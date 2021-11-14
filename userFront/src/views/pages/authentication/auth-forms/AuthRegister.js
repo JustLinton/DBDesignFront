@@ -286,6 +286,7 @@ const FirebaseRegister = ({ ...others }) => {
                                 <Button
                                     disableElevation
                                     disabled={isSubmitting}
+                                    onClick={googleHandler}
                                     fullWidth
                                     size="large"
                                     type="submit"

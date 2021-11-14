@@ -2,7 +2,6 @@
     "name": "berry-material-react-free",
     "version": "3.0.0",
     "private": true,
-    "homepage": "https://berrydashboard.io/free",
     "dependencies": {
         "@emotion/cache": "^11.4.0",
         "@emotion/react": "^11.4.0",
@@ -28,6 +27,7 @@
         "redux": "^4.0.5",
         "yup": "^0.32.9"
     },
+    "proxy": "http://127.0.0.1:8080",
     "scripts": {
         "start": "react-scripts start",
         "build": "react-scripts build",
@@ -64,6 +64,7 @@
         "@mui/system": "^5.0.6",
         "@tabler/icons": "^1.42.0",
         "apexcharts": "^3.29.0",
+        "axios": "^0.24.0",
         "eslint": "^7.27.0",
         "eslint-config-airbnb-typescript": "^12.3.1",
         "eslint-config-prettier": "^8.3.0",
