@@ -3,18 +3,23 @@
 # dependencies
 manageFront/node_modules
 landingFront/node_modules
+userFront/node_modules
 landingFront/.pnp
-manageFront/.pnp
+landingFront/.pnp
+userFront/.pnp
 manageFront/.pnp.js
 landingFront/.pnp.js
+userFront/.pnp.js
 
 # testing
 landingFront/coverage
 manageFront/coverage
+userFront/coverage
 
 # production
 manageFront/build
 landingFront/build
+userFront/build
 
 # misc
 landingFront/.DS_Store
@@ -22,6 +27,11 @@ landingFront/.env.local
 landingFront/.env.development.local
 landingFront/.env.test.local
 landingFront/.env.production.local
+userFront/.DS_Store
+userFront/.env.local
+userFront/.env.development.local
+userFront/.env.test.local
+userFront/.env.production.local
 manageFront/.DS_Store
 manageFront/.env.local
 manageFront/.env.development.local
@@ -34,3 +44,6 @@ landingFront/yarn-error.log*
 manageFront/npm-debug.log*
 manageFront/yarn-debug.log*
 manageFront/yarn-error.log*
+userFront/npm-debug.log*
+userFront/yarn-debug.log*
+userFront/yarn-error.log*
