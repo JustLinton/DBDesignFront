@@ -65,6 +65,7 @@
         "@tabler/icons": "^1.42.0",
         "apexcharts": "^3.29.0",
         "axios": "^0.24.0",
+        "crypto-js": "^4.1.1",
         "eslint": "^7.27.0",
         "eslint-config-airbnb-typescript": "^12.3.1",
         "eslint-config-prettier": "^8.3.0",

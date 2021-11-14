@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
+import ReactDOM from 'react-dom';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -36,6 +37,7 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import Google from 'assets/images/icons/social-google.svg';
 
 import axios from 'axios';
+import sha256 from 'crypto-js/sha256'
 
 // ============================|| FIREBASE - LOGIN ||============================ //
 
@@ -115,7 +117,7 @@ const FirebaseLogin = ({ ...others }) => {
                 </Grid>
                 <Grid item xs={12} container alignItems="center" justifyContent="center">
                     <Box sx={{ mb: 2 }}>
-                        <Typography variant="subtitle1">使用邮箱登录</Typography>
+                        <Typography variant="subtitle1">使用手机登录</Typography>
                     </Box>
                 </Grid>
             </Grid>
@@ -123,33 +125,47 @@ const FirebaseLogin = ({ ...others }) => {
             <Formik
                 initialValues={{
                     email: '',
+                    phone: '',
                     password: '',
                     submit: null
                 }}
                 validationSchema={Yup.object().shape({
-                    email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
-                    password: Yup.string().max(255).required('Password is required')
+                    // email: Yup.string().email('不是有效的邮箱').max(255).required('必须输入邮箱'),
+                    password: Yup.string().max(255).required('请输入密码'),
+                    phone: Yup.string().trim().required("请输入手机号").matches(/^[0-9]{11}$/,"手机号无效")
                 })}
                 onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
                     try {
                         if (scriptedRef.current) {
-					setStatus({ success: true });
-					setSubmitting(false);
-					console.log("the email is:"+values.email);
-					
-					// axios.defaults.headers.post['Content-Type'] = 'text/plain';
-					axios.defaults.baseURL = ""
-					axios.post('/form', {
-						pname: values.email,
-						pgender: values.password,
-						phobby: 'hobby!'
-					})
-					.then(function (response) {
-						console.log(response);
-					})
-					.catch(function (error) {
-						console.log(error);
-					});
+                            setStatus({ success: true });
+                            setSubmitting(false);
+                            // console.log("the email is:"+values.email);
+                            
+                            // axios.defaults.headers.post['Content-Type'] = 'text/plain';
+                            axios.defaults.baseURL = ""
+                            let data = new FormData();
+                            const hashDigest = sha256(values.password).toString();
+                            data.append('phone',values.phone);
+                            data.append('passwd',hashDigest);
+                            axios.post('/login',data)
+                            .then(function (response) {
+                                if(response.status===200){
+                                   if(response.data==="passwd"){
+                                    //密码不对
+                                    const errorPasswdMsg = <h1>Hello, world!</h1>;
+                                    ReactDOM.render(
+                                        errorPasswdMsg,
+                                        document.getElementById('standard-weight-helper-text-password-login'));
+                                        alert("密码错误～");
+                                   }else if(response.data==='ok'){
+                                        console.log("success!");
+                                        window.location='/manage';
+                                   } 
+                                }
+                            })
+                            .catch(function (error) {
+                                console.log(error);
+                            });
 
                         }
                     } catch (err) {
@@ -164,7 +180,7 @@ const FirebaseLogin = ({ ...others }) => {
             >
                 {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
                     <form noValidate onSubmit={handleSubmit} {...others}>
-                        <FormControl fullWidth error={Boolean(touched.email && errors.email)} sx={{ ...theme.typography.customInput }}>
+                        {/* <FormControl fullWidth error={Boolean(touched.email && errors.email)} sx={{ ...theme.typography.customInput }}>
                             <InputLabel htmlFor="outlined-adornment-email-login">邮箱</InputLabel>
                             <OutlinedInput
                                 id="outlined-adornment-email-login"
@@ -179,6 +195,25 @@ const FirebaseLogin = ({ ...others }) => {
                             {touched.email && errors.email && (
                                 <FormHelperText error id="standard-weight-helper-text-email-login">
                                     {errors.email}
+                                </FormHelperText>
+                            )}
+                        </FormControl> */}
+
+
+                        <FormControl fullWidth error={Boolean(touched.phone && errors.phone)} sx={{ ...theme.typography.customInput }}>
+                            <InputLabel htmlFor="outlined-adornment-email-register">手机</InputLabel>
+                            <OutlinedInput
+                                id="outlined-adornment-phone-register"
+                                type="text"
+                                value={values.phone}
+                                name="phone"
+                                onBlur={handleBlur}
+                                onChange={handleChange}
+                                inputProps={{}}
+                            />
+                            {touched.phone && errors.phone && (
+                                <FormHelperText error id="standard-weight-helper-text--register">
+                                    {errors.phone}
                                 </FormHelperText>
                             )}
                         </FormControl>

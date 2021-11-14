@@ -17,7 +17,7 @@ import {
     InputAdornment,
     InputLabel,
     OutlinedInput,
-    TextField,
+    // TextField,
     Typography,
     useMediaQuery
 } from '@mui/material';
@@ -25,6 +25,8 @@ import {
 // third party
 import * as Yup from 'yup';
 import { Formik } from 'formik';
+import axios from 'axios';
+import sha256 from 'crypto-js/sha256'
 
 // project imports
 import useScriptRef from 'hooks/useScriptRef';
@@ -90,7 +92,7 @@ const FirebaseRegister = ({ ...others }) => {
                             <Box sx={{ mr: { xs: 1, sm: 2, width: 20 } }}>
                                 <img src={Google} alt="google" width={16} height={16} style={{ marginRight: matchDownSM ? 8 : 16 }} />
                             </Box>
-                            Sign up with Google
+                            使用 Google 继续
                         </Button>
                     </AnimateButton>
                 </Grid>
@@ -119,7 +121,7 @@ const FirebaseRegister = ({ ...others }) => {
                 </Grid>
                 <Grid item xs={12} container alignItems="center" justifyContent="center">
                     <Box sx={{ mb: 2 }}>
-                        <Typography variant="subtitle1">Sign up with Email address</Typography>
+                        <Typography variant="subtitle1">以手机和邮箱注册</Typography>
                     </Box>
                 </Grid>
             </Grid>
@@ -127,18 +129,45 @@ const FirebaseRegister = ({ ...others }) => {
             <Formik
                 initialValues={{
                     email: '',
+                    phone:'',
                     password: '',
+                    name:'',
                     submit: null
                 }}
                 validationSchema={Yup.object().shape({
-                    email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
-                    password: Yup.string().max(255).required('Password is required')
+                    name: Yup.string().required('请输入昵称'),
+                    email: Yup.string().email('不是有效的邮箱').max(255).required('必须输入邮箱'),
+                    password: Yup.string().max(255).required('请输入密码'),
+                    phone: Yup.string().trim().required("请输入手机号").matches(/^[0-9]{11}$/,"手机号无效")
                 })}
                 onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
                     try {
                         if (scriptedRef.current) {
                             setStatus({ success: true });
                             setSubmitting(false);
+
+                            // console.log(values.name);
+                            // console.log(values.phone);
+                            // console.log(values.password);
+                            // console.log(values.email);
+
+                            axios.defaults.baseURL = ""
+                            let data = new FormData();
+                            data.append('email',values.email);
+                            const hashDigest = sha256(values.password).toString();
+                            data.append('passwd',hashDigest);
+                            data.append('name',values.name);
+                            data.append('phone',values.phone);
+                            axios.post('/register',data)
+                            .then(function (response) {
+                                if(response.status===200){
+                                    console.log("success!");
+                                    window.location='/auth/login';
+                                }
+                            })
+                            .catch(function (error) {
+                                console.log(error);
+                            });
                         }
                     } catch (err) {
                         console.error(err);
@@ -152,7 +181,7 @@ const FirebaseRegister = ({ ...others }) => {
             >
                 {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
                     <form noValidate onSubmit={handleSubmit} {...others}>
-                        <Grid container spacing={matchDownSM ? 0 : 2}>
+                        {/* <Grid container spacing={matchDownSM ? 0 : 2}>
                             <Grid item xs={12} sm={6}>
                                 <TextField
                                     fullWidth
@@ -175,9 +204,46 @@ const FirebaseRegister = ({ ...others }) => {
                                     sx={{ ...theme.typography.customInput }}
                                 />
                             </Grid>
-                        </Grid>
+                        </Grid> */}
+
+                        <FormControl fullWidth error={Boolean(touched.name && errors.name)} sx={{ ...theme.typography.customInput }}>
+                            <InputLabel htmlFor="outlined-adornment-email-register">昵称</InputLabel>
+                            <OutlinedInput
+                                id="outlined-adornment-name-register"
+                                type="text"
+                                value={values.name}
+                                name="name"
+                                onBlur={handleBlur}
+                                onChange={handleChange}
+                                inputProps={{}}
+                            />
+                            {touched.name && errors.name && (
+                                <FormHelperText error id="standard-weight-helper-text--register">
+                                    {errors.name}
+                                </FormHelperText>
+                            )}
+                        </FormControl>
+
+                        <FormControl fullWidth error={Boolean(touched.phone && errors.phone)} sx={{ ...theme.typography.customInput }}>
+                            <InputLabel htmlFor="outlined-adornment-email-register">手机</InputLabel>
+                            <OutlinedInput
+                                id="outlined-adornment-phone-register"
+                                type="text"
+                                value={values.phone}
+                                name="phone"
+                                onBlur={handleBlur}
+                                onChange={handleChange}
+                                inputProps={{}}
+                            />
+                            {touched.phone && errors.phone && (
+                                <FormHelperText error id="standard-weight-helper-text--register">
+                                    {errors.phone}
+                                </FormHelperText>
+                            )}
+                        </FormControl>
+
                         <FormControl fullWidth error={Boolean(touched.email && errors.email)} sx={{ ...theme.typography.customInput }}>
-                            <InputLabel htmlFor="outlined-adornment-email-register">Email Address / Username</InputLabel>
+                            <InputLabel htmlFor="outlined-adornment-email-register">邮箱</InputLabel>
                             <OutlinedInput
                                 id="outlined-adornment-email-register"
                                 type="email"
@@ -199,7 +265,7 @@ const FirebaseRegister = ({ ...others }) => {
                             error={Boolean(touched.password && errors.password)}
                             sx={{ ...theme.typography.customInput }}
                         >
-                            <InputLabel htmlFor="outlined-adornment-password-register">Password</InputLabel>
+                            <InputLabel htmlFor="outlined-adornment-password-register">密码</InputLabel>
                             <OutlinedInput
                                 id="outlined-adornment-password-register"
                                 type={showPassword ? 'text' : 'password'}
@@ -266,9 +332,9 @@ const FirebaseRegister = ({ ...others }) => {
                                     }
                                     label={
                                         <Typography variant="subtitle1">
-                                            Agree with &nbsp;
+                                            同意 &nbsp;
                                             <Typography variant="subtitle1" component={Link} to="#">
-                                                Terms & Condition.
+                                                服务条款.
                                             </Typography>
                                         </Typography>
                                     }
@@ -286,14 +352,13 @@ const FirebaseRegister = ({ ...others }) => {
                                 <Button
                                     disableElevation
                                     disabled={isSubmitting}
-                                    onClick={googleHandler}
                                     fullWidth
                                     size="large"
                                     type="submit"
                                     variant="contained"
                                     color="secondary"
                                 >
-                                    Sign up
+                                    注册
                                 </Button>
                             </AnimateButton>
                         </Box>

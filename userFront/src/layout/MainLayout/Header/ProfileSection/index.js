@@ -29,6 +29,7 @@ import {
 
 // third-party
 import PerfectScrollbar from 'react-perfect-scrollbar';
+import axios from 'axios';
 
 // project imports
 import MainCard from 'ui-component/cards/MainCard';
@@ -56,7 +57,16 @@ const ProfileSection = () => {
      * */
     const anchorRef = useRef(null);
     const handleLogout = async () => {
-        console.log('Logout');
+        // console.log('Logout');
+        axios.defaults.baseURL = ""
+        axios.get("/logout", {
+        　　params: { 'key': 'value' }
+        }).then(function (response) {
+        // 　　alert(''.concat(response.data, '\r\n', response.status, '\r\n', response.statusText, '\r\n', response.headers, '\r\n', response.config));
+		if(response.status===200)window.location='/auth/login';
+        }).catch(function (error) {
+        　　alert(error);
+        });
     };
 
     const handleClose = (event) => {
