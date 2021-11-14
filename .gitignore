@@ -1,0 +1,36 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+manageFront/node_modules
+landingFront/node_modules
+landingFront/.pnp
+manageFront/.pnp
+manageFront/.pnp.js
+landingFront/.pnp.js
+
+# testing
+landingFront/coverage
+manageFront/coverage
+
+# production
+manageFront/build
+landingFront/build
+
+# misc
+landingFront/.DS_Store
+landingFront/.env.local
+landingFront/.env.development.local
+landingFront/.env.test.local
+landingFront/.env.production.local
+manageFront/.DS_Store
+manageFront/.env.local
+manageFront/.env.development.local
+manageFront/.env.test.local
+manageFront/.env.production.local
+
+landingFront/npm-debug.log*
+landingFront/yarn-debug.log*
+landingFront/yarn-error.log*
+manageFront/npm-debug.log*
+manageFront/yarn-debug.log*
+manageFront/yarn-error.log*
