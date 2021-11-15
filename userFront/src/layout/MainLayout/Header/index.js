@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+// import {useState} from 'react'
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -15,8 +16,10 @@ import { IconMenu2 } from '@tabler/icons';
 
 // ==============================|| MAIN NAVBAR / HEADER ||============================== //
 
-const Header = ({ handleLeftDrawerToggle }) => {
+const Header = (props) => {
     const theme = useTheme();
+
+    // console.log(userData);
 
     return (
         <>
@@ -47,7 +50,7 @@ const Header = ({ handleLeftDrawerToggle }) => {
                                 color: theme.palette.secondary.light
                             }
                         }}
-                        onClick={handleLeftDrawerToggle}
+                        onClick={props.handleLeftDrawerToggle}
                         color="inherit"
                     >
                         <IconMenu2 stroke={1.5} size="1.3rem" />
@@ -62,7 +65,7 @@ const Header = ({ handleLeftDrawerToggle }) => {
 
             {/* notification & profile */}
             <NotificationSection />
-            <ProfileSection />
+            <ProfileSection  userData={props.userData}/>
         </>
     );
 };

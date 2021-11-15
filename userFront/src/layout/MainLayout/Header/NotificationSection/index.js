@@ -36,19 +36,11 @@ import { IconBell } from '@tabler/icons';
 const status = [
     {
         value: 'all',
-        label: 'All Notification'
+        label: '全部通知'
     },
     {
         value: 'new',
-        label: 'New'
-    },
-    {
-        value: 'unread',
-        label: 'Unread'
-    },
-    {
-        value: 'other',
-        label: 'Other'
+        label: '新通知'
     }
 ];
 
@@ -151,7 +143,7 @@ const NotificationSection = () => {
                                             <Grid container alignItems="center" justifyContent="space-between" sx={{ pt: 2, px: 2 }}>
                                                 <Grid item>
                                                     <Stack direction="row" spacing={2}>
-                                                        <Typography variant="subtitle1">All Notification</Typography>
+                                                        <Typography variant="subtitle1">全部通知</Typography>
                                                         <Chip
                                                             size="small"
                                                             label="01"
@@ -164,7 +156,7 @@ const NotificationSection = () => {
                                                 </Grid>
                                                 <Grid item>
                                                     <Typography component={Link} to="#" variant="subtitle2" color="primary">
-                                                        Mark as all read
+                                                        全部标记为已读
                                                     </Typography>
                                                 </Grid>
                                             </Grid>
@@ -205,7 +197,7 @@ const NotificationSection = () => {
                                     <Divider />
                                     <CardActions sx={{ p: 1.25, justifyContent: 'center' }}>
                                         <Button size="small" disableElevation>
-                                            View All
+                                             进入通知中心
                                         </Button>
                                     </CardActions>
                                 </MainCard>

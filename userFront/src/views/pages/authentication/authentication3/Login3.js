@@ -12,12 +12,32 @@ import Logo from 'ui-component/Logo';
 import AuthFooter from 'ui-component/cards/AuthFooter';
 
 // assets
+import axios from 'axios';
 
 // ================================|| AUTH3 - LOGIN ||================================ //
 
 const Login = () => {
     const theme = useTheme();
     const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
+
+    // console.log("login!");
+
+    axios.defaults.baseURL = ""
+    axios.get("/checkLoggedIn", {
+    　　params: { 'key': 'value' }
+    }).then(function (response) {
+    // 　　alert(''.concat(response.data, '\r\n', response.status, '\r\n', response.statusText, '\r\n', response.headers, '\r\n', response.config));
+    if(response.status===200){
+       
+        // console.log(response);
+        if(response.data==="ok"){
+            window.location='/manage/dashboard';
+        }
+    }
+
+    }).catch(function (error) {
+    　　alert(error);
+    });
 
     return (
         <AuthWrapper1>

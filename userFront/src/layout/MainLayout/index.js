@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useState,useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Outlet } from 'react-router-dom';
 
@@ -17,6 +17,8 @@ import { SET_MENU } from 'store/actions';
 
 // assets
 import { IconChevronRight } from '@tabler/icons';
+import axios from 'axios';
+
 
 // styles
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(({ theme, open }) => ({
@@ -64,6 +66,8 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(({
 
 // ==============================|| MAIN LAYOUT ||============================== //
 
+var userData;
+
 const MainLayout = () => {
     const theme = useTheme();
     const matchDownMd = useMediaQuery(theme.breakpoints.down('lg'));
@@ -80,6 +84,44 @@ const MainLayout = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [matchDownMd]);
 
+    const [loading, setLoading] = useState(true);
+
+    axios.defaults.baseURL = ""
+    axios.get("/checkLoggedIn", {
+    　　params: { 'key': 'value' }
+    }).then(function (response) {
+    // 　　alert(''.concat(response.data, '\r\n', response.status, '\r\n', response.statusText, '\r\n', response.headers, '\r\n', response.config));
+    if(response.status===200){
+       
+        // console.log(response);
+        if(response.data==="notlogged"){
+            window.location='/auth/login';
+        }
+    }
+
+    }).catch(function (error) {
+    　　alert(error);
+    });
+
+  
+    axios.get("/profile", {
+        　　params: { 'verbose': 'false' }
+        }).then(function (response) {
+        // 　　alert(''.concat(response.data, '\r\n', response.status, '\r\n', response.statusText, '\r\n', response.headers, '\r\n', response.config));
+        if(response.status===200){
+           
+            // console.log(response);
+            if(response.data==="notlogged"){
+                window.location='/auth/login';
+            }
+
+                userData=response.data;
+                setLoading(false);
+            }
+        }).catch(function (error) {
+        　　alert(error);
+        });
+
     return (
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />
@@ -95,7 +137,7 @@ const MainLayout = () => {
                 }}
             >
                 <Toolbar>
-                    <Header handleLeftDrawerToggle={handleLeftDrawerToggle} />
+                    <Header handleLeftDrawerToggle={handleLeftDrawerToggle}  userData={loading?{'Name':'加载中...'}:userData} />
                 </Toolbar>
             </AppBar>
 

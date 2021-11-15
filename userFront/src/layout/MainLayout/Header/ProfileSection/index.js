@@ -14,12 +14,12 @@ import {
     ClickAwayListener,
     Divider,
     Grid,
-    InputAdornment,
+    // InputAdornment,
     List,
     ListItemButton,
     ListItemIcon,
     ListItemText,
-    OutlinedInput,
+    // OutlinedInput,
     Paper,
     Popper,
     Stack,
@@ -30,25 +30,27 @@ import {
 // third-party
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import axios from 'axios';
+import lintonUserAvt from 'assets/images/users/usr_linton.png';
 
 // project imports
 import MainCard from 'ui-component/cards/MainCard';
 import Transitions from 'ui-component/extended/Transitions';
-import UpgradePlanCard from './UpgradePlanCard';
-import User1 from 'assets/images/users/user-round.svg';
+// import UpgradePlanCard from './UpgradePlanCard';
+// import User1 from 'assets/images/users/user-round.svg';
 
 // assets
-import { IconLogout, IconSearch, IconSettings, IconUser } from '@tabler/icons';
+import { IconLogout, IconSettings, IconUser } from '@tabler/icons';
+
 
 // ==============================|| PROFILE MENU ||============================== //
 
-const ProfileSection = () => {
+const ProfileSection = (props) => {
     const theme = useTheme();
     const customization = useSelector((state) => state.customization);
     const navigate = useNavigate();
 
     const [sdm, setSdm] = useState(true);
-    const [value, setValue] = useState('');
+    // const [value, setValue] = useState('');
     const [notification, setNotification] = useState(false);
     const [selectedIndex, setSelectedIndex] = useState(-1);
     const [open, setOpen] = useState(false);
@@ -97,6 +99,8 @@ const ProfileSection = () => {
         prevOpen.current = open;
     }, [open]);
 
+    // console.log(props.userData['Name']);
+
     return (
         <>
             <Chip
@@ -121,7 +125,8 @@ const ProfileSection = () => {
                 }}
                 icon={
                     <Avatar
-                        src={User1}
+                        // src={User1}
+                        src= {lintonUserAvt}
                         sx={{
                             ...theme.typography.mediumAvatar,
                             margin: '8px 0 8px 8px !important',
@@ -132,6 +137,7 @@ const ProfileSection = () => {
                         aria-haspopup="true"
                         color="inherit"
                     />
+                    // <Avatar>N</Avatar>
                 }
                 label={<IconSettings stroke={1.5} size="1.5rem" color={theme.palette.primary.main} />}
                 variant="outlined"
@@ -164,17 +170,17 @@ const ProfileSection = () => {
                         <Paper>
                             <ClickAwayListener onClickAway={handleClose}>
                                 <MainCard border={false} elevation={16} content={false} boxShadow shadow={theme.shadows[16]}>
-                                    <Box sx={{ p: 2 }}>
+                                    <Box sx={{ paddingTop:5,paddingLeft:5,paddingRight:5 }}>
                                         <Stack>
                                             <Stack direction="row" spacing={0.5} alignItems="center">
-                                                <Typography variant="h4">Good Morning,</Typography>
+                                                <Typography variant="h4">你好,</Typography>
                                                 <Typography component="span" variant="h4" sx={{ fontWeight: 400 }}>
-                                                    Johne Doe
+                                                    {props.userData['Name']}
                                                 </Typography>
                                             </Stack>
-                                            <Typography variant="subtitle2">Project Admin</Typography>
+                                            <Typography variant="subtitle">业主用户</Typography>
                                         </Stack>
-                                        <OutlinedInput
+                                        {/* <OutlinedInput
                                             sx={{ width: '100%', pr: 1, pl: 2, my: 2 }}
                                             id="input-search-profile"
                                             value={value}
@@ -190,12 +196,12 @@ const ProfileSection = () => {
                                                 'aria-label': 'weight'
                                             }}
                                         />
-                                        <Divider />
+                                        <Divider /> */}
                                     </Box>
                                     <PerfectScrollbar style={{ height: '100%', maxHeight: 'calc(100vh - 250px)', overflowX: 'hidden' }}>
                                         <Box sx={{ p: 2 }}>
-                                            <UpgradePlanCard />
-                                            <Divider />
+                                            {/* <UpgradePlanCard /> */}
+                                            {/* <Divider /> */}
                                             <Card
                                                 sx={{
                                                     bgcolor: theme.palette.primary.light,
@@ -207,7 +213,7 @@ const ProfileSection = () => {
                                                         <Grid item>
                                                             <Grid item container alignItems="center" justifyContent="space-between">
                                                                 <Grid item>
-                                                                    <Typography variant="subtitle1">Start DND Mode</Typography>
+                                                                    <Typography variant="subtitle1">显示高级选项</Typography>
                                                                 </Grid>
                                                                 <Grid item>
                                                                     <Switch
@@ -223,7 +229,7 @@ const ProfileSection = () => {
                                                         <Grid item>
                                                             <Grid item container alignItems="center" justifyContent="space-between">
                                                                 <Grid item>
-                                                                    <Typography variant="subtitle1">Allow Notifications</Typography>
+                                                                    <Typography variant="subtitle1">允许通知</Typography>
                                                                 </Grid>
                                                                 <Grid item>
                                                                     <Switch
@@ -263,7 +269,7 @@ const ProfileSection = () => {
                                                     <ListItemIcon>
                                                         <IconSettings stroke={1.5} size="1.3rem" />
                                                     </ListItemIcon>
-                                                    <ListItemText primary={<Typography variant="body2">Account Settings</Typography>} />
+                                                    <ListItemText primary={<Typography variant="body2">账户设置</Typography>} />
                                                 </ListItemButton>
                                                 <ListItemButton
                                                     sx={{ borderRadius: `${customization.borderRadius}px` }}
@@ -277,7 +283,7 @@ const ProfileSection = () => {
                                                         primary={
                                                             <Grid container spacing={1} justifyContent="space-between">
                                                                 <Grid item>
-                                                                    <Typography variant="body2">Social Profile</Typography>
+                                                                    <Typography variant="body2">我的主页</Typography>
                                                                 </Grid>
                                                                 <Grid item>
                                                                     <Chip
@@ -301,7 +307,7 @@ const ProfileSection = () => {
                                                     <ListItemIcon>
                                                         <IconLogout stroke={1.5} size="1.3rem" />
                                                     </ListItemIcon>
-                                                    <ListItemText primary={<Typography variant="body2">Logout</Typography>} />
+                                                    <ListItemText primary={<Typography variant="body2">登出</Typography>} />
                                                 </ListItemButton>
                                             </List>
                                         </Box>

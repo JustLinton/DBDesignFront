@@ -8,15 +8,15 @@ const icons = { IconDashboard };
 
 const dashboard = {
     id: 'dashboard',
-    title: 'Dashboard',
-    caption: 'Linton Collin.',
+    title: '总览 / Overview',
+    caption: '',
     type: 'group',
     children: [
         {
             id: 'default',
-            title: 'Dashboard',
+            title: '仪表盘',
             type: 'item',
-            url: '/dashboard/default',
+            url: '/manage/dashboard',
             icon: icons.IconDashboard,
             breadcrumbs: false
         }
