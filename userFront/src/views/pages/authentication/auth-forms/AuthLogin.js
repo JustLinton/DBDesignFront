@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
-import ReactDOM from 'react-dom';
+// import ReactDOM from 'react-dom';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -53,8 +53,14 @@ const FirebaseLogin = ({ ...others }) => {
     };
 
     const [showPassword, setShowPassword] = useState(false);
+    const [passwdWrong, setpasswdWrong] = useState(false);
+
     const handleClickShowPassword = () => {
         setShowPassword(!showPassword);
+    };
+
+    const handleClickPasswdInput = () => {
+        setpasswdWrong(false);
     };
 
     const handleMouseDownPassword = (event) => {
@@ -152,13 +158,10 @@ const FirebaseLogin = ({ ...others }) => {
                                 if(response.status===200){
                                    if(response.data==="passwd"){
                                     //密码不对
-                                    const errorPasswdMsg = <h1>Hello, world!</h1>;
-                                    ReactDOM.render(
-                                        errorPasswdMsg,
-                                        document.getElementById('standard-weight-helper-text-password-login'));
-                                        alert("密码错误～");
+                                    setpasswdWrong(true);
                                    }else if(response.data==='ok'){
                                         console.log("success!");
+                                        setpasswdWrong(false);
                                         window.location='/manage';
                                    } 
                                 }
@@ -231,6 +234,7 @@ const FirebaseLogin = ({ ...others }) => {
                                 name="password"
                                 onBlur={handleBlur}
                                 onChange={handleChange}
+                                onClick={handleClickPasswdInput}
                                 endAdornment={
                                     <InputAdornment position="end">
                                         <IconButton
@@ -247,9 +251,14 @@ const FirebaseLogin = ({ ...others }) => {
                                 label="Password"
                                 inputProps={{}}
                             />
-                            {touched.password && errors.password && (
+                            {touched.password && errors.password &&(
                                 <FormHelperText error id="standard-weight-helper-text-password-login">
                                     {errors.password}
+                                </FormHelperText>
+                            )}
+                            {passwdWrong &&(
+                                <FormHelperText error id="standard-weight-helper-text-passwordWrong-login">
+                                    密码错误
                                 </FormHelperText>
                             )}
                         </FormControl>

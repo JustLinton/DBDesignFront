@@ -48,6 +48,7 @@ const FirebaseRegister = ({ ...others }) => {
     const [showPassword, setShowPassword] = useState(false);
     const [checked, setChecked] = useState(true);
 
+    const [phoneUsed, setPhoneUsed] = useState(false);
     const [strength, setStrength] = useState(0);
     const [level, setLevel] = useState();
 
@@ -57,6 +58,10 @@ const FirebaseRegister = ({ ...others }) => {
 
     const handleClickShowPassword = () => {
         setShowPassword(!showPassword);
+    };
+
+    const handleClickPhoneInput = () => {
+        setPhoneUsed(false);
     };
 
     const handleMouseDownPassword = (event) => {
@@ -161,8 +166,14 @@ const FirebaseRegister = ({ ...others }) => {
                             axios.post('/register',data)
                             .then(function (response) {
                                 if(response.status===200){
-                                    console.log("success!");
-                                    window.location='/auth/login';
+                                    if(response.data==="phone"){
+                                            //手机号已使用
+                                            setPhoneUsed(true);
+                                       }else if(response.data==='ok'){
+                                            // console.log("success!");
+                                            setPhoneUsed(false);
+                                            window.location='/auth/login';
+                                    }
                                 }
                             })
                             .catch(function (error) {
@@ -233,6 +244,7 @@ const FirebaseRegister = ({ ...others }) => {
                                 name="phone"
                                 onBlur={handleBlur}
                                 onChange={handleChange}
+                                onClick={handleClickPhoneInput}
                                 inputProps={{}}
                             />
                             {touched.phone && errors.phone && (
@@ -240,6 +252,11 @@ const FirebaseRegister = ({ ...others }) => {
                                     {errors.phone}
                                 </FormHelperText>
                             )}
+                             {phoneUsed && (
+                                <FormHelperText error id="standard-weight-helper-textPhone--register">
+                                    手机号已经使用
+                                </FormHelperText>
+                            )}                           
                         </FormControl>
 
                         <FormControl fullWidth error={Boolean(touched.email && errors.email)} sx={{ ...theme.typography.customInput }}>
