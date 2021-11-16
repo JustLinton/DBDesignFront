@@ -314,10 +314,8 @@ go env -w GOPROXY=https://goproxy.io,direct
 
 | ID   | 含义        |
 | ---- | ----------- |
-| 00xx | sidebar.*   |
-| 01xx | dashboard.* |
-| 02xx | userman.*   |
-| 03xx | waterman.*  |
+| 1xx  | dashboard.* |
+| 2xx  | function.*  |
 
 
 

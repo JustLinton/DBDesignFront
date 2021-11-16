@@ -16,6 +16,7 @@ const Dashboard = Loadable(lazy(() => import('views/dashboard/Main')));
 // const UtilsTablerIcons = Loadable(lazy(() => import('views/utilities/TablerIcons')));
 
 const WatermanRec = Loadable(lazy(() => import('views/utilities/waterman_rec')));
+const WatermanUserman = Loadable(lazy(() => import('views/utilities/waterman_userman')));
 
 // sample page routing
 // const SamplePage = Loadable(lazy(() => import('views/sample-page')));
@@ -37,6 +38,10 @@ const MainRoutes = {
         {
             path: '/waterman/rec',
             element: <WatermanRec  />
+        },
+        {
+            path: '/waterman/userman',
+            element: <WatermanUserman  />
         }
     ]
 };

@@ -50,7 +50,7 @@ const items = {
                     id: 'function.waterman.userman',
                     title: '业主管理',
                     type: 'item',
-                    url: '/icons/material-icons',
+                    url: '/manage/waterman/userman',
                     breadcrumbs: false
                 }
             ]
