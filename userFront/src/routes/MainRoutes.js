@@ -8,15 +8,17 @@ import Loadable from 'ui-component/Loadable';
 // const DashboardDefault = Loadable(lazy(() => import('views/dashboard/Default')));
 const Dashboard = Loadable(lazy(() => import('views/dashboard/Main')));
 
-// utilities routing
-const UtilsTypography = Loadable(lazy(() => import('views/utilities/Typography')));
-const UtilsColor = Loadable(lazy(() => import('views/utilities/Color')));
-const UtilsShadow = Loadable(lazy(() => import('views/utilities/Shadow')));
-const UtilsMaterialIcons = Loadable(lazy(() => import('views/utilities/MaterialIcons')));
-const UtilsTablerIcons = Loadable(lazy(() => import('views/utilities/TablerIcons')));
+// // utilities routing
+// const UtilsTypography = Loadable(lazy(() => import('views/utilities/Typography')));
+// const UtilsColor = Loadable(lazy(() => import('views/utilities/Color')));
+// const UtilsShadow = Loadable(lazy(() => import('views/utilities/Shadow')));
+// const UtilsMaterialIcons = Loadable(lazy(() => import('views/utilities/MaterialIcons')));
+// const UtilsTablerIcons = Loadable(lazy(() => import('views/utilities/TablerIcons')));
+
+const WatermanRec = Loadable(lazy(() => import('views/utilities/waterman_rec')));
 
 // sample page routing
-const SamplePage = Loadable(lazy(() => import('views/sample-page')));
+// const SamplePage = Loadable(lazy(() => import('views/sample-page')));
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -33,28 +35,8 @@ const MainRoutes = {
             element: <Dashboard />
         },
         {
-            path: '/utils/util-typography',
-            element: <UtilsTypography />
-        },
-        {
-            path: '/utils/util-color',
-            element: <UtilsColor />
-        },
-        {
-            path: '/utils/util-shadow',
-            element: <UtilsShadow />
-        },
-        {
-            path: '/icons/tabler-icons',
-            element: <UtilsTablerIcons />
-        },
-        {
-            path: '/icons/material-icons',
-            element: <UtilsMaterialIcons />
-        },
-        {
-            path: '/sample-page',
-            element: <SamplePage />
+            path: '/waterman/rec',
+            element: <WatermanRec  />
         }
     ]
 };

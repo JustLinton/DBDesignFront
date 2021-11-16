@@ -10,16 +10,23 @@ import NavCollapse from '../NavCollapse';
 
 // ==============================|| SIDEBAR MENU LIST GROUP ||============================== //
 
-const NavGroup = ({ item }) => {
+const NavGroup = ({ item, userData }) => {
     const theme = useTheme();
 
     // menu list collapse & items
     const items = item.children?.map((menu) => {
         switch (menu.type) {
             case 'collapse':
+                if(userData['Name']==='加载中...')return undefined;
+                if((userData['FunctionC'])[menu.id]>0){
                 return <NavCollapse key={menu.id} menu={menu} level={1} />;
+                }else return undefined;
             case 'item':
-                return <NavItem key={menu.id} item={menu} level={1} />;
+                if(userData['Name']==='加载中...')return undefined;
+                if((userData['FunctionC'])[menu.id]>0){
+                    return <NavItem key={menu.id} item={menu} level={1} />;
+                }else return undefined;
+           
             default:
                 return (
                     <Typography key={menu.id} variant="h6" color="error" align="center">
@@ -55,7 +62,8 @@ const NavGroup = ({ item }) => {
 };
 
 NavGroup.propTypes = {
-    item: PropTypes.object
+    item: PropTypes.object,
+    userData: PropTypes.object
 };
 
 export default NavGroup;

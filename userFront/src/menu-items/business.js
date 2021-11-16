@@ -11,13 +11,14 @@ const icons = {
 
 // ==============================|| UTILITIES MENU ITEMS ||============================== //
 
-const utilities = {
-    id: 'utilities',
+const items = {
+    id: 'sidebar.manage',
     title: '业务管理 / Management',
+    caption: '做社区的管理者',
     type: 'group',
     children: [
         {
-            id: 'things',
+            id: 'function.essentials.things',
             title: '事务',
             type: 'item',
             url: '/utils/util-color',
@@ -25,7 +26,7 @@ const utilities = {
             breadcrumbs: false
         },       
         {
-            id: 'issue',
+            id: 'function.essentials.report',
             title: '情况上报',
             type: 'item',
             url: '/utils/util-color',
@@ -33,20 +34,20 @@ const utilities = {
             breadcrumbs: false
         },
         {
-            id: 'icons',
+            id: 'function.waterman.root',
             title: '水务管理',
             type: 'collapse',
             icon: icons.IconWindmill,
             children: [
                 {
-                    id: 'water_chaobiao',
+                    id: 'function.waterman.rec',
                     title: '在线抄表',
                     type: 'item',
-                    url: '/icons/tabler-icons',
+                    url: '/manage/waterman/rec',
                     breadcrumbs: false
                 },
                 {
-                    id: 'material-icons',
+                    id: 'function.waterman.userman',
                     title: '业主管理',
                     type: 'item',
                     url: '/icons/material-icons',
@@ -57,4 +58,4 @@ const utilities = {
     ]
 };
 
-export default utilities;
+export default items  ;

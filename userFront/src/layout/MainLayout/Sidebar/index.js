@@ -17,7 +17,7 @@ import { drawerWidth } from 'store/constant';
 
 // ==============================|| SIDEBAR DRAWER ||============================== //
 
-const Sidebar = ({ drawerOpen, drawerToggle, window }) => {
+const Sidebar = ({ userData,drawerOpen, drawerToggle, window }) => {    
     const theme = useTheme();
     const matchUpMd = useMediaQuery(theme.breakpoints.up('md'));
 
@@ -40,7 +40,7 @@ const Sidebar = ({ drawerOpen, drawerToggle, window }) => {
                     
                     {/* <UpgradePlanCard/> */}
                       <MenuCard />
-                    <MenuList />
+                    <MenuList userData={userData} />
                   
                 </PerfectScrollbar>
             </BrowserView>
@@ -86,7 +86,8 @@ const Sidebar = ({ drawerOpen, drawerToggle, window }) => {
 Sidebar.propTypes = {
     drawerOpen: PropTypes.bool,
     drawerToggle: PropTypes.func,
-    window: PropTypes.object
+    window: PropTypes.object,
+    userData: PropTypes.object
 };
 
 export default Sidebar;
