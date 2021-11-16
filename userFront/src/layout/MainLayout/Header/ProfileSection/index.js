@@ -178,7 +178,7 @@ const ProfileSection = (props) => {
                                                     {props.userData['Name']}
                                                 </Typography>
                                             </Stack>
-                                            <Typography variant="subtitle">业主用户</Typography>
+                                            <Typography variant="subtitle">{props.userData['PGName']}</Typography>
                                         </Stack>
                                         {/* <OutlinedInput
                                             sx={{ width: '100%', pr: 1, pl: 2, my: 2 }}
