@@ -1,19 +1,19 @@
-import PropTypes from 'prop-types';
 import { useState } from 'react';
 
 // material-ui
-import { Box, Card, Grid, Typography} from '@mui/material';
+import { Grid } from '@mui/material';
 import MuiTypography from '@mui/material/Typography';
 
 // project imports
-import SubCard from 'ui-component/cards/SubCard';
 import MainCard from 'ui-component/cards/MainCard';
-import SecondaryAction from 'ui-component/cards/CardSecondaryAction';
+// import SecondaryAction from 'ui-component/cards/CardSecondaryAction';
 import { gridSpacing } from 'store/constant';
 import axios from 'axios';
 
 import UsermanCard from './cards/waterman/UsermanCard';
-
+// import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined';
+// import Tooltip from '@mui/material/Tooltip';
+// import IconButton from '@mui/material/IconButton';
 // var userData;
 
 const NoPermissionContent = () =>{
@@ -49,14 +49,22 @@ const EmptyContent = () =>{
 const Contents = (props) => {
 
     return (
-        <MainCard title="Color Palette" secondary={<SecondaryAction link="https://next.material-ui.com/system/palette/" />}>
-        <Grid container spacing={gridSpacing}>
-            <Grid item xs={12}>
-                    <UsermanCard isLoading={props.isLoading} />
-            </Grid>        
+        <UsermanCard isLoading={props.isLoading} />
+
+
+    //     <MainCard title="水务管理" secondary={
+    //             <Tooltip title="Filter list">
+    //                 <IconButton>
+    //                     <HelpOutlineOutlinedIcon />
+    //                 </IconButton>
+    //             </Tooltip>}>
+    //     <Grid container spacing={gridSpacing}>
+    //         <Grid item xs={12}>
+    //                 <UsermanCard isLoading={props.isLoading} />
+    //         </Grid>        
         
-        </Grid>
-    </MainCard>
+    //     </Grid>
+    // </MainCard>
     );
 }
 
