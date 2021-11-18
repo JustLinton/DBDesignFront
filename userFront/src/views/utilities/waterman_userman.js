@@ -99,14 +99,14 @@ const Work = () => {
                                 // userData=response.data;
                             }
                         }).catch(function (error) {
-                        　　alert(error);
+                        // 　　alert(error);
                         });
                 
                 //结束加载
                 setLoading(false);
             }
         }).catch(function (error) {
-        　　alert(error);
+        // 　　alert(error);
         });
 
 

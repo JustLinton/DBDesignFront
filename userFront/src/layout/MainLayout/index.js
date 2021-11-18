@@ -100,7 +100,7 @@ const MainLayout = () => {
     }
 
     }).catch(function (error) {
-    　　alert(error);
+    // 　　alert(error);
     });
 
   
@@ -119,7 +119,7 @@ const MainLayout = () => {
                 setLoading(false);
             }
         }).catch(function (error) {
-        　　alert(error);
+        // 　　alert(error);
         });
 
     return (
