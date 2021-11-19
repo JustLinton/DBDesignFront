@@ -15,8 +15,8 @@ import InvertColorsRoundedIcon from '@mui/icons-material/InvertColorsRounded';
 import RoomRoundedIcon from '@mui/icons-material/RoomRounded';
 import Fade from '@mui/material/Fade';
 import StyledMenu from '../essentials/styledMenu'
-import TextDialog from '../essentials/dialog_text'
-
+// import TextDialog from '../essentials/dialog_text'
+import TableDialog from '../essentials/dialog_table'
 
 
 // ===============================|| COLOR BOX ||=============================== //
@@ -43,12 +43,20 @@ const Content = (props) =>{
     return(
         <>
        
-       <TextDialog
+       {/* <TextDialog
           openDialog={openDialog}
           setOpenDialog={setOpenDialog}
           scroll={scroll}
           setScroll={setScroll}
           title={props.name}
+       /> */}
+
+       <TableDialog
+           openDialog={openDialog}
+           setOpenDialog={setOpenDialog}
+           scroll={scroll}
+           setScroll={setScroll}
+           title={props.name}
        />
        
         <StyledMenu

@@ -1,12 +1,13 @@
 // assets
-import { IconTypography, IconPalette, IconShadow, IconWindmill } from '@tabler/icons';
+import { IconTypography, IconPalette, IconShadow, IconWindmill,IconUsers } from '@tabler/icons';
 
 // constant
 const icons = {
     IconTypography,
     IconPalette,
     IconShadow,
-    IconWindmill
+    IconWindmill,
+    IconUsers
 };
 
 // ==============================|| UTILITIES MENU ITEMS ||============================== //
@@ -51,6 +52,21 @@ const items = {
                     title: '业主管理',
                     type: 'item',
                     url: '/manage/waterman/userman',
+                    breadcrumbs: false
+                }
+            ]
+        },
+        {
+            id: 'function.userman.root',
+            title: '业主和用户管理',
+            type: 'collapse',
+            icon: icons.IconUsers,
+            children: [
+                {
+                    id: 'function.userman.overview',
+                    title: '用户总览',
+                    type: 'item',
+                    url: '/manage/userman/overview',
                     breadcrumbs: false
                 }
             ]

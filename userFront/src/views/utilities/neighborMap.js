@@ -930,8 +930,8 @@ const Contents = () => {
                             <ChevronRightOutlinedIcon />
                         </Grid>
                         <Grid  container item xs={10} justifyContent="flex-start" direction="column">
-                            <Typography variant="h2">NeighborMap</Typography>
-                            <Typography variant="body">平面图管理社区</Typography>
+                            <Typography variant="h2">Nesto Map</Typography>
+                            <Typography variant="body">社区平面图</Typography>
                         </Grid>
 
                         <Grid item xs={1}>
@@ -987,13 +987,10 @@ const Contents = () => {
 const Work = () => {
 
     const [loading, setLoading] = useState(true);
-
- //本页面关闭权限验证
-    const [insufPermission, setInsufPermission] = useState(false);
-        // const [insufPermission, setInsufPermission] = useState(true);
+    const [insufPermission, setInsufPermission] = useState(true);
 
     axios.get("/haveperm", {
-        　　params: { 'permid': 204 }
+        　　params: { 'permid': 206 }
         }).then(function (response) {
         // 　　alert(''.concat(response.data, '\r\n', response.status, '\r\n', response.statusText, '\r\n', response.headers, '\r\n', response.config));
         if(response.status===200){

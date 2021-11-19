@@ -13,6 +13,7 @@ const MenuList = ({userData}) => {
         switch (item.type) {
             case 'group':
                 // console.log(item.id);
+                // console.log(userData);
                 if(userData['Name']==='加载中...')return undefined;
                 if((userData['SidebarC'])[item.id]>0){
                     return <NavGroup userData={userData} key={item.id} item={item} />;

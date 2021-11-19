@@ -1,5 +1,5 @@
 // assets
-import { IconDashboard } from '@tabler/icons';
+import { IconDashboard,IconMap2 } from '@tabler/icons';
 
 // constant
 const icons = { IconDashboard };
@@ -18,6 +18,14 @@ const dashboard = {
             type: 'item',
             url: '/manage/dashboard',
             icon: icons.IconDashboard,
+            breadcrumbs: false
+        },        
+        {
+            id: 'function.essentials.nmap',
+            title: 'Nesto 地图',
+            type: 'item',
+            url: '/manage/nmap',
+            icon: IconMap2,
             breadcrumbs: false
         }
     ]
