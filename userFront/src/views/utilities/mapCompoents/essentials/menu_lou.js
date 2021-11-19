@@ -8,25 +8,26 @@ import {  Grid, Typography} from '@mui/material';
 // import axios from 'axios';
 
 import * as React from 'react';
-// import { styled, alpha } from '@mui/material/styles';
-// import Button from '@mui/material/Button';
-// import EditIcon from '@mui/icons-material/Edit';
 import Divider from '@mui/material/Divider';
-// import ArchiveIcon from '@mui/icons-material/Archive';
-// import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import PeopleRoundedIcon from '@mui/icons-material/PeopleRounded';
 import HomeWorkRoundedIcon from '@mui/icons-material/HomeWorkRounded';
 import InvertColorsRoundedIcon from '@mui/icons-material/InvertColorsRounded';
 import RoomRoundedIcon from '@mui/icons-material/RoomRounded';
 import Fade from '@mui/material/Fade';
 import StyledMenu from '../essentials/styledMenu'
+import TextDialog from '../essentials/dialog_text'
+
+
 
 // ===============================|| COLOR BOX ||=============================== //
 
 const Content = (props) =>{
     // const theme = useTheme();
-    
-    // const [anchorEl, setAnchorEl] = React.useState(null);
+
+    const [openDialog, setOpenDialog] = React.useState(false);
+    const [scroll, setScroll] = React.useState('paper');
+
+    //menu open
     const open = Boolean(props.anchorEl);
 
     const handleClose = () => {
@@ -35,11 +36,21 @@ const Content = (props) =>{
 
     const handleSelectInfoEdit = () => {
         props.setAnchorEl(null);
-        console.log("info.");
+        setOpenDialog(true);
+        setScroll('body');
       };
 
     return(
         <>
+       
+       <TextDialog
+          openDialog={openDialog}
+          setOpenDialog={setOpenDialog}
+          scroll={scroll}
+          setScroll={setScroll}
+          title={props.name}
+       />
+       
         <StyledMenu
           id="demo-customized-menu"
           MenuListProps={{
