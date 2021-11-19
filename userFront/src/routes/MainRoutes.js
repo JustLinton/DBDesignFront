@@ -10,7 +10,7 @@ const Dashboard = Loadable(lazy(() => import('views/dashboard/Main')));
 
 // // utilities routing
 // const UtilsTypography = Loadable(lazy(() => import('views/utilities/Typography')));
-// const UtilsColor = Loadable(lazy(() => import('views/utilities/Color')));
+const UtilsColor = Loadable(lazy(() => import('views/utilities/Color')));
 // const UtilsShadow = Loadable(lazy(() => import('views/utilities/Shadow')));
 // const UtilsMaterialIcons = Loadable(lazy(() => import('views/utilities/MaterialIcons')));
 // const UtilsTablerIcons = Loadable(lazy(() => import('views/utilities/TablerIcons')));
@@ -47,6 +47,10 @@ const MainRoutes = {
         {
             path: '/waterman/userman',
             element: <WatermanUserman  />
+        }, 
+        {
+            path: '/dev/color',
+            element: <UtilsColor  />
         }
     ]
 };
