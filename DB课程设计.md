@@ -53,13 +53,17 @@ kill -9  进程号
 1、显示数据库列表。
 
 ```
+mysql -u backend -p
+
+update users set pg_id=2 where name="Johnson";
+
 show databases;
 ```
 
 2、显示库中的数据表：
 
 ```
-use mysql;
+use dbdesign;
 show tables;
 ```
 

@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -17,7 +17,7 @@ import { drawerWidth } from 'store/constant';
 
 // ==============================|| SIDEBAR DRAWER ||============================== //
 
-const Sidebar = ({ userData,drawerOpen, drawerToggle, window }) => {    
+const Sidebar = (props) => {    
     const theme = useTheme();
     const matchUpMd = useMediaQuery(theme.breakpoints.up('md'));
 
@@ -40,20 +40,20 @@ const Sidebar = ({ userData,drawerOpen, drawerToggle, window }) => {
                     
                     {/* <UpgradePlanCard/> */}
                       <MenuCard />
-                    <MenuList userData={userData} />
+                    <MenuList userData={props.userData} />
                   
                 </PerfectScrollbar>
             </BrowserView>
             <MobileView>
                 <Box sx={{ px: 2 }}>
-                    <MenuList />
+                    <MenuList userData={props.userData}/>
                     <MenuCard />
                 </Box>
             </MobileView>
         </>
     );
 
-    const container = window !== undefined ? () => window.document.body : undefined;
+    const container = props.window !== undefined ? () => props.window.document.body : undefined;
 
     return (
         <Box component="nav" sx={{ flexShrink: { md: 0 }, width: matchUpMd ? drawerWidth : 'auto' }} aria-label="mailbox folders">
@@ -61,8 +61,8 @@ const Sidebar = ({ userData,drawerOpen, drawerToggle, window }) => {
                 container={container}
                 variant={matchUpMd ? 'persistent' : 'temporary'}
                 anchor="left"
-                open={drawerOpen}
-                onClose={drawerToggle}
+                open={props.drawerOpen}
+                onClose={props.drawerToggle}
                 sx={{
                     '& .MuiDrawer-paper': {
                         width: drawerWidth,
@@ -83,11 +83,11 @@ const Sidebar = ({ userData,drawerOpen, drawerToggle, window }) => {
     );
 };
 
-Sidebar.propTypes = {
-    drawerOpen: PropTypes.bool,
-    drawerToggle: PropTypes.func,
-    window: PropTypes.object,
-    userData: PropTypes.object
-};
+// Sidebar.propTypes = {
+//     drawerOpen: PropTypes.bool,
+//     drawerToggle: PropTypes.func,
+//     window: PropTypes.object,
+//     userData: PropTypes.object
+// };
 
 export default Sidebar;

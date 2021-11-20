@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -10,22 +10,22 @@ import NavCollapse from '../NavCollapse';
 
 // ==============================|| SIDEBAR MENU LIST GROUP ||============================== //
 
-const NavGroup = ({ item, userData }) => {
+const NavGroup = (props) => {
     const theme = useTheme();
 
     // menu list collapse & items
-    const items = item.children?.map((menu) => {
+    const items = props.item.children?.map((menu) => {
         switch (menu.type) {
             case 'collapse':
-                if(userData['Name']==='加载中...')return undefined;
-                if((userData['FunctionC'])[menu.id]>0){
+                if(props.userData['Name']==='加载中...')return <></>;
+                if((props.userData['FunctionC'])[menu.id]>0){
                 return <NavCollapse key={menu.id} menu={menu} level={1} />;
-                }else return undefined;
+                }else return <></>;
             case 'item':
-                if(userData['Name']==='加载中...')return undefined;
-                if((userData['FunctionC'])[menu.id]>0){
+                if(props.userData['Name']==='加载中...')return <></>;
+                if((props.userData['FunctionC'])[menu.id]>0){
                     return <NavItem key={menu.id} item={menu} level={1} />;
-                }else return undefined;
+                }else return <></>;
            
             default:
                 return (
@@ -40,12 +40,12 @@ const NavGroup = ({ item, userData }) => {
         <>
             <List
                 subheader={
-                    item.title && (
+                    props.item.title && (
                         <Typography variant="caption" sx={{ ...theme.typography.menuCaption }} display="block" gutterBottom>
-                            {item.title}
-                            {item.caption && (
+                            {props.item.title}
+                            {props.item.caption && (
                                 <Typography variant="caption" sx={{ ...theme.typography.subMenuCaption }} display="block" gutterBottom>
-                                    {item.caption}
+                                    {props.item.caption}
                                 </Typography>
                             )}
                         </Typography>
@@ -59,11 +59,6 @@ const NavGroup = ({ item, userData }) => {
             <Divider sx={{ mt: 0.25, mb: 1.25 }} />
         </>
     );
-};
-
-NavGroup.propTypes = {
-    item: PropTypes.object,
-    userData: PropTypes.object
 };
 
 export default NavGroup;

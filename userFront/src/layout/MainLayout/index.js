@@ -66,7 +66,7 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(({
 
 // ==============================|| MAIN LAYOUT ||============================== //
 
-var userData;
+var userData = {'Name':'加载中...'};
 
 const MainLayout = () => {
     const theme = useTheme();

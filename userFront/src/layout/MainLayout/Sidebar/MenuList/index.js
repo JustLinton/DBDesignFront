@@ -1,6 +1,6 @@
 // material-ui
 import { Typography } from '@mui/material';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 
 // project imports
 import NavGroup from './NavGroup';
@@ -8,17 +8,17 @@ import menuItem from 'menu-items';
 
 // ==============================|| SIDEBAR MENU LIST ||============================== //
 
-const MenuList = ({userData}) => {
+const MenuList = (props) => {
     const navItems = menuItem.items.map((item) => {
         switch (item.type) {
             case 'group':
                 // console.log(item.id);
                 // console.log(userData);
-                if(userData['Name']==='加载中...')return undefined;
-                if((userData['SidebarC'])[item.id]>0){
-                    return <NavGroup userData={userData} key={item.id} item={item} />;
+                if(props.userData['Name']==='加载中...')return <></>;
+                if((props.userData['SidebarC'])[item.id]>0){
+                    return <NavGroup userData={props.userData} key={item.id} item={item} />;
                 }else{
-                    return undefined;
+                    return <></>;
                 }
                 
             default:
@@ -31,10 +31,6 @@ const MenuList = ({userData}) => {
     });
 
     return <>{navItems}</>;
-};
-
-MenuList.propTypes = {
-    userData: PropTypes.object
 };
 
 export default MenuList;
