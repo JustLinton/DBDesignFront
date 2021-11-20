@@ -163,7 +163,7 @@ const FirebaseRegister = ({ ...others }) => {
                             data.append('passwd',hashDigest);
                             data.append('name',values.name);
                             data.append('phone',values.phone);
-                            axios.post('/register',data)
+                            axios.post('/api/register',data)
                             .then(function (response) {
                                 if(response.status===200){
                                     if(response.data==="phone"){

@@ -77,7 +77,7 @@ const Work = () => {
     const [loading, setLoading] = useState(true);
     const [insufPermission, setInsufPermission] = useState(true);
 
-    axios.get("/haveperm", {
+    axios.get("/api/haveperm", {
         　　params: { 'permid': 207 }
         }).then(function (response) {
         // 　　alert(''.concat(response.data, '\r\n', response.status, '\r\n', response.statusText, '\r\n', response.headers, '\r\n', response.config));
@@ -89,7 +89,7 @@ const Work = () => {
                 setInsufPermission(false);
             }
 
-                axios.get("/userlist", {
+                axios.get("/api/userlist", {
                     　　params: { 'verbose': 'false' }
                     }).then(function (response) {
                         // 　　alert(''.concat(response.data, '\r\n', response.status, '\r\n', response.statusText, '\r\n', response.headers, '\r\n', response.config));

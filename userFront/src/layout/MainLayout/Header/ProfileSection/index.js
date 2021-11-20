@@ -61,7 +61,7 @@ const ProfileSection = (props) => {
     const handleLogout = async () => {
         // console.log('Logout');
         axios.defaults.baseURL = ""
-        axios.get("/logout", {
+        axios.get("/api/logout", {
         　　params: { 'key': 'value' }
         }).then(function (response) {
         // 　　alert(''.concat(response.data, '\r\n', response.status, '\r\n', response.statusText, '\r\n', response.headers, '\r\n', response.config));

@@ -27,6 +27,7 @@
         "redux": "^4.0.5",
         "yup": "^0.32.9"
     },
+    "proxy": "http://127.0.0.1:8080",
     "scripts": {
         "start": "react-scripts start",
         "build": "react-scripts build",
@@ -78,7 +79,6 @@
         "eslint-plugin-react-hooks": "4.0.8",
         "formik": "^2.2.9",
         "framer-motion": "^4.1.17",
-        "http-proxy-middleware": "^2.0.1",
         "material-ui-popup-state": "^1.9.3",
         "prettier": "^2.2.1",
         "react-perfect-scrollbar": "^1.5.8",

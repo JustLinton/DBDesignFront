@@ -23,7 +23,7 @@ const Login = () => {
     // console.log("login!");
 
     axios.defaults.baseURL = ""
-    axios.get("/checkLoggedIn", {
+    axios.get("/api/checkLoggedIn", {
     　　params: { 'key': 'value' }
     }).then(function (response) {
     // 　　alert(''.concat(response.data, '\r\n', response.status, '\r\n', response.statusText, '\r\n', response.headers, '\r\n', response.config));

@@ -16,6 +16,13 @@ passwd:123456
 localhost:3306
 ```
 
+###### 部署服务器上的数据库账户
+
+```
+user:root
+passwd:as251421
+```
+
 6.本地初始化仓库,进入代码目录
 
 ###### changing
@@ -25,7 +32,62 @@ material-ui/core
 material-ui/icons
 ```
 
+以后可以放到后台运行：
 
+```
+nohup ./main &
+```
+
+然后不管是否是当前终端，都可以如下方式查看：
+
+```
+ps -aux|grep main
+```
+
+如果要杀掉进程，可以kill -9：
+
+```
+kill -9  进程号
+```
+
+1、显示数据库列表。
+
+```
+show databases;
+```
+
+2、显示库中的数据表：
+
+```
+use mysql;
+show tables;
+```
+
+3、显示数据表的结构：
+
+```
+describe 表名;
+```
+
+4、建库：
+
+```
+create database 库名;
+```
+
+5、建表：
+
+```
+use 库名;
+create table 表名 (字段设定列表);
+```
+
+6、删库和删表:
+
+```
+drop database 库名;
+drop table 表名; 
+```
 
 ###### git：初始化仓库
 
@@ -387,6 +449,56 @@ context.SetCookie("user_cookie", string(u.Id), 1000, "/", "localhost", false, tr
 ###### layout
 
 规定了网页的主要框架的样式。
+
+##### React 跨域、代理
+
+###### react操作
+
+安装http-proxy-middleware。
+
+在src同级目录创建setupProxy.js如图所示
+
+const { createProxyMiddleware } = require('http-proxy-middleware');  //注意写法，这是1.0以后的版本，最好按抄
+
+module.exports = function (app) {
+    app.use(createProxyMiddleware('/api',
+        {
+            target: 'http://ip:8000/',
+            pathRewrite: {
+                '^/api': '',
+            },
+            changeOrigin: true,
+            secure: false, // 是否验证证书
+            ws: true, // 启用websocket
+        }
+    ));
+};
+以上表达的意思是，把/api 代理到  http://ip:8000/ 到这个网址上，重写一定要，如果不写
+
+pathRewrite: {
+    '^/api': '',
+},
+5
+
+###### nginx操作
+
+可以如下方式操作：即把/api/再次进行反代。
+
+```
+server {
+   server_name nesto.cupof.beer;
+   root /home/lighthouse/nesto/build;
+   index index.html index.htm;
+   location / {
+   try_files $uri /index.html =404;
+   }
+    location /api/ {
+   proxy_pass http://127.0.0.1:8081/
+   }
+}
+```
+
+
 
 ##### React DOM渲染
 
@@ -840,3 +952,104 @@ gorm 用 tag 的方式来标识 mysql 里面的约束
 ###### 全局变量
 
 Go中不存在全局变量的概念。main函数中的变量就可以认为是全局变量。其他函数如果要当成全局变量来对其进行修改或赋值，可以采用指针。
+
+
+
+## 项目部署
+
+#### nginx配置
+
+###### 文件目录
+
+nginx文件安装完成之后的文件位置：
+
+- /usr/sbin/nginx：主程序
+- /etc/nginx：存放配置文件
+- /usr/share/nginx：存放静态文件
+- /var/log/nginx：存放日志
+
+###### nginx使用
+
+```
+systemctl start nginx.service  //开启
+systemctl enable nginx.service  //开机自启动
+nginx -t # 查看nginx状态
+nginx -s reload # 重新载入配置文件
+nginx -s reopen # 重启 Nginx
+#上述可能在做了大的操作后不管用，可以使用
+#service nginx restart
+#进行系统级重启，如果还是不行就重启服务器。
+nginx -s stop # 停止 Nginx
+```
+
+1.打开 /etc/nginx/conf.d/文件夹，创建配置文件xxx.conf，内容如下：
+
+```
+server {
+   server_name nesto.cupof.beer;
+   root /home/lighthouse/nesto/build;
+   index index.html index.htm;
+   location / {
+   try_files $uri /index.html =404;
+   }
+}
+```
+
+3.配置完成后重新启动nginx
+
+在本地npm build，在build文件夹内全选并打包tar.gz，使用sz上传到nginx中配置的项目目录下，原地解压即可。
+
+#### Go项目部署
+
+###### 如何部署
+
+远程服务器先安装go环境。
+
+把本地整个gopath内的所有文件（例如/home/linton/go下的）打包tar.gz，上传到服务器的gopath下，解压。之所以这么做，是为了方便依赖的配置。这样就把所有需要的依赖都打包好了。
+
+注意还可以打开服务器上的gomodule和服务器上的gomodule代理：
+
+```
+go env -w GOPROXY=https://goproxy.io,direct
+go env -w export GO111MODULE=on
+```
+
+然后，在项目目录的src下，编译：
+
+```
+go build main.go
+```
+
+运行一下测试看看好不好用：
+
+```
+./main
+```
+
+以后可以放到后台运行：
+
+```
+nohup ./main &
+```
+
+然后不管是否是当前终端，都可以如下方式查看：
+
+```
+ps -aux|grep main
+```
+
+如果要杀掉进程，可以kill -9：
+
+```
+kill -9  进程号
+```
+
+#### react部署
+
+###### 创建生产环境打包
+
+```
+npm run build
+```
+
+把build中的东西整体打包.tar.gz，上传即可。

@@ -153,7 +153,7 @@ const FirebaseLogin = ({ ...others }) => {
                             const hashDigest = sha256(values.password).toString();
                             data.append('phone',values.phone);
                             data.append('passwd',hashDigest);
-                            axios.post('/login',data)
+                            axios.post('/api/login',data)
                             .then(function (response) {
                                 if(response.status===200){
                                    if(response.data==="passwd"){
