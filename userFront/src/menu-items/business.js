@@ -1,13 +1,13 @@
 // assets
-import { IconTypography, IconPalette, IconShadow, IconWindmill,IconUsers } from '@tabler/icons';
+import {  IconNotebook, IconShadow,IconUsers,IconDropletFilled2,IconMessageReport } from '@tabler/icons';
 
 // constant
 const icons = {
-    IconTypography,
-    IconPalette,
+    IconMessageReport,
+    IconNotebook,
     IconShadow,
-    IconWindmill,
-    IconUsers
+    IconUsers,
+    IconDropletFilled2
 };
 
 // ==============================|| UTILITIES MENU ITEMS ||============================== //
@@ -23,7 +23,7 @@ const items = {
             title: '事务',
             type: 'item',
             url: '/utils/util-color',
-            icon: icons.IconPalette,
+            icon: icons.IconNotebook,
             breadcrumbs: false
         },       
         {
@@ -31,14 +31,14 @@ const items = {
             title: '情况上报',
             type: 'item',
             url: '/utils/util-color',
-            icon: icons.IconTypography,
+            icon: icons.IconMessageReport,
             breadcrumbs: false
         },
         {
             id: 'function.waterman.root',
             title: '水务管理',
             type: 'collapse',
-            icon: icons.IconWindmill,
+            icon: icons.IconDropletFilled2,
             children: [
                 {
                     id: 'function.waterman.rec',

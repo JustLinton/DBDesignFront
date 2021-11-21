@@ -7,7 +7,7 @@ import {  Checkbox, CardContent, Grid, Typography } from '@mui/material';
 // import {  Menu,MenuItem } from '@mui/material';
 
 import * as React from 'react';
-import { alpha } from '@mui/material/styles';
+// import { alpha } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -33,12 +33,13 @@ import { visuallyHidden } from '@mui/utils';
 // import BajajAreaChartCard from './BajajAreaChartCard';
 import MainCard from 'ui-component/cards/MainCard';
 import SkeletonNewPostCard from 'ui-component/cards/Skeleton/NewPostCard';
-import { gridSpacing } from 'store/constant';
+// import { gridSpacing } from 'store/constant';
 
 // assets
 import ChevronRightOutlinedIcon from '@mui/icons-material/ChevronRightOutlined';
 
-
+import UsermanDataCard from 'views/utilities/cards/userman/compoents/UsermanDataCard.js';
+import Breadcrumb from 'views/utilities/essentialCompoents/BreadCrumb.js'
 
 // ==============================|| DASHBOARD DEFAULT - POPULAR CARD ||============================== //
 
@@ -196,51 +197,62 @@ function createData(name, calories, fat, carbs, protein) {
     const { numSelected } = props;
   
     return (
-      <Toolbar
-        sx={{
-          pl: { sm: 2 },
-          pr: { xs: 1, sm: 1 },
-          ...(numSelected > 0 && {
-            bgcolor: (theme) =>
-              alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
-          }),
-        }}
+      
+      <Grid container  sx={{pt:2}} 
+        // backgroundColor="#ffab91"
       >
-        {numSelected > 0 ? (
-          <Typography
-            sx={{ flex: '1 1 100%' }}
-            color="inherit"
-            variant="subtitle1"
-            component="div"
-          >
-            {numSelected} selected
-          </Typography>
-        ) : (
-          <Typography
-            sx={{ flex: '1 1 100%' }}
-            variant="h4"
-            id="tableTitle"
-            component="div"
-          >
-            用户简表
-          </Typography>
-        )}
-  
-        {numSelected > 0 ? (
-          <Tooltip title="Delete">
-            <IconButton>
-              <DeleteIcon />
-            </IconButton>
-          </Tooltip>
-        ) : (
-          <></>
-          // <Tooltip title="Filter list">
-          //   <IconButton>
-          //     <FilterListIcon />
-          //   </IconButton>
-          // </Tooltip>
-        )}
-      </Toolbar>
+	    <FormControlLabel
+		control={<Switch checked={props.multiSwitchChecked} onChange={props.onMultiSwitchChange} />}
+		label="多选"
+		/>
+         {numSelected > 0 ?
+           <Toolbar
+           sx={{
+             pl: { sm: 2 },
+             pr: { xs: 1, sm: 1 }
+           }}
+         >
+           {numSelected > 0 ? (
+             
+             <Typography
+               sx={{ flex: '1 1 100%' }}
+               color="inherit"
+               variant="subtitle1"
+               component="div"
+             >
+              已选择 {numSelected} 个
+             </Typography>
+           ) : (
+             // <Typography
+             //   sx={{ flex: '1 1 100%' }}
+             //   variant="h4"
+             //   id="tableTitle"
+             //   component="div"
+             // >
+             //   用户简表
+             // </Typography>
+             <></>
+           )}
+     
+           {numSelected > 0 ? (
+             <Tooltip title="Delete">
+               <IconButton>
+                 <DeleteIcon />
+               </IconButton>
+             </Tooltip>
+           ) : (
+             <></>
+             // <Tooltip title="Filter list">
+             //   <IconButton>
+             //     <FilterListIcon />
+             //   </IconButton>
+             // </Tooltip>
+           )}
+     
+         </Toolbar>:<></>
+        }
+    
+      </Grid>
     );
   };
   
@@ -308,6 +320,7 @@ function EnhancedTable() {
   
     const handleSwitchMultiSel = (event) => {
       setMultiSel(event.target.checked);
+      if(!event.target.checked) setSelected([]);
     };
   
     const isSelected = (name) => selected.indexOf(name) !== -1;
@@ -318,18 +331,21 @@ function EnhancedTable() {
   
     return (
       <Box sx={{ width: '100%' }}>
-				<FormControlLabel
-		control={<Switch checked={multiSel} onChange={handleSwitchMultiSel} />}
-		label="多选"
-		/>
-        <Paper sx={{ width: '100%', mb: 2 }}>
-          <EnhancedTableToolbar numSelected={selected.length} />
+			
+        <Paper sx={{ width: '100%' }}>
+
+        <UsermanDataCard isLoading={false} />
+
+          <EnhancedTableToolbar multiSwitchChecked={multiSel} onMultiSwitchChange={handleSwitchMultiSel} numSelected={selected.length}  />
+          
           <TableContainer>
+
             <Table
               sx={{ minWidth: 750 }}
               aria-labelledby="tableTitle"
               size={'medium'}
             >
+	
               <EnhancedTableHead
                 numSelected={selected.length}
 		    multiSel={multiSel}
@@ -423,6 +439,9 @@ function EnhancedTable() {
             onPageChange={handleChangePage}
             onRowsPerPageChange={handleChangeRowsPerPage}
           />
+
+
+
         </Paper>
     
       </Box>
@@ -434,7 +453,7 @@ const PostList = (props) =>{
   
 
     return(
-        <Grid container direction="column" sx={{pl:5,pr:2,pt:5}}>
+        <Grid container direction="column" sx={{pt:2}}>
             <EnhancedTable/>                    
         </Grid>
     );
@@ -464,21 +483,31 @@ const NewpostCard = (props) => {
                 <SkeletonNewPostCard />
             ) : (
                 <MainCard content={false}>
-                    <CardContent>
-                        <Grid container spacing={gridSpacing}>
+              
+                    <CardContent>    
 
-                        <Grid item xs={12} sx={{ pt: '43px !important' }}>
-                                
-                                </Grid>
-                            <Grid item xs={12}>
-                                <Grid container spacing={1} alignContent="center" >
-                                    <Grid container item xs={1} justifyContent="flex-end">
-                                        <ChevronRightOutlinedIcon />
-                                    </Grid>
-                                    <Grid  container item xs={10} justifyContent="flex-start" direction="column">
-                                        <Typography variant="h2">用户总览</Typography>
-                                        <Typography variant="body">管理所有用户</Typography>
-                                    </Grid>
+                        <Grid container sx={{pl:"3%",pr:"3%"}}>
+
+                              <Grid item xs={12} sx={{ pt: '43px !important' }}  ></Grid>
+                              
+                              <Grid item xs={12} md={7} >
+                                  <Grid container spacing={1} alignContent="center" >
+                                      <Grid container item  xs={1}  justifyContent="flex-start" >
+                                          <ChevronRightOutlinedIcon />
+                                      </Grid>
+                                      <Grid  container item  xs={11}  justifyContent="flex-start" direction="column">
+
+
+                                          <Breadcrumb
+                                          second="业主和用户管理"
+                                          secondh="#"
+                                          third="用户总览"
+                                          />
+
+
+                                          {/* <Typography variant="h2">用户总览</Typography>
+                                          <Typography variant="body">管理所有用户</Typography> */}
+                                      </Grid>
 
                                     {/* <Grid item xs={1}>
                                         <MenuOpenRoundedIcon
@@ -523,7 +552,7 @@ const NewpostCard = (props) => {
                         </Grid>
 
                     </CardContent>
- 
+                   
                 </MainCard>
             )}
         </>

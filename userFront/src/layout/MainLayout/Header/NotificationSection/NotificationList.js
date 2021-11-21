@@ -2,9 +2,9 @@
 import { useTheme, styled } from '@mui/material/styles';
 import {
     Avatar,
-    Button,
-    Card,
-    CardContent,
+    // Button,
+    // Card,
+    // CardContent,
     Chip,
     Divider,
     Grid,
@@ -13,13 +13,13 @@ import {
     ListItemAvatar,
     ListItemSecondaryAction,
     ListItemText,
-    Stack,
+    // Stack,
     Typography
 } from '@mui/material';
 
 // assets
-import { IconBrandTelegram, IconBuildingStore, IconMailbox, IconPhoto } from '@tabler/icons';
-import User1 from 'assets/images/users/user-round.svg';
+// import { IconBrandTelegram, IconBuildingStore, IconMailbox, IconPhoto } from '@tabler/icons';
+import User1 from 'assets/images/users/usr_linton.png';
 
 // styles
 const ListItemWrapper = styled('div')(({ theme }) => ({
@@ -55,12 +55,12 @@ const NotificationList = () => {
         backgroundColor: theme.palette.warning.light
     };
 
-    const chipSuccessSX = {
-        ...chipSX,
-        color: theme.palette.success.dark,
-        backgroundColor: theme.palette.success.light,
-        height: 28
-    };
+    // const chipSuccessSX = {
+    //     ...chipSX,
+    //     color: theme.palette.success.dark,
+    //     backgroundColor: theme.palette.success.light,
+    //     height: 28
+    // };
 
     return (
         <List
@@ -88,12 +88,12 @@ const NotificationList = () => {
                     <ListItemAvatar>
                         <Avatar alt="John Doe" src={User1} />
                     </ListItemAvatar>
-                    <ListItemText primary="John Doe" />
+                    <ListItemText primary="Linton" />
                     <ListItemSecondaryAction>
                         <Grid container justifyContent="flex-end">
                             <Grid item xs={12}>
                                 <Typography variant="caption" display="block" gutterBottom>
-                                    2 min ago
+                                    2 分钟前
                                 </Typography>
                             </Grid>
                         </Grid>
@@ -101,22 +101,128 @@ const NotificationList = () => {
                 </ListItem>
                 <Grid container direction="column" className="list-container">
                     <Grid item xs={12} sx={{ pb: 2 }}>
-                        <Typography variant="subtitle2">It is a long established fact that a reader will be distracted</Typography>
+                        <Typography variant="subtitle2">通知中心正在做了！已经建文件夹了！</Typography>
                     </Grid>
                     <Grid item xs={12}>
                         <Grid container>
                             <Grid item>
-                                <Chip label="Unread" sx={chipErrorSX} />
+                                <Chip label="未读" sx={chipErrorSX} />
                             </Grid>
                             <Grid item>
-                                <Chip label="New" sx={chipWarningSX} />
+                                <Chip label="好友" sx={chipWarningSX} />
                             </Grid>
                         </Grid>
                     </Grid>
                 </Grid>
             </ListItemWrapper>
             <Divider />
+            
             <ListItemWrapper>
+                <ListItem alignItems="center">
+                    <ListItemAvatar>
+                        <Avatar alt="John Doe" src={User1} />
+                    </ListItemAvatar>
+                    <ListItemText primary="Linton" />
+                    <ListItemSecondaryAction>
+                        <Grid container justifyContent="flex-end">
+                            <Grid item xs={12}>
+                                <Typography variant="caption" display="block" gutterBottom>
+                                    2 分钟前
+                                </Typography>
+                            </Grid>
+                        </Grid>
+                    </ListItemSecondaryAction>
+                </ListItem>
+                <Grid container direction="column" className="list-container">
+                    <Grid item xs={12} sx={{ pb: 2 }}>
+                        <Typography variant="subtitle2">通知中心正在做了！已经建文件夹了！</Typography>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Grid container>
+                            <Grid item>
+                                <Chip label="未读" sx={chipErrorSX} />
+                            </Grid>
+                            <Grid item>
+                                <Chip label="好友" sx={chipWarningSX} />
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </ListItemWrapper>
+            <Divider />
+
+            <ListItemWrapper>
+                <ListItem alignItems="center">
+                    <ListItemAvatar>
+                        <Avatar alt="John Doe" src={User1} />
+                    </ListItemAvatar>
+                    <ListItemText primary="Linton" />
+                    <ListItemSecondaryAction>
+                        <Grid container justifyContent="flex-end">
+                            <Grid item xs={12}>
+                                <Typography variant="caption" display="block" gutterBottom>
+                                    2 分钟前
+                                </Typography>
+                            </Grid>
+                        </Grid>
+                    </ListItemSecondaryAction>
+                </ListItem>
+                <Grid container direction="column" className="list-container">
+                    <Grid item xs={12} sx={{ pb: 2 }}>
+                        <Typography variant="subtitle2">通知中心正在做了！已经建文件夹了！</Typography>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Grid container>
+                            <Grid item>
+                                <Chip label="未读" sx={chipErrorSX} />
+                            </Grid>
+                            <Grid item>
+                                <Chip label="好友" sx={chipWarningSX} />
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </ListItemWrapper>
+            <Divider />
+
+            <ListItemWrapper>
+                <ListItem alignItems="center">
+                    <ListItemAvatar>
+                        <Avatar alt="John Doe" src={User1} />
+                    </ListItemAvatar>
+                    <ListItemText primary="Linton" />
+                    <ListItemSecondaryAction>
+                        <Grid container justifyContent="flex-end">
+                            <Grid item xs={12}>
+                                <Typography variant="caption" display="block" gutterBottom>
+                                    2 分钟前
+                                </Typography>
+                            </Grid>
+                        </Grid>
+                    </ListItemSecondaryAction>
+                </ListItem>
+                <Grid container direction="column" className="list-container">
+                    <Grid item xs={12} sx={{ pb: 2 }}>
+                        <Typography variant="subtitle2">通知中心正在做了！已经建文件夹了！</Typography>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Grid container>
+                            <Grid item>
+                                <Chip label="未读" sx={chipErrorSX} />
+                            </Grid>
+                            <Grid item>
+                                <Chip label="好友" sx={chipWarningSX} />
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </ListItemWrapper>
+   
+
+            
+
+
+            {/* <ListItemWrapper>
                 <ListItem alignItems="center">
                     <ListItemAvatar>
                         <Avatar
@@ -274,7 +380,7 @@ const NotificationList = () => {
                         </Grid>
                     </Grid>
                 </Grid>
-            </ListItemWrapper>
+            </ListItemWrapper> */}
         </List>
     );
 };

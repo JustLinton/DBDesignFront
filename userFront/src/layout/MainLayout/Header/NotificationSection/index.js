@@ -16,7 +16,7 @@ import {
     Paper,
     Popper,
     Stack,
-    TextField,
+    // TextField,
     Typography,
     useMediaQuery
 } from '@mui/material';
@@ -33,16 +33,16 @@ import NotificationList from './NotificationList';
 import { IconBell } from '@tabler/icons';
 
 // notification status options
-const status = [
-    {
-        value: 'all',
-        label: '全部通知'
-    },
-    {
-        value: 'new',
-        label: '新通知'
-    }
-];
+// const status = [
+//     {
+//         value: 'all',
+//         label: '全部通知'
+//     },
+//     {
+//         value: 'new',
+//         label: '新通知'
+//     }
+// ];
 
 // ==============================|| NOTIFICATION ||============================== //
 
@@ -51,7 +51,7 @@ const NotificationSection = () => {
     const matchesXs = useMediaQuery(theme.breakpoints.down('md'));
 
     const [open, setOpen] = useState(false);
-    const [value, setValue] = useState('');
+    // const [value, setValue] = useState('');
     /**
      * anchorRef is used on different componets and specifying one type leads to other components throwing an error
      * */
@@ -76,9 +76,9 @@ const NotificationSection = () => {
         prevOpen.current = open;
     }, [open]);
 
-    const handleChange = (event) => {
-        if (event?.target.value) setValue(event?.target.value);
-    };
+    // const handleChange = (event) => {
+    //     if (event?.target.value) setValue(event?.target.value);
+    // };
 
     return (
         <>
@@ -165,7 +165,7 @@ const NotificationSection = () => {
                                             <PerfectScrollbar
                                                 style={{ height: '100%', maxHeight: 'calc(100vh - 205px)', overflowX: 'hidden' }}
                                             >
-                                                <Grid container direction="column" spacing={2}>
+                                                {/* <Grid container direction="column" spacing={2}>
                                                     <Grid item xs={12}>
                                                         <Box sx={{ px: 2, pt: 0.25 }}>
                                                             <TextField
@@ -189,7 +189,7 @@ const NotificationSection = () => {
                                                     <Grid item xs={12} p={0}>
                                                         <Divider sx={{ my: 0 }} />
                                                     </Grid>
-                                                </Grid>
+                                                </Grid> */}
                                                 <NotificationList />
                                             </PerfectScrollbar>
                                         </Grid>

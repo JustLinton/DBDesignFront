@@ -452,6 +452,12 @@ context.SetCookie("user_cookie", string(u.Id), 1000, "/", "localhost", false, tr
 
 规定了网页的主要框架的样式。
 
+##### React grid探针法对排版进行debug
+
+不管是什么元素，都可以在其内部紧紧嵌套一层grid container，然后设置 `backgroundColor="#ffab91"`，这样就可以看出了。
+
+教训：不要使用gridspacing，因为这样会让卡片的内容往右边偏移。
+
 ##### React 跨域、代理
 
 ###### react操作

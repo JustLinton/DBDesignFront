@@ -8,6 +8,8 @@ import MinimalLayout from 'layout/MinimalLayout';
 const AuthLogin3 = Loadable(lazy(() => import('views/pages/authentication/authentication3/Login3')));
 const AuthRegister3 = Loadable(lazy(() => import('views/pages/authentication/authentication3/Register3')));
 
+const UnderConstruction = Loadable(lazy(() => import('views/pages/other/emptypages/construction.js')));
+
 // ==============================|| AUTHENTICATION ROUTING ||============================== //
 
 const AuthenticationRoutes = {
@@ -17,6 +19,10 @@ const AuthenticationRoutes = {
         {
             path: '/',
             element: <AuthLogin3 />
+        },
+        {
+            path: '/error/construction',
+            element: <UnderConstruction />
         },
         {
             path: '/auth/login',

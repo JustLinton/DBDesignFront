@@ -10,7 +10,7 @@ import MainCard from 'ui-component/cards/MainCard';
 import { gridSpacing } from 'store/constant';
 import axios from 'axios';
 
-import UsermanOverviewCard from './cards/waterman/UsermanOverviewCard';
+import UsermanOverviewCard from './cards/userman/UsermanOverviewCard';
 // import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined';
 // import Tooltip from '@mui/material/Tooltip';
 // import IconButton from '@mui/material/IconButton';
@@ -32,8 +32,8 @@ const NoPermissionContent = () =>{
 
 const EmptyContent = () =>{
     return (
-        <MainCard title="">
-        <Grid container spacing={gridSpacing}>
+        <MainCard title="" >
+        <Grid container spacing={gridSpacing} >
             <Grid item xs={12} sm={6}>
                 <Grid item>
                     <MuiTypography variant="h3" gutterBottom>加载中...</MuiTypography>
