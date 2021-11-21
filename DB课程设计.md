@@ -127,8 +127,6 @@ git push origin master
 7 doc/*.txt # 会忽略 doc/notes.txt 但不包括 doc/server/arch.txt
 ```
 
-
-
 ## 入门配置
 
 #### 如何建一个数据库
@@ -960,6 +958,134 @@ Go中不存在全局变量的概念。main函数中的变量就可以认为是�
 
 
 ## 项目部署
+
+#### Linux 自动化初探
+
+###### 实现git自动部署、shell自动化后的部署方式
+
+前端先npm run build，把build复制到本地仓库，push一下，前端就部署完成。
+
+后端直接push，然后到服务器上运行一下**nestoKillBack.sh** ，把老的后端杀掉，然后再运行**nestoRunBack.sh** ，编译并开启新后端。
+
+###### shell语法注意
+
+定义变量
+
+```
+pid=`ps aux|grep dbdback|grep -v "grep"|awk '{print $2}'`
+```
+
+注意，变量和等于号之间不能有空格，否则识别成指令。
+
+使用变量
+
+```
+echo ${pid}
+```
+
+注意，要加dollar。
+
+
+
+###### 如何解决sh脚本不能动态变更工作目录的问题
+
+因为sh是在子进程中运行，其继承了父进程的路径。
+
+解决方案：
+
+把./script.sh运行方法，改成sh ./script即可。
+
+如果还嫌麻烦，可以建立一个script.sh，其中写入“sh ./work.sh一行代码”（work里面是带有cd的），然后去执行./scrpit.sh，也能达到一样的效果。
+
+根本在于，要直接用shell去运行，而不是直接"./"。
+
+#### 如何利用git自动部署代码
+
+###### linux的三类权限
+
+- owner:属主 u
+- group:属组 g
+- other:其他 o
+
+注意，在多用户的情况下，如果要正常操作，一般要修改other。
+
+###### 搭建git仓库
+
+为了安全，新建git用户，并设置密码
+
+```
+useradd git
+passwd git
+```
+
+可以在git用户的家中建立一个.git目录，作为仓库文件夹：
+
+```
+cd ～
+mkdir nesto.git
+```
+
+进入它，初始化为空仓库：
+
+```
+cd nesto.git
+git init --bare .
+```
+
+允许被push：
+
+```
+git config receive.denyCurrentBranch ignore
+```
+
+###### 测试git仓库
+
+先把本地仓库添加该remote：
+
+```
+git remote add dep git@111.111.111.111:/home/git/nestob.git
+```
+
+111.111.111.111是服务器ip。
+
+dep是该远程配置的名称，可以随意指定。
+
+该操作的范围只是更改本仓库。
+
+然后就可以push了：
+
+```
+git push -u dep master
+```
+
+###### 利用git hook来实现自动部署
+
+git hook就像react hook一样，会在特定的事件发生时执行一定的操作。这里是sh脚本。
+
+进入hooks存放目录：
+
+```
+cd /home/git/nestob.git/hooks
+```
+
+创建post-receive钩子，使收到push后可以自动拉取代码到服务器的项目目录：
+
+```
+vi post-receive
+```
+
+写入：
+
+```
+#!/bin/bash
+git --work-tree=/home/website/wwwroot checkout -f
+```
+
+这样做的效果就是，当接收到push，就会自动把代码拉取到/home/website/wwwroot目录下。相当于完成了自动部署。
+
+对于go语言一类的需要在目标机器上编译再运行的，还可以在此进行自动编译。
+
+**需要注意，一定要保证git用户拥有对/home/website/wwwroot的写权限！！！**
 
 #### nginx配置
 
