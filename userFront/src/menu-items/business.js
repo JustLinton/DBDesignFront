@@ -22,7 +22,7 @@ const items = {
             id: 'function.essentials.things',
             title: '事务',
             type: 'item',
-            url: '/utils/util-color',
+            url: '/error/construction',
             icon: icons.IconNotebook,
             breadcrumbs: false
         },       
@@ -30,7 +30,7 @@ const items = {
             id: 'function.essentials.report',
             title: '情况上报',
             type: 'item',
-            url: '/utils/util-color',
+            url: '/error/construction',
             icon: icons.IconMessageReport,
             breadcrumbs: false
         },

@@ -25,10 +25,11 @@ import Button from '@mui/material/Button';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import DeleteIcon from '@mui/icons-material/Delete';
+import Snackbar from '@mui/material/Snackbar';
 // import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 // import MenuOpenRoundedIcon from '@mui/icons-material/MenuOpenRounded';
-
+import CloseIcon from '@mui/icons-material/Close';
 // project imports
 // import BajajAreaChartCard from './BajajAreaChartCard';
 import MainCard from 'ui-component/cards/MainCard';
@@ -40,6 +41,8 @@ import ChevronRightOutlinedIcon from '@mui/icons-material/ChevronRightOutlined';
 
 import UsermanDataCard from 'views/utilities/cards/userman/compoents/UsermanDataCard.js';
 import Breadcrumb from 'views/utilities/essentialCompoents/BreadCrumb.js'
+
+import EditDialog from 'views/utilities/essentialCompoents/dialog_uoverview_edit.js'
 
 // ==============================|| DASHBOARD DEFAULT - POPULAR CARD ||============================== //
 
@@ -122,7 +125,13 @@ function createData(name, calories, fat, carbs, protein) {
       numeric: true,
       disablePadding: false,
       label: '邮箱',
-    },
+    }
+//     {
+//       id: 'uid',
+//       numeric: false,
+//       disablePadding: false,
+//       label: 'UID',
+//     }
   ];
   
 
@@ -261,6 +270,22 @@ function createData(name, calories, fat, carbs, protein) {
   };
   
 function EnhancedTable() {
+	
+	const [editDialogState, setEditDialogState] = React.useState({
+		open: false,
+		scroll: 'body',
+		row: {'name':'null'},
+	});
+
+	const [snackState, setSnackState] = React.useState({
+		open: false,
+		message: '成功',
+		undo: false,
+	});
+
+
+	const [multiSel, setMultiSel] = React.useState(false);
+
     const [order, setOrder] = React.useState('asc');
     const [orderBy, setOrderBy] = React.useState('calories');
     const [selected, setSelected] = React.useState([]);
@@ -268,7 +293,7 @@ function EnhancedTable() {
     // const [dense, setDense] = React.useState(false);
     const [rowsPerPage, setRowsPerPage] = React.useState(15);
 
-    const [multiSel, setMultiSel] = React.useState(false);
+
   
     const handleRequestSort = (event, property) => {
       const isAsc = orderBy === property && order === 'asc';
@@ -276,6 +301,31 @@ function EnhancedTable() {
       setOrderBy(property);
     };
   
+    const handleClickEdit = (event,row) => {
+		// setEditOpenDialog(true);
+		// setEditDialogScroll('body');
+		// curEditRow=row;
+		// setEditDialogUserName(row);
+		setEditDialogState({
+			open: true,
+			scroll: 'body',
+			row: row,
+		})
+    };
+
+    const handleClickSnack = (event,reason) => {
+	if (reason === 'clickaway') {
+		return;
+	}
+
+	setSnackState({
+		open: false,
+		message:snackState.message,
+		undo: false,
+	})
+};
+
+
     const handleSelectAllClick = (event) => {
       if (event.target.checked) {
         const newSelecteds = rows.map((n) => n.name);
@@ -322,16 +372,62 @@ function EnhancedTable() {
       setMultiSel(event.target.checked);
       if(!event.target.checked) setSelected([]);
     };
-  
+
     const isSelected = (name) => selected.indexOf(name) !== -1;
   
     // Avoid a layout jump when reaching the last page with empty rows.
     const emptyRows =
       page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
   
+
+	const snackbarActionWithUNDO = (
+		<React.Fragment>
+		  <Button color="secondary" size="small" onClick={handleClickSnack}>
+		    撤销
+		  </Button>
+		  <IconButton
+		    size="small"
+		    aria-label="close"
+		    color="inherit"
+		    onClick={handleClickSnack}
+		  >
+		    <CloseIcon fontSize="small" />
+		  </IconButton>
+		</React.Fragment>
+	    );
+
+	    const snackbarAction = (
+		<React.Fragment>
+		  <IconButton
+		    size="small"
+		    aria-label="close"
+		    color="inherit"
+		    onClick={handleClickSnack}
+		  >
+		    <CloseIcon fontSize="small" />
+		  </IconButton>
+		</React.Fragment>
+	    );
+
     return (
       <Box sx={{ width: '100%' }}>
 			
+
+	<Snackbar
+		open={snackState.open}
+		autoHideDuration={2000}
+		onClose={handleClickSnack}
+		message={snackState.message}
+		action={snackState.undo?snackbarActionWithUNDO:snackbarAction}
+		anchorOrigin={{vertical:'bottom', horizontal:'right'}}
+	/>
+
+	<EditDialog
+		state={editDialogState}
+		setState={setEditDialogState}
+		setSnackState={setSnackState}
+	/>
+
         <Paper sx={{ width: '100%' }}>
 
         <UsermanDataCard isLoading={false} />
@@ -361,17 +457,17 @@ function EnhancedTable() {
                 {stableSort(rows, getComparator(order, orderBy))
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row, index) => {
-                    const isItemSelected = isSelected(row.name);
+                    const isItemSelected = isSelected(row.phone);
                     const labelId = `enhanced-table-checkbox-${index}`;
   
                     return (
                       <TableRow
                         hover
-                        onClick={(event) => handleClick(event, row.name)}
+                        onClick={(event) => handleClick(event, row.phone)}
                         role="checkbox"
                         aria-checked={isItemSelected}
                         tabIndex={-1}
-                        key={row.name}
+                        key={row.phone}
                         selected={isItemSelected}
                       >
 
@@ -408,10 +504,12 @@ function EnhancedTable() {
                         <TableCell padding="checkbox">
                         	<Button 
 						variant="outlined" 
-						onClick={() => {
-							alert('clicked');
-							}} >
-						操作
+						// onClick={() => {
+
+						// 	}} 
+						onClick={(event) => handleClickEdit(event,row)}
+						>
+						修改
 					</Button>
                         </TableCell>
 
