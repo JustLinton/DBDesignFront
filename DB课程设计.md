@@ -1188,4 +1188,3 @@ kill -9  进程号
 npm run build
 ```
 
-把build中的东西整体打包.tar.gz，上传即可。

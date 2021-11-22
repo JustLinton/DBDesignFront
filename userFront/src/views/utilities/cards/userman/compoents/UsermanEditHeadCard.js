@@ -13,8 +13,7 @@ import Chart from 'react-apexcharts';
 import MainCard from 'ui-component/cards/MainCard';
 import SkeletonTotalOrderCard from 'ui-component/cards/Skeleton/EarningCard';
 
-// import ChartDataMonth from './chart-data/total-order-month-line-chart';
-import ChartData from './chart-data/total-order-year-line-chart';
+import ChartData from './chart-data/total-order-month-line-chart';
 
 // assets
 // import LocalMallOutlinedIcon from '@mui/icons-material/LocalMallOutlined';
@@ -78,7 +77,7 @@ const UserFeeCard = ({ isLoading }) => {
                 <SkeletonTotalOrderCard />
             ) : (
                 <CardWrapper border={false} content={false}>
-                    <Box sx={{ p: 2.5 }}>
+                    <Box sx={{ p: 0 ,m:-1 }}>
                         <Grid container direction="row">
                             {/* <Grid item>
                                 <Grid container justifyContent="space-between">
@@ -118,18 +117,18 @@ const UserFeeCard = ({ isLoading }) => {
                                     </Grid>
                                 </Grid>
                             </Grid> */}
-                            <Grid item xs={12} sx={{ mb: 0.75 }}>
-                                <Grid container alignItems="flex-start" direction="row">
-                                    <Grid item xs={12} md={3} >
-                                        <Grid container alignItems="center" >
-                                            <Grid item>
+                            <Grid item xs={12} sx={{ mb: 0,pl:'10%',pr:'10%',pt:'3%',pb:'3%'}} >
+                                <Grid container alignItems="flex-start"  direction="row"  >
+                                    <Grid item xs={12} md={6} >
+                                        <Grid container alignItems="center"  sx={{ mt:'5%'}}>
+                                            <Grid item >
                                                 {/* {timeValue ? (
                                                     <Typography sx={{ fontSize: '2.125rem', fontWeight: 500, mr: 1, mt: 1.75, mb: 0.75 }}>
                                                         水费
                                                     </Typography>
                                                 ) : ( */}
                                                     <Typography sx={{ fontSize: '2.0rem', fontWeight: 500, mr: 0, mt: 1.75, mb: 0.3 }}>
-                                                        用户管理
+                                                        信息编辑
                                                     </Typography>
                                                 {/* )} */}
                                             </Grid>
@@ -145,20 +144,20 @@ const UserFeeCard = ({ isLoading }) => {
                                                     <ArrowDownwardIcon fontSize="inherit" sx={{ transform: 'rotate3d(1, 1, 1, 45deg)' }} />
                                                 </Avatar>
                                             </Grid> */}
-                                            <Grid item xs={12}>
+                                            <Grid item xs={12} >
                                                 <Typography
                                                     sx={{
-                                                        fontSize: '0.7rem',
+                                                        fontSize: '0.8rem',
                                                         fontWeight: 500,
-                                                        color: theme.palette.paper
+                                                        color: theme.palette.paper,
                                                     }}
                                                 >
-                                                    *图为活跃用户走势
+                                                    *图为信息完善度
                                                 </Typography>
                                             </Grid>
                                         </Grid>
                                     </Grid>
-                                    <Grid item xs={12} md={9}>
+                                    <Grid item xs={12} md={6}>
                                         {/* {timeValue ? 
                                         <Chart {...ChartDataMonth} /> :  */}
                                         <Chart {...ChartData} />

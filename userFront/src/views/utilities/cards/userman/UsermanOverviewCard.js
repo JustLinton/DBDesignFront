@@ -43,6 +43,7 @@ import UsermanDataCard from 'views/utilities/cards/userman/compoents/UsermanData
 import Breadcrumb from 'views/utilities/essentialCompoents/BreadCrumb.js'
 
 import EditDialog from 'views/utilities/essentialCompoents/dialog_uoverview_edit.js'
+import axios from 'axios';
 
 // ==============================|| DASHBOARD DEFAULT - POPULAR CARD ||============================== //
 
@@ -270,11 +271,14 @@ function createData(name, calories, fat, carbs, protein) {
   };
   
 function EnhancedTable() {
+
+  const timer = React.useRef();
 	
 	const [editDialogState, setEditDialogState] = React.useState({
 		open: false,
 		scroll: 'body',
 		row: {'name':'null'},
+		gotData: {'Name':'null'},
 	});
 
 	const [snackState, setSnackState] = React.useState({
@@ -301,16 +305,87 @@ function EnhancedTable() {
       setOrderBy(property);
     };
   
+
+
     const handleClickEdit = (event,row) => {
 		// setEditOpenDialog(true);
 		// setEditDialogScroll('body');
 		// curEditRow=row;
 		// setEditDialogUserName(row);
-		setEditDialogState({
-			open: true,
-			scroll: 'body',
-			row: row,
-		})
+
+    setEditDialogState({
+      open: true,
+      scroll: 'body',
+      row: row,
+      loading: true,
+      gotData:{'Name':'null'},
+      insufPermission:false
+    })
+
+
+    axios.get("/api/haveperm", {
+      　　params: { 'permid': 209 }
+      }).then(function (response) {
+      // 　　alert(''.concat(response.data, '\r\n', response.status, '\r\n', response.statusText, '\r\n', response.headers, '\r\n', response.config));
+      if(response.status===200){
+         //鉴权请求
+      
+	   if(response.data==="notlogged"){
+            window.location='/auth/login';
+        }
+
+          if(response.data==="ok"){
+          //该用户有相应的权限
+          setEditDialogState({
+            open: true,
+            scroll: 'body',
+            row: row,
+            loading: true,
+            gotData:{'Name':'null'},
+            insufPermission:true
+          })
+          }
+      
+          axios.get("/api/userinfo", {
+          　　params: { 'uid': row.uid}
+          }).then(function (response) {
+              // 　　alert(''.concat(response.data, '\r\n', response.status, '\r\n', response.statusText, '\r\n', response.headers, '\r\n', response.config));
+              if(response.status===200){
+             
+          
+              if(response.data==="notlogged"){
+              window.location='/auth/login';
+              }
+
+
+            //   console.log(response.data);
+
+              //结束加载(并强制欣赏加载动画)
+              timer.current = window.setTimeout(() => {
+   
+                  setEditDialogState({
+                    open: true,
+                    scroll: 'body',
+                    row: row,
+                    loading: false,
+                    gotData:response.data,
+                  })
+
+			// console.log(editDialogState.gotData);
+
+              },450)
+              
+              }
+                }).catch(function (error) {
+                // 　　alert(error);
+                });
+          
+          // console.log(userData);
+          }
+      }).catch(function (error) {
+      // 　　alert(error);
+      });
+
     };
 
     const handleClickSnack = (event,reason) => {

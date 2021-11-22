@@ -84,6 +84,11 @@ const Work = () => {
         if(response.status===200){
            //鉴权请求
 
+           if(response.data==="notlogged"){
+               //未登录，则去登录
+                window.location='/auth/login';
+            }
+
             if(response.data==="ok"){
                 //该用户有相应的权限
                 setInsufPermission(false);

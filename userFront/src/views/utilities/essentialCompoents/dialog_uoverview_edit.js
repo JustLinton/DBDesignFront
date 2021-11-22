@@ -1,5 +1,5 @@
 // material-ui
-import {  Grid, Typography} from '@mui/material';
+import {  Chip, CircularProgress, Grid} from '@mui/material';
 
 // project imports
 // import axios from 'axios';
@@ -15,17 +15,23 @@ import Divider from '@mui/material/Divider';
 // import AlertDialog from './dialog_alert'
 import ConfirmDialog from 'views/utilities/essentialCompoents/dialog_uoverview_confirm.js';
 import TextField from '@mui/material/TextField';
-import UsermanDataCard from 'views/utilities/cards/userman/compoents/UsermanDataCard.js';
+import EditHeadCard from 'views/utilities/cards/userman/compoents/UsermanEditHeadCard.js';
+import MyAutocomplete from 'views/utilities/essentialCompoents/textfield_autocomp.js';
 
-import axios from 'axios';
+// import InputAdornment from '@mui/material/InputAdornment';
+// import AccountCircle from '@mui/icons-material/AccountCircle';
 
+
+// import axios from 'axios';
 
 // ===============================|| COLOR BOX ||=============================== //
 
 const Content = (props) =>{
 
 	// const timer = React.useRef();
-	const [insufPermission, setInsufPermission] = React.useState(true);
+
+	// const [insufPermission, setInsufPermission] = React.useState(true);
+	// const [loading, setLoading] = React.useState(true);
 
 	const [confirmDialogState, setConfirmDialogState] = React.useState({
 		open: false,
@@ -46,9 +52,12 @@ const Content = (props) =>{
 
 
 
+
     const handleCancelDialog = (event) => {
 
 	// console.log('cancel');
+
+	if(props.state.loading)return;
 
 	props.setSnackState({
 		open: true,
@@ -60,7 +69,10 @@ const Content = (props) =>{
 		open: false,
 		scroll: 'body',
 		row: {'name':props.state.row.name},
+		loading: false,
+		gotData:{'Name':''}
 	})
+
 
     };
 
@@ -93,44 +105,7 @@ const Content = (props) =>{
 	
 //     }
 
-//     const getData = () =>{
 
-// 	axios.get("/api/haveperm", {
-// 		　　params: { 'permid': 207 }
-// 		}).then(function (response) {
-// 		// 　　alert(''.concat(response.data, '\r\n', response.status, '\r\n', response.statusText, '\r\n', response.headers, '\r\n', response.config));
-// 		if(response.status===200){
-// 		   //鉴权请求
-    
-// 		    if(response.data==="ok"){
-// 			  //该用户有相应的权限
-// 			  setInsufPermission(false);
-// 		    }
-    
-// 			  axios.get("/api/userlist", {
-// 				　　params: { 'verbose': 'false' }
-// 				}).then(function (response) {
-// 				    // 　　alert(''.concat(response.data, '\r\n', response.status, '\r\n', response.statusText, '\r\n', response.headers, '\r\n', response.config));
-// 				    if(response.status===200){
-					 
-// 					  // console.log(response);
-// 					  if(response.data==="notlogged"){
-// 						window.location='/auth/login';
-// 					  }
-// 						// userData=response.data['Rows'];
-// 						//结束加载
-// 						// afterSuccessfulGetData();
-// 					  }
-// 				    }).catch(function (error) {
-// 				    // 　　alert(error);
-// 				    });
-			  
-// 			  // console.log(userData);
-// 		    }
-// 		}).catch(function (error) {
-// 		// 　　alert(error);
-// 		});
-//     }
 
 
     const handleConfirmDialog = (event) => {
@@ -144,6 +119,11 @@ const Content = (props) =>{
 	})
 
     };
+
+	const handleTextChange = (event) => {
+		console.log(event.target.value);
+		console.log(event.target.id);
+	}
 
     return(
         <>
@@ -161,6 +141,8 @@ const Content = (props) =>{
 		setSnackState={props.setSnackState}
 	/>
 
+
+
        <Dialog
         open={props.state.open}
         onClose={handleCancelDialog}
@@ -173,7 +155,18 @@ const Content = (props) =>{
 				<Grid item>
 					<Grid container direction="row" columnSpacing={5} rowSpacing={1} justifyContent="flex-start">
 						<Grid item xs={10}></Grid>
-						<Grid item>{"编辑用户 "+props.state.row.name}<Divider sx={{ my: 1 }} /></Grid>
+						{props.state.loading?
+							<Grid item>
+								{"加载用户 "+props.state.row.name+" 信息..."}
+								<Divider sx={{ my: 1 }} />
+							</Grid>
+						:
+							<Grid item>
+								{"编辑用户 "+props.state.row.name}
+								<Divider sx={{ my: 1 }} />
+							</Grid>
+						}
+						
 					</Grid>
 				</Grid>
 			</Grid>
@@ -182,64 +175,142 @@ const Content = (props) =>{
         <DialogContent dividers={props.scroll === 'paper'}>
 	 
 
-	 <Grid container>
-
-		<Grid  container spacing={2} direction="column" sx={{pt:2}} justifyContent="center">
-			<Grid item md={12} xs={12} sx={{ml:'5%',mr:'5%'}}>
-				<UsermanDataCard/>
-				{/* <Typography >
-						姓名
-				</Typography> */}
+	 <Grid container justifyContent="center">
+		{props.state.loading?
+			<Grid item>
+				<CircularProgress/> 
 			</Grid>
-			
-			<Grid item  md={12} xs={12} sx={{ml:'5%',mr:'5%'}}>
-				<Grid container spacing={1}>
+			:
+			<Grid  container spacing={2} direction="column" sx={{pt:2}} justifyContent="center">
+				<Grid item md={12} xs={12} sx={{ml:'5%',mr:'5%'}}>
+					<EditHeadCard/>
+					{/* <Typography >
+							姓名
+					</Typography> */}
+				</Grid>
+				
+				<Grid item  md={12} xs={12} sx={{ml:'5%',mr:'5%'}}>
 
-					<Grid item  xs={12} sx={{pb:2}} >
-						<TextField  fullWidth label="姓名" variant="outlined" defaultValue="测试" />
-					</Grid>
 
-					<Grid item  xs={12} sx={{pb:2}} >
-						<TextField  fullWidth label="身份证" variant="outlined" defaultValue="测试"/>
-					</Grid>
+								<Grid container spacing={2}  alignItems="center" sx={{pb:2}} >
+									<Grid item  md={3} xs={12} >
+										<Divider textAlign="left" variant="fullwidth">
+											<Chip label="姓名"  color="primary" variant="outlined" />
+										</Divider>
+									</Grid>
+									<Grid item  md={9} xs={12} >
+										<TextField 
+											id="Name"
+											variant="outlined"  
+											color="primary" 
+											defaultValue={props.state.gotData===undefined?'':props.state.gotData.Name} 
+											onChange={handleTextChange}
+											fullWidth 
+										/>
+									</Grid>
+								</Grid>
 
-					<Grid item  xs={12} sx={{pb:2}} >
-						<TextField  fullWidth label="身份证" variant="outlined" defaultValue="测试"/>
-					</Grid>
+								<Grid container spacing={2}  alignItems="center" sx={{pb:2}}>
+									<Grid item  md={3} xs={12} >
+										<Divider textAlign="left" variant="fullwidth">
+											<Chip label="UID"  color="primary" variant="outlined" />
+										</Divider>
+									</Grid>
+									<Grid item  md={9} xs={12} >
+										<TextField 
+											id="Uid"
+											variant="outlined"  
+											color="primary"
+											disabled = {true}
+											helperText="不提供编辑。"
+											defaultValue={props.state.gotData===undefined?'':props.state.gotData.Uid} 
+											onChange={handleTextChange}
+											fullWidth 
+										/>
+									</Grid>
+								</Grid>
 
-					<Grid item  xs={12} sx={{pb:2}} >
-						<TextField  fullWidth label="身份证" variant="outlined" defaultValue="测试"/>
-					</Grid>
 
-					<Grid item  xs={12} sx={{pb:2}} >
-						<TextField  fullWidth label="身份证" variant="outlined" defaultValue="测试"/>
-					</Grid>
+								<Grid container spacing={2}  alignItems="center" sx={{pb:2}}>
+									<Grid item  md={3} xs={12} >
+										<Divider textAlign="left" variant="fullwidth">
+											<Chip label="电话"  color="primary" variant="outlined" />
+										</Divider>
+									</Grid>
+									<Grid item  md={9} xs={12} >
+										<TextField 
+											id="Phone"
+											variant="outlined"  
+											color="primary"
+											disabled = {true}
+											helperText="不提供编辑。"
+											defaultValue={props.state.gotData===undefined?'':props.state.gotData.Phone} 
+											onChange={handleTextChange}
+											fullWidth 
+										/>
+									</Grid>
+								</Grid>
 
-					<Grid item  xs={12} sx={{pb:2}} >
-						<TextField  fullWidth label="姓名" variant="outlined" defaultValue="测试" />
-					</Grid>
+								
 
-					<Grid item  xs={12} sx={{pb:2}} >
-						<TextField  fullWidth label="身份证" variant="outlined" defaultValue="测试"/>
-					</Grid>
+								<Grid container spacing={2}  alignItems="center" sx={{pb:2}}>
+									<Grid item  md={3} xs={12} >
+										<Divider textAlign="left" variant="fullwidth">
+											<Chip label="身份证"  color="primary" variant="outlined" />
+										</Divider>
+									</Grid>
+									<Grid item  md={9} xs={12} >
+										<TextField 
+											id="IdCard"
+											variant="outlined"  
+											color="primary"
+											defaultValue={props.state.gotData===undefined?'':props.state.gotData.IdCard} 
+											onChange={handleTextChange}
+											fullWidth 
+										/>
+									</Grid>
+								</Grid>
 
-					<Grid item  xs={12} sx={{pb:2}} >
-						<TextField  fullWidth label="身份证" variant="outlined" defaultValue="测试"/>
-					</Grid>
 
-					<Grid item  xs={12} sx={{pb:2}} >
-						<TextField  fullWidth label="身份证" variant="outlined" defaultValue="测试"/>
-					</Grid>
-					
-					<Grid item  xs={12} sx={{pb:2}} >
-						<TextField  fullWidth label="身份证" variant="outlined" defaultValue="测试"/>
-					</Grid>
+								<Grid container spacing={2}  alignItems="center" sx={{pb:2}}>
+									<Grid item  md={3} xs={12} >
+										<Divider textAlign="left" variant="fullwidth">
+											<Chip label="权限组"  color="primary" variant="outlined" />
+										</Divider>
+									</Grid>
+									<Grid item  md={9} xs={12} >
+										<MyAutocomplete 
+											default={props.state.gotData===undefined?'':props.state.gotData.PGname} 
+										/>
+									</Grid>
+								</Grid>
+
+
+								<Grid container spacing={2}  alignItems="center" sx={{pb:2}}>
+									<Grid item  md={3} xs={12} >
+										<Divider textAlign="left" variant="fullwidth">
+											<Chip label="邮箱"  color="primary" variant="outlined" />
+										</Divider>
+									</Grid>
+									<Grid item  md={9} xs={12} >
+										<TextField 
+											id="Email"
+											variant="outlined"  
+											color="primary"
+											defaultValue={props.state.gotData===undefined?'':props.state.gotData.Email} 
+											onChange={handleTextChange}
+											fullWidth 
+										/>
+									</Grid>
+								</Grid>
 
 				</Grid>
-			</Grid>
-			
+				
 
-		</Grid>
+			</Grid>
+
+		}
+
 	
 	 </Grid>
 
@@ -248,10 +319,13 @@ const Content = (props) =>{
 
         </DialogContent>
 
-        <DialogActions>
-          <Button onClick={handleCancelDialog}>取消</Button>
-          <Button onClick={handleConfirmDialog}>提交</Button>
-        </DialogActions>
+		{(!props.state.loading)&&
+			<DialogActions>
+				<Button onClick={handleCancelDialog}>取消</Button>
+				<Button onClick={handleConfirmDialog}>提交</Button>
+			</DialogActions>
+		}
+    
       </Dialog>
 
     </>

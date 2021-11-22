@@ -132,7 +132,7 @@ const Content = (props) =>{
 		setConfirmButtonLoading(true);
 		timer.current = window.setTimeout(() => {
 			postData();
-		},700)
+		},550)
 		
 	    }
 
