@@ -14,9 +14,19 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Divider from '@mui/material/Divider';
 // import AlertDialog from './dialog_alert'
 import ConfirmDialog from 'views/utilities/essentialCompoents/dialog_uoverview_confirm.js';
+import DelConfirmDialog from 'views/utilities/essentialCompoents/dialog_uoverview_deluser_confirm';
 import TextField from '@mui/material/TextField';
 import EditHeadCard from 'views/utilities/cards/userman/compoents/UsermanEditHeadCard.js';
 import MyAutocomplete from 'views/utilities/essentialCompoents/textfield_autocomp.js';
+
+
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormControl from '@mui/material/FormControl';
+import Switch from '@mui/material/Switch';
+import FormGroup from '@mui/material/FormGroup';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 // import InputAdornment from '@mui/material/InputAdornment';
 // import AccountCircle from '@mui/icons-material/AccountCircle';
@@ -32,12 +42,22 @@ const Content = (props) =>{
 
 	// const [insufPermission, setInsufPermission] = React.useState(true);
 	// const [loading, setLoading] = React.useState(true);
+	// const [newData, setNewData] = React.useState({'Name':'null'});
+
+	const [inputValuePGname, setInputValuePGname] = React.useState('');
 
 	const [confirmDialogState, setConfirmDialogState] = React.useState({
 		open: false,
 		scroll: 'body',
 		row: {'name':'null'},
 	});
+
+	const [delConfirmDialogState, setDelConfirmDialogState] = React.useState({
+		open: false,
+		scroll: 'body',
+		row: {'name':'null'},
+	});
+
 
 
     const descriptionElementRef = React.useRef(null);
@@ -107,6 +127,18 @@ const Content = (props) =>{
 
 
 
+const handleDelConfirmDialog = (event) => {
+
+	// console.log('cancel');
+
+      setDelConfirmDialogState({
+		open: true,
+		scroll: 'body',
+		row: props.state.row,
+	})
+
+    };
+
 
     const handleConfirmDialog = (event) => {
 
@@ -121,8 +153,31 @@ const Content = (props) =>{
     };
 
 	const handleTextChange = (event) => {
-		console.log(event.target.value);
-		console.log(event.target.id);
+		// console.log(event.target.value);
+		// console.log(event.target.id);
+		var theState=props.state;
+		theState.gotData[event.target.id]=event.target.value;
+		console.log(theState.gotData);
+		props.setState(theState);
+	}
+
+	const handleRadioChange = (event) => {
+		// console.log(event.target.value);
+		// console.log(event.target.name);
+		var theState=props.state;
+		theState.gotData[event.target.name]=event.target.value;
+		// console.log(theState.gotData);
+		props.setState(theState);
+	}
+
+	const handleAutoCompleteChange = (event,newValue) => {
+		console.log(newValue);
+		// console.log(event.target.value);
+		// console.log(event.target.id);
+		var theState=props.state;
+		theState.gotData['PGname']=newValue;
+		console.log(theState.gotData);
+		props.setState(theState);
 	}
 
     return(
@@ -141,7 +196,13 @@ const Content = (props) =>{
 		setSnackState={props.setSnackState}
 	/>
 
-
+	<DelConfirmDialog
+		state={delConfirmDialogState}
+		setState={setDelConfirmDialogState}
+		editState={props.state}
+		setEditState={props.setState}
+		setSnackState={props.setSnackState}
+	/>
 
        <Dialog
         open={props.state.open}
@@ -256,6 +317,27 @@ const Content = (props) =>{
 								<Grid container spacing={2}  alignItems="center" sx={{pb:2}}>
 									<Grid item  md={3} xs={12} >
 										<Divider textAlign="left" variant="fullwidth">
+											<Chip label="性别"  color="primary" variant="outlined" />
+										</Divider>
+									</Grid>
+									<Grid item  md={9} xs={12} >
+									<FormControl component="fieldset">
+										<RadioGroup 
+										row
+										name="Gender"
+										value={props.state.gotData===undefined?'':props.state.gotData.Gender} 
+										onChange={handleRadioChange}
+										>
+											<FormControlLabel value="男" control={<Radio />} label="男" />
+											<FormControlLabel value="女" control={<Radio />} label="女" />
+										</RadioGroup>
+									</FormControl>
+									</Grid>
+								</Grid>
+
+								<Grid container spacing={2}  alignItems="center" sx={{pb:2}}>
+									<Grid item  md={3} xs={12} >
+										<Divider textAlign="left" variant="fullwidth">
 											<Chip label="身份证"  color="primary" variant="outlined" />
 										</Divider>
 									</Grid>
@@ -280,7 +362,11 @@ const Content = (props) =>{
 									</Grid>
 									<Grid item  md={9} xs={12} >
 										<MyAutocomplete 
-											default={props.state.gotData===undefined?'':props.state.gotData.PGname} 
+											id="PGName"
+											value={props.state.gotData===undefined?'':props.state.gotData.PGname}
+											onChange={handleAutoCompleteChange}
+											inputValue={inputValuePGname}
+											setInputValue={setInputValuePGname}
 										/>
 									</Grid>
 								</Grid>
@@ -303,6 +389,41 @@ const Content = (props) =>{
 										/>
 									</Grid>
 								</Grid>
+
+
+
+								<Grid container spacing={2}  alignItems="center" sx={{pb:2}}>
+									<Grid item  md={12} xs={12} >
+										<Divider  variant="fullwidth">
+											<Chip label="危险区"  color="secondary" variant="outlined" />
+										</Divider>
+									</Grid>
+									<Grid item  md={12} xs={12} >
+										<Grid container justifyContent="center">
+
+											<Grid item xs={6}>
+												<FormGroup>
+													{/* <FormControlLabel  control={<Switch  color="error" />} label="禁言" /> */}
+													<FormControlLabel disabled control={<Switch  defaultChecked color="secondary"  />} label="封禁" />
+												</FormGroup>
+											</Grid>
+
+											<Grid item >
+												<Button 
+													color="secondary" 
+													variant="outlined" 
+													onClick={handleDelConfirmDialog}
+													startIcon={<DeleteIcon />}
+													>
+													删除帐号
+												</Button>
+											</Grid>
+
+										</Grid>
+									</Grid>
+								</Grid>
+
+								
 
 				</Grid>
 				

@@ -5,21 +5,19 @@ import Autocomplete from '@mui/material/Autocomplete';
 const options = ['业主用户', '水务员','超级管理员'];
 
 export default function ControllableStates(props) {
-  const [value, setValue] = React.useState(props.default);
-  const [inputValue, setInputValue] = React.useState('');
+  // const [value, setValue] = React.useState(props.default);
+  // const [inputValue, setInputValue] = React.useState('');
 
   return (
     <div>
       <Autocomplete
-        value={value}
-        onChange={(event, newValue) => {
-          setValue(newValue);
-        }}
-        inputValue={inputValue}
+        value={props.value}
+        onChange={props.onChange}
+        inputValue={props.inputValue}
         onInputChange={(event, newInputValue) => {
-          setInputValue(newInputValue);
+          props.setInputValue(newInputValue);
         }}
-        id="controllable-states-demo"
+        id="csa"
         options={options}
         renderInput={(params) => <TextField {...params}  />}
       />
