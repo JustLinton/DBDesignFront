@@ -20,6 +20,23 @@ import axios from 'axios';
 
 // ===============================|| COLOR BOX ||=============================== //
 
+
+function createData(name, calories, fat, carbs, protein) {
+	return {
+	  name,
+	  calories,
+	  fat,
+	  carbs,
+	  protein,
+	};
+    }
+
+    var initData = [
+	createData('-', 0, 0, 0, 0),
+    ];
+    
+    var refreshedData = initData;
+
 const Content = (props) =>{
 
 	const timer = React.useRef();
@@ -53,39 +70,52 @@ const Content = (props) =>{
     };
 
 
-    const afterSuccessfulPostData = () =>{
+    const afterSuccessfulRefreshTable = () =>{
 		setConfirmButtonSuccess(true);
 		setConfirmButtonLoading(false);
 
 		timer.current = window.setTimeout(() => {
-			props.setSnackState({
-				open: true,
-				message:props.state.row.name+ ' 信息已更新',
-				undo: true,
-			})
-		
-			props.setState({
-				open: false,
-				scroll: 'body',
-				row: {'name':props.state.row.name},
-			})
 
-			props.setEditState({
-				open: false,
-				scroll: 'body',
-				row: {'name':props.state.row.name},
-			})
+			//先更新原表格中的数据
+			props.setRows(refreshedData===undefined?initData:refreshedData);
+			// props.setRows(initRows);
 
 			timer.current = window.setTimeout(() => {
-				setConfirmButtonSuccess(false);
-				setConfirmButtonLoading(false);	
-			}, 350);
 
-		}, 1000);
+				//然后再关闭窗口
+
+				props.setSnackState({
+					open: true,
+					message:props.state.row.name+ ' 信息已更新',
+					undo: true,
+				})
+			
+				props.setState({
+					open: false,
+					scroll: 'body',
+					row: {'name':props.state.row.name},
+				})
+	
+				props.setEditState({
+					open: false,
+					scroll: 'body',
+					row: {'name':props.state.row.name},
+				})
+
+	
+				timer.current = window.setTimeout(() => {
+					setConfirmButtonSuccess(false);
+					setConfirmButtonLoading(false);	
+				}, 350);
+	
+			}, 900);
+
+		}, 100);
+
 
     }
 
-    const postData = () =>{
+    const refreshTable = () =>{
 
 	axios.get("/api/haveperm", {
 		　　params: { 'permid': 207 }
@@ -94,6 +124,11 @@ const Content = (props) =>{
 		if(response.status===200){
 		   //鉴权请求
     
+		   if(response.data==="notlogged"){
+			//未登录，则去登录
+			 window.location='/auth/login';
+		   }
+
 		    if(response.data==="ok"){
 			  //该用户有相应的权限
 			  setInsufPermission(false);
@@ -109,9 +144,9 @@ const Content = (props) =>{
 					  if(response.data==="notlogged"){
 						window.location='/auth/login';
 					  }
-						// userData=response.data['Rows'];
+					  	refreshedData=response.data['Rows'];
 						//结束加载
-						afterSuccessfulPostData();
+						afterSuccessfulRefreshTable();
 					  }
 				    }).catch(function (error) {
 				    // 　　alert(error);
@@ -125,15 +160,60 @@ const Content = (props) =>{
     }
 
 
+    const submitChange = () =>{
+
+	axios.get("/api/haveperm", {
+		　　params: { 'permid': 209 }
+		}).then(function (response) {
+		// 　　alert(''.concat(response.data, '\r\n', response.status, '\r\n', response.statusText, '\r\n', response.headers, '\r\n', response.config));
+		if(response.status===200){
+		   //鉴权请求
+
+		   if(response.data==="notlogged"){
+			//未登录，则去登录
+			 window.location='/auth/login';
+		   }
+    
+		    if(response.data==="ok"){
+			  //该用户有相应的权限
+			  setInsufPermission(false);
+		    }
+    
+		    let data = new FormData();
+		    data.append('Name',props.state.gotData.Name);
+		    data.append('Email',props.state.gotData.Email);
+		    data.append('IdCard',props.state.gotData.IdCard);
+		    data.append('PGname',props.state.gotData.PGname);
+		    data.append('Phone',props.state.gotData.Phone);
+		    data.append('Uid',props.state.gotData.Uid);
+		    data.append('Gender',props.state.gotData.Gender);
+		    
+		    axios.post('/api/userinfo',data)
+
+		    .then(function (response) {
+				timer.current = window.setTimeout(() => {
+					refreshTable();
+				},550)
+		    })
+		    .catch(function (error) {
+			  console.log(error);
+		    });
+			  // console.log(userData);
+		    }
+		}).catch(function (error) {
+		// 　　alert(error);
+		});
+    }
+
+
+
     const handleConfirmDialog = (event) => {
 
 	if (!confirmButtonLoading) {
 		setConfirmButtonSuccess(false);
 		setConfirmButtonLoading(true);
-		timer.current = window.setTimeout(() => {
-			postData();
-		},550)
-		
+
+		submitChange();
 	    }
 
     };

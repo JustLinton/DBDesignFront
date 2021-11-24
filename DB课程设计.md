@@ -432,6 +432,72 @@ context.SetCookie("user_cookie", string(u.Id), 1000, "/", "localhost", false, tr
 
 ## 前端开发
 
+##### 覆盖主题样式的两种方法
+
+###### 直接创造自定义样式了的组件：
+
+```
+const YellowSwitch = styled(Switch)(({ theme }) => ({
+		'& .Mui-checked': {
+			color: yellow[700],
+			'&:hover': {
+			backgroundColor: alpha(yellow[700], theme.palette.action.hoverOpacity),
+			},
+		},
+		'& .Mui-checked+ .MuiSwitch-track': {
+			backgroundColor: yellow[700],
+		},
+	}));
+```
+
+###### 或可以利用themeProvider包围在待改写的组件外，临时更改其样式：
+
+```
+	const themeWXQ = createTheme({
+		components: {
+		  // Name of the component
+		  MuiChip: {
+			  //需要重写样式的MUI组件名称
+		    defaultProps: {
+			// The props to change the default for.即：使用组件时传入的参数的值。
+		    },
+		    styleOverrides: {
+			    //styleOverrides是对css类选择器“	.MuiChip-colorSecondary”的重写。如果要重写其他类选择器
+			    //，则可再建立一个新的这样的结构，名称换成那个类的名。
+			colorSecondary:{
+				color:yellow[700],
+				borderColor:yellow[700],
+			},
+			outlinedSecondary:{
+				color:yellow[700],
+				borderColor:yellow[700],
+			}
+		    },
+		  },
+		MuiButton: {
+			//需要重写样式的MUI组件名称
+		  defaultProps: {
+		    // The props to change the default for.即：使用组件时传入的参数的值。
+		  },
+		  styleOverrides: {
+			  //styleOverrides是对css类选择器“	.MuiChip-colorSecondary”的重写。如果要重写其他类选择器
+			  //，则可再建立一个新的这样的结构，名称换成那个类的名。
+		    outlinedSecondary:{
+			    color:yellow[700],
+			    borderColor:yellow[700],
+			    '&:hover': {
+				color:yellow[700],
+				borderColor:yellow[700],
+			    },
+		    }
+		  },
+		},
+		},
+	    });
+```
+
+
+
 ##### Material UI
 
 ######  menuitems
@@ -677,6 +743,25 @@ ReactDOM.render(
 ```
 
 箭头函数起到了简化的效果，是一种匿名函数。例如上述listitems中，就在定义这个常变量时，表达了预处理为表项的语义。注意，如果箭头函数的函数体不需要换行，就不需要写花括号；如果只有一处return，就不需要写return。
+
+
+
+##### ES6 扩展运算符(...)
+
+```
+输入：console.log(...[1, 2, 3]) 
+输出： 1 2 3
+可见，就是把数组转化为逗号分隔的参数序列。
+
+...(props.success && {
+      bgcolor: yellow[600],
+	color:'#ffffff',
+      '&:hover': {
+        bgcolor: yellow[700],
+	  color:'#ffffff',
+      },
+    }),
+```
 
 
 

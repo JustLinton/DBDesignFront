@@ -16,10 +16,29 @@ import TextField from '@mui/material/TextField';
 // import AlertDialog from './dialog_alert'
 import ButtonLoad from 'views/utilities/essentialCompoents/button_del_load.js';
 
+
 import axios from 'axios';
 
 
 // ===============================|| COLOR BOX ||=============================== //
+
+
+function createData(name, calories, fat, carbs, protein) {
+	return {
+	  name,
+	  calories,
+	  fat,
+	  carbs,
+	  protein,
+	};
+    }
+
+    var initData = [
+	createData('-', 0, 0, 0, 0),
+    ];
+    
+    var refreshedData = initData;
+
 
 const Content = (props) =>{
 
@@ -40,12 +59,16 @@ const Content = (props) =>{
     const [insufPermission, setInsufPermission] = React.useState(true);
 
     const [nameWrong, setNameWrong] = React.useState(false);
+    const [clickedTextField, setClickedTextField] = React.useState(false);
 
     const handleCancelDialog = (event) => {
 
 	// console.log('cancel');
 
 	if(confirmButtonLoading||confirmButtonSuccess)return;
+
+	setNameWrong(false);
+	setClickedTextField(false);
 
       props.setState({
 		open: false,
@@ -57,6 +80,7 @@ const Content = (props) =>{
 
 
     const handleTextChange = (event) => {
+	    setClickedTextField(true);
 	    if(event.target.value!==props.state.row.name){
 		    setNameWrong(true);
 	    }else{
@@ -71,9 +95,16 @@ const Content = (props) =>{
 }
 
 
-    const afterSuccessfulPostData = () =>{
+    const afterSuccessfulRefreshTable = () =>{
 		setConfirmButtonSuccess(true);
 		setConfirmButtonLoading(false);
+
+		setNameWrong(false);
+		setClickedTextField(false);	
+
+
+		//先更新原表格中的数据
+		props.setRows(refreshedData===undefined?initData:refreshedData);
 
 		timer.current = window.setTimeout(() => {
 			props.setSnackState({
@@ -103,7 +134,8 @@ const Content = (props) =>{
 
     }
 
-    const postData = () =>{
+
+    const refreshTable = () =>{
 
 	axios.get("/api/haveperm", {
 		　　params: { 'permid': 207 }
@@ -112,6 +144,11 @@ const Content = (props) =>{
 		if(response.status===200){
 		   //鉴权请求
     
+		   if(response.data==="notlogged"){
+			//未登录，则去登录
+			 window.location='/auth/login';
+		   }
+
 		    if(response.data==="ok"){
 			  //该用户有相应的权限
 			  setInsufPermission(false);
@@ -127,9 +164,56 @@ const Content = (props) =>{
 					  if(response.data==="notlogged"){
 						window.location='/auth/login';
 					  }
-						// userData=response.data['Rows'];
+					  	refreshedData=response.data['Rows'];
 						//结束加载
-						afterSuccessfulPostData();
+						afterSuccessfulRefreshTable();
+					  }
+				    }).catch(function (error) {
+				    // 　　alert(error);
+				    });
+			  
+			  // console.log(userData);
+		    }
+		}).catch(function (error) {
+		// 　　alert(error);
+		});
+    }
+
+    const delUser = () =>{
+
+	axios.get("/api/haveperm", {
+		　　params: { 'permid': 209 }
+		}).then(function (response) {
+		// 　　alert(''.concat(response.data, '\r\n', response.status, '\r\n', response.statusText, '\r\n', response.headers, '\r\n', response.config));
+		if(response.status===200){
+		   //鉴权请求
+    
+		   if(response.data==="notlogged"){
+			//未登录，则去登录
+			 window.location='/auth/login';
+		   }
+
+
+		    if(response.data==="ok"){
+			  //该用户有相应的权限
+			  setInsufPermission(false);
+		    }
+    
+			  axios.get("/api/deluser", {
+				　　params: { 'uid': props.state.row.uid }
+				}).then(function (response) {
+				    // 　　alert(''.concat(response.data, '\r\n', response.status, '\r\n', response.statusText, '\r\n', response.headers, '\r\n', response.config));
+				    if(response.status===200){
+					 
+						// console.log(response);
+						if(response.data==="notlogged"){
+						window.location='/auth/login';
+						}
+
+						timer.current = window.setTimeout(() => {
+							refreshTable();
+						},550)
+
 					  }
 				    }).catch(function (error) {
 				    // 　　alert(error);
@@ -144,17 +228,16 @@ const Content = (props) =>{
 
 
     const handleConfirmDialog = (event) => {
-
 	if (!confirmButtonLoading) {
 		setConfirmButtonSuccess(false);
 		setConfirmButtonLoading(true);
-		timer.current = window.setTimeout(() => {
-			postData();
-		},550)
-		
+
+		delUser();		
 	    }
 
     };
+
+
 
     return(
         <>
@@ -196,7 +279,6 @@ const Content = (props) =>{
 			variant="outlined"  
 			color="secondary"
 			helperText={nameWrong&&"请输入 "+props.state.row.name+" 。"}
-			defaultValue={props.state.gotData===undefined?'':props.state.gotData.Phone} 
 			onChange={handleTextChange}
 			fullWidth 
 		/>
@@ -204,7 +286,7 @@ const Content = (props) =>{
         </DialogContent>
 
         <DialogActions>
-          <Button disabled={confirmButtonLoading||confirmButtonSuccess} color="secondary" onClick={handleCancelDialog}>取消</Button>
+          <Button disabled={confirmButtonLoading||confirmButtonSuccess} variant="text" color="secondary" onClick={handleCancelDialog}>取消</Button>
           {/* <Button onClick={handleConfirmDialog}>提交</Button> */}
 		<ButtonLoad  
 			text="确定"
@@ -213,6 +295,7 @@ const Content = (props) =>{
 			loading={confirmButtonLoading}
 			success={confirmButtonSuccess}
 			handleButtonClick={handleConfirmDialog}
+			disabled={(!clickedTextField)||nameWrong}
 		/>
         </DialogActions>
       </Dialog>

@@ -5,6 +5,7 @@ import { yellow } from '@mui/material/colors';
 import Button from '@mui/material/Button';
 import CheckIcon from '@mui/icons-material/Check';
 
+
 export default function CircularIntegration(props) {
   // const [loading, setLoading] = React.useState(false);
   // const [success, setSuccess] = React.useState(false);
@@ -12,10 +13,10 @@ export default function CircularIntegration(props) {
 
   const buttonSx = {
     ...(props.success && {
-      bgcolor: yellow[400],
+      bgcolor: yellow[600],
 	color:'#ffffff',
       '&:hover': {
-        bgcolor: yellow[500],
+        bgcolor: yellow[700],
 	  color:'#ffffff',
       },
     }),
@@ -46,7 +47,7 @@ export default function CircularIntegration(props) {
         <Button
           variant="text"
           sx={buttonSx}
-          disabled={props.loading}
+          disabled={props.loading||props.disabled}
           color="secondary"
           onClick={props.handleButtonClick}
         >
@@ -57,7 +58,7 @@ export default function CircularIntegration(props) {
           <CircularProgress
             size={24}
             sx={{
-              color: yellow[500],
+              color: yellow[700],
               position: 'absolute',
               top: '50%',
               left: '50%',

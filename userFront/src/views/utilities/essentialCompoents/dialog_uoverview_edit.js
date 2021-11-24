@@ -28,6 +28,11 @@ import Switch from '@mui/material/Switch';
 import FormGroup from '@mui/material/FormGroup';
 import DeleteIcon from '@mui/icons-material/Delete';
 
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { alpha, styled } from '@mui/material/styles';
+import { yellow } from '@mui/material/colors';
+
+
 // import InputAdornment from '@mui/material/InputAdornment';
 // import AccountCircle from '@mui/icons-material/AccountCircle';
 
@@ -50,12 +55,16 @@ const Content = (props) =>{
 		open: false,
 		scroll: 'body',
 		row: {'name':'null'},
+		rows: props.state.rows,
+		gotData: {'Name':'null'},
 	});
 
 	const [delConfirmDialogState, setDelConfirmDialogState] = React.useState({
 		open: false,
 		scroll: 'body',
 		row: {'name':'null'},
+		rows: props.state.rows,
+		gotData: {'Name':'null'},
 	});
 
 
@@ -135,6 +144,8 @@ const handleDelConfirmDialog = (event) => {
 		open: true,
 		scroll: 'body',
 		row: props.state.row,
+		rows: props.state.rows,
+		gotData: props.state.gotData,
 	})
 
     };
@@ -148,6 +159,8 @@ const handleDelConfirmDialog = (event) => {
 		open: true,
 		scroll: 'body',
 		row: props.state.row,
+		rows: props.state.rows,
+		gotData: props.state.gotData,
 	})
 
     };
@@ -157,28 +170,91 @@ const handleDelConfirmDialog = (event) => {
 		// console.log(event.target.id);
 		var theState=props.state;
 		theState.gotData[event.target.id]=event.target.value;
-		console.log(theState.gotData);
-		props.setState(theState);
-	}
-
-	const handleRadioChange = (event) => {
-		// console.log(event.target.value);
-		// console.log(event.target.name);
-		var theState=props.state;
-		theState.gotData[event.target.name]=event.target.value;
 		// console.log(theState.gotData);
 		props.setState(theState);
 	}
 
+	const handleRadioChange = (event,newValue) => {
+		// console.log(event.target.value);
+		// console.log(event.target.name);
+		var theState=props.state;
+		theState.gotData[event.target.name]=newValue;
+		props.setState(theState);
+		// console.log(props.state.gotData.Gender);
+
+		//为了解决奇怪的bug。没办法。
+		setConfirmDialogState({
+			open: false,
+			scroll: 'body',
+			row: props.state.row,
+			rows: props.state.rows,
+			gotData: props.state.gotData,
+		})
+	}
+
 	const handleAutoCompleteChange = (event,newValue) => {
-		console.log(newValue);
+		// console.log(newValue);
 		// console.log(event.target.value);
 		// console.log(event.target.id);
 		var theState=props.state;
 		theState.gotData['PGname']=newValue;
-		console.log(theState.gotData);
+		// console.log(theState.gotData);
 		props.setState(theState);
 	}
+
+	const themeWXQ = createTheme({
+		components: {
+		  // Name of the component
+		  MuiChip: {
+			  //需要重写样式的MUI组件名称
+		    defaultProps: {
+			// The props to change the default for.即：使用组件时传入的参数的值。
+		    },
+		    styleOverrides: {
+			    //styleOverrides是对css类选择器“	.MuiChip-colorSecondary”的重写。如果要重写其他类选择器
+			    //，则可再建立一个新的这样的结构，名称换成那个类的名。
+			colorSecondary:{
+				color:yellow[700],
+				borderColor:yellow[700],
+			},
+			outlinedSecondary:{
+				color:yellow[700],
+				borderColor:yellow[700],
+			}
+		    },
+		  },
+		MuiButton: {
+			//需要重写样式的MUI组件名称
+		  defaultProps: {
+		    // The props to change the default for.即：使用组件时传入的参数的值。
+		  },
+		  styleOverrides: {
+			  //styleOverrides是对css类选择器“	.MuiChip-colorSecondary”的重写。如果要重写其他类选择器
+			  //，则可再建立一个新的这样的结构，名称换成那个类的名。
+		    outlinedSecondary:{
+			    color:yellow[700],
+			    borderColor:yellow[700],
+			    '&:hover': {
+				color:yellow[700],
+				borderColor:yellow[700],
+			    },
+		    }
+		  },
+		},
+		},
+	    });
+
+	const YellowSwitch = styled(Switch)(({ theme }) => ({
+		'& .Mui-checked': {
+			color: yellow[700],
+			'&:hover': {
+			backgroundColor: alpha(yellow[700], theme.palette.action.hoverOpacity),
+			},
+		},
+		'& .Mui-checked+ .MuiSwitch-track': {
+			backgroundColor: yellow[700],
+		},
+	}));
 
     return(
         <>
@@ -194,6 +270,7 @@ const handleDelConfirmDialog = (event) => {
 		editState={props.state}
 		setEditState={props.setState}
 		setSnackState={props.setSnackState}
+		setRows={props.setRows}
 	/>
 
 	<DelConfirmDialog
@@ -202,6 +279,7 @@ const handleDelConfirmDialog = (event) => {
 		editState={props.state}
 		setEditState={props.setState}
 		setSnackState={props.setSnackState}
+		setRows={props.setRows}
 	/>
 
        <Dialog
@@ -236,21 +314,23 @@ const handleDelConfirmDialog = (event) => {
         <DialogContent dividers={props.scroll === 'paper'}>
 	 
 
-	 <Grid container justifyContent="center">
+	 {/* <Grid container justifyContent="center" direction="column"> */}
 		{props.state.loading?
-			<Grid item>
-				<CircularProgress/> 
+			<Grid container justifyContent="center">
+				<Grid item>
+					<CircularProgress/> 
+				</Grid>
 			</Grid>
 			:
 			<Grid  container spacing={2} direction="column" sx={{pt:2}} justifyContent="center">
-				<Grid item md={12} xs={12} sx={{ml:'5%',mr:'5%'}}>
+				<Grid item sx={{ml:'5%',mr:'5%'}}>
 					<EditHeadCard/>
 					{/* <Typography >
 							姓名
 					</Typography> */}
 				</Grid>
 				
-				<Grid item  md={12} xs={12} sx={{ml:'5%',mr:'5%'}}>
+				<Grid item  sx={{ml:'5%',mr:'5%'}}>
 
 
 								<Grid container spacing={2}  alignItems="center" sx={{pb:2}} >
@@ -325,11 +405,13 @@ const handleDelConfirmDialog = (event) => {
 										<RadioGroup 
 										row
 										name="Gender"
-										value={props.state.gotData===undefined?'':props.state.gotData.Gender} 
+										// value={"男"} 
+										value={props.state.gotData===undefined?"保密":props.state.gotData.Gender} 
 										onChange={handleRadioChange}
 										>
 											<FormControlLabel value="男" control={<Radio />} label="男" />
 											<FormControlLabel value="女" control={<Radio />} label="女" />
+											<FormControlLabel value="保密" control={<Radio />} label="保密" />
 										</RadioGroup>
 									</FormControl>
 									</Grid>
@@ -366,7 +448,9 @@ const handleDelConfirmDialog = (event) => {
 											value={props.state.gotData===undefined?'':props.state.gotData.PGname}
 											onChange={handleAutoCompleteChange}
 											inputValue={inputValuePGname}
+											disabled={false}
 											setInputValue={setInputValuePGname}
+											options={props.state.gotData===undefined?['业主用户']:props.state.gotData.PGNameList}
 										/>
 									</Grid>
 								</Grid>
@@ -395,28 +479,33 @@ const handleDelConfirmDialog = (event) => {
 								<Grid container spacing={2}  alignItems="center" sx={{pb:2}}>
 									<Grid item  md={12} xs={12} >
 										<Divider  variant="fullwidth">
-											<Chip label="危险区"  color="secondary" variant="outlined" />
+											<ThemeProvider theme={themeWXQ}>
+												<Chip sx={{clickable:true}} label="危险区"  color="secondary" variant="outlined" />
+											</ThemeProvider>
 										</Divider>
 									</Grid>
 									<Grid item  md={12} xs={12} >
 										<Grid container justifyContent="center">
 
 											<Grid item xs={6}>
+												
 												<FormGroup>
 													{/* <FormControlLabel  control={<Switch  color="error" />} label="禁言" /> */}
-													<FormControlLabel disabled control={<Switch  defaultChecked color="secondary"  />} label="封禁" />
+													<FormControlLabel  disabled={true} control={<YellowSwitch  defaultChecked color="secondary"  />} label="封禁" />
 												</FormGroup>
 											</Grid>
 
 											<Grid item >
-												<Button 
-													color="secondary" 
-													variant="outlined" 
-													onClick={handleDelConfirmDialog}
-													startIcon={<DeleteIcon />}
-													>
-													删除帐号
-												</Button>
+												<ThemeProvider theme={themeWXQ}>
+													<Button 
+														color="secondary" 
+														variant="outlined" 
+														onClick={handleDelConfirmDialog}
+														startIcon={<DeleteIcon />}
+														>
+														删除帐号
+													</Button>
+												</ThemeProvider>
 											</Grid>
 
 										</Grid>
@@ -433,7 +522,7 @@ const handleDelConfirmDialog = (event) => {
 		}
 
 	
-	 </Grid>
+	 {/* </Grid> */}
 
      
 

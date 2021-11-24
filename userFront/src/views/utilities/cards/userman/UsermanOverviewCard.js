@@ -46,25 +46,6 @@ import EditDialog from 'views/utilities/essentialCompoents/dialog_uoverview_edit
 import axios from 'axios';
 
 // ==============================|| DASHBOARD DEFAULT - POPULAR CARD ||============================== //
-
-function createData(name, calories, fat, carbs, protein) {
-    return {
-      name,
-      calories,
-      fat,
-      carbs,
-      protein,
-    };
-  }
-  
-  var rows = [
-    createData('Cupcake', 305, 3.7, 67, 4.3),
-    createData('Donut', 452, 25.0, 51, 4.9),
-    createData('Eclair', 262, 16.0, 24, 6.0),
-    createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-    createData('Gingerbread', 356, 16.0, 49, 3.9),
-    createData('Honeycomb', 408, 3.2, 87, 6.5),
-  ];
   
   function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
@@ -164,7 +145,7 @@ function createData(name, calories, fat, carbs, protein) {
           {headCells.map((headCell) => (
             <TableCell
               key={headCell.id}
-              align={headCell.numeric ? 'right' : 'left'}
+              align={headCell.numeric ? 'left' : 'left'}
               padding={headCell.disablePadding ? 'none' : 'normal'}
               sortDirection={orderBy === headCell.id ? order : false}
             >
@@ -185,7 +166,7 @@ function createData(name, calories, fat, carbs, protein) {
 
 
           {/* 从这里添加操作（表头） */}
-          <TableCell padding="checkbox">
+          <TableCell align='center'>
                  操作
           </TableCell>
 
@@ -270,7 +251,10 @@ function createData(name, calories, fat, carbs, protein) {
     numSelected: PropTypes.number.isRequired,
   };
   
-function EnhancedTable() {
+
+
+  
+function EnhancedTable(props) {
 
   const timer = React.useRef();
 	
@@ -279,6 +263,7 @@ function EnhancedTable() {
 		scroll: 'body',
 		row: {'name':'null'},
 		gotData: {'Name':'null'},
+		rows: props.rows,
 	});
 
 	const [snackState, setSnackState] = React.useState({
@@ -308,6 +293,7 @@ function EnhancedTable() {
 
 
     const handleClickEdit = (event,row) => {
+
 		// setEditOpenDialog(true);
 		// setEditDialogScroll('body');
 		// curEditRow=row;
@@ -319,7 +305,8 @@ function EnhancedTable() {
       row: row,
       loading: true,
       gotData:{'Name':'null'},
-      insufPermission:false
+      insufPermission:false,
+      rows: props.rows,
     })
 
 
@@ -358,7 +345,7 @@ function EnhancedTable() {
               }
 
 
-            //   console.log(response.data);
+              // console.log(response.data);
 
               //结束加载(并强制欣赏加载动画)
               timer.current = window.setTimeout(() => {
@@ -403,7 +390,7 @@ function EnhancedTable() {
 
     const handleSelectAllClick = (event) => {
       if (event.target.checked) {
-        const newSelecteds = rows.map((n) => n.name);
+        const newSelecteds = props.rows.map((n) => n.name);
         setSelected(newSelecteds);
         return;
       }
@@ -452,7 +439,7 @@ function EnhancedTable() {
   
     // Avoid a layout jump when reaching the last page with empty rows.
     const emptyRows =
-      page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+      page > 0 ? Math.max(0, (1 + page) * rowsPerPage - props.rows.length) : 0;
   
 
 	const snackbarActionWithUNDO = (
@@ -501,6 +488,7 @@ function EnhancedTable() {
 		state={editDialogState}
 		setState={setEditDialogState}
 		setSnackState={setSnackState}
+    setRows={props.setRows}
 	/>
 
         <Paper sx={{ width: '100%' }}>
@@ -524,12 +512,12 @@ function EnhancedTable() {
                 orderBy={orderBy}
                 onSelectAllClick={handleSelectAllClick}
                 onRequestSort={handleRequestSort}
-                rowCount={rows.length}
+                rowCount={props.rows.length}
               />
               <TableBody>
                 {/* if you don't need to support IE11, you can replace the `stableSort` call with:
                    rows.slice().sort(getComparator(order, orderBy)) */}
-                {stableSort(rows, getComparator(order, orderBy))
+                {stableSort(props.rows, getComparator(order, orderBy))
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row, index) => {
                     const isItemSelected = isSelected(row.phone);
@@ -564,16 +552,17 @@ function EnhancedTable() {
                           component="th"
                           id={labelId}
                           scope="row"
-                          padding="none"
+                          // padding="none"
+                          align="left"
                         >
                           {row.name}
 
-                          {/* 从这里修改列名 */}
+                          {/* 从这里修改每行的情况 */}
                         </TableCell>
-                        <TableCell align="right">{row.phone}</TableCell>
-                        <TableCell align="right">{row.pgname}</TableCell>
-                        <TableCell align="right">{row.idcard}</TableCell>
-                        <TableCell align="right">{row.email}</TableCell>
+                        <TableCell align="left">{row.phone}</TableCell>
+                        <TableCell align="left">{row.pgname}</TableCell>
+                        <TableCell align="left">{row.idcard}</TableCell>
+                        <TableCell align="left">{row.email}</TableCell>
 
                           {/* 从这里添加操作（每行） */}
                         <TableCell padding="checkbox">
@@ -606,7 +595,7 @@ function EnhancedTable() {
           <TablePagination
             rowsPerPageOptions={[5, 15, 25,40]}
             component="div"
-            count={rows.length}
+            count={props.rows.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
@@ -627,7 +616,7 @@ const PostList = (props) =>{
 
     return(
         <Grid container direction="column" sx={{pt:2}}>
-            <EnhancedTable/>                    
+            <EnhancedTable rows={props.rows} setRows={props.setRows}/>                    
         </Grid>
     );
 }
@@ -645,7 +634,9 @@ const NewpostCard = (props) => {
     //     setAnchorEl(null);
     // };
 
-    rows=props.tableData;
+    const [rows, setRows] = React.useState(props.tableData);
+
+    // rows=props.tableData;
 
     // console.log(props.tableData);
     // console.log(rows);
@@ -718,7 +709,7 @@ const NewpostCard = (props) => {
                             </Grid>
 
 
-                            <PostList theme={theme} />
+                            <PostList theme={theme} rows={rows} setRows={setRows}/>
 
    
 
