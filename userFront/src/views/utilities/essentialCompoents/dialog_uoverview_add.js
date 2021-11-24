@@ -13,10 +13,10 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import Divider from '@mui/material/Divider';
 // import AlertDialog from './dialog_alert'
-import ConfirmDialog from 'views/utilities/essentialCompoents/dialog_uoverview_confirm.js';
-import DelConfirmDialog from 'views/utilities/essentialCompoents/dialog_uoverview_deluser_confirm';
+import ConfirmDialog from 'views/utilities/essentialCompoents/dialog_uoverview_addconfirm';
+
 import TextField from '@mui/material/TextField';
-import EditHeadCard from 'views/utilities/cards/userman/compoents/UsermanEditHeadCard.js';
+import AddHeadCard from 'views/utilities/cards/userman/compoents/UsermanAddHeadCard.js';
 import MyAutocomplete from 'views/utilities/essentialCompoents/textfield_autocomp.js';
 
 
@@ -24,14 +24,11 @@ import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
-import Switch from '@mui/material/Switch';
-import FormGroup from '@mui/material/FormGroup';
-import DeleteIcon from '@mui/icons-material/Delete';
 
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { alpha, styled } from '@mui/material/styles';
 import { yellow } from '@mui/material/colors';
 import * as Yup from 'yup';
+
 
 // import InputAdornment from '@mui/material/InputAdornment';
 // import AccountCircle from '@mui/icons-material/AccountCircle';
@@ -49,10 +46,10 @@ const Content = (props) =>{
 	// const [loading, setLoading] = React.useState(true);
 	// const [newData, setNewData] = React.useState({'Name':'null'});
 
+	const [inputValuePGname, setInputValuePGname] = React.useState('');
+
 	const [validationErrors, setValidationErrors] = React.useState('nil');
 	const [validationErrorAlertOpen, setValidationErrorAlertOpen] = React.useState(false);
-
-	const [inputValuePGname, setInputValuePGname] = React.useState('');
 
 	const [confirmDialogState, setConfirmDialogState] = React.useState({
 		open: false,
@@ -61,15 +58,6 @@ const Content = (props) =>{
 		rows: props.state.rows,
 		gotData: {'Name':'null'},
 	});
-
-	const [delConfirmDialogState, setDelConfirmDialogState] = React.useState({
-		open: false,
-		scroll: 'body',
-		row: {'name':'null'},
-		rows: props.state.rows,
-		gotData: {'Name':'null'},
-	});
-
 
 
     const descriptionElementRef = React.useRef(null);
@@ -83,16 +71,61 @@ const Content = (props) =>{
     }, [props.openDialog]);
 
 
-    const YellowButton = styled(Button)(({ theme }) => ({
-	'&.MuiButton-textSecondary': {
-		color: yellow[700],
-		'&:hover': {
-		backgroundColor: alpha(yellow[700], theme.palette.action.hoverOpacity),
-		},
-	},
-}));
 
-    const handleCloseValidateAlert = (event) => {
+
+    const handleCancelDialog = (event) => {
+
+	// console.log('cancel');
+
+	if(props.state.loading)return;
+
+	props.setSnackState({
+		open: true,
+		message: '操作已取消',
+		undo: false,
+	})
+
+      props.setState({
+		open: false,
+		scroll: 'body',
+		// row: {'name':props.state.row.name},
+		loading: false,
+		gotData:{'Name':''}
+	})
+
+
+    };
+
+
+
+//     const afterSuccessfulGetData = () =>{
+// 		setConfirmButtonSuccess(true);
+// 		setConfirmButtonLoading(false);
+
+// 		timer.current = window.setTimeout(() => {
+// 			props.setSnackState({
+// 				open: true,
+// 				message:props.state.row.name+ ' 信息已更新',
+// 				undo: true,
+// 			})
+		
+// 			props.setState({
+// 				open: false,
+// 				scroll: 'body',
+// 				row: {'name':props.state.row.name},
+// 			})
+
+// 				timer.current = window.setTimeout(() => {
+// 					setConfirmButtonSuccess(false);
+// 					setConfirmButtonLoading(false);	
+// 				}, 350);
+
+// 			}, 1000);
+
+	
+//     }
+
+const handleCloseValidateAlert = (event) => {
 	setValidationErrorAlertOpen(false);
 
 	timer.current = window.setTimeout(() => {
@@ -133,75 +166,6 @@ const validate = () =>{
 }
 
 
-    const handleCancelDialog = (event) => {
-
-	// console.log('cancel');
-
-	if(props.state.loading)return;
-
-	props.setSnackState({
-		open: true,
-		message: '操作已取消',
-		undo: false,
-	})
-
-      props.setState({
-		open: false,
-		scroll: 'body',
-		row: {'name':props.state.row.name},
-		loading: false,
-		gotData:{'Name':''}
-	})
-
-
-    };
-
-
-
-//     const afterSuccessfulGetData = () =>{
-// 		setConfirmButtonSuccess(true);
-// 		setConfirmButtonLoading(false);
-
-// 		timer.current = window.setTimeout(() => {
-// 			props.setSnackState({
-// 				open: true,
-// 				message:props.state.row.name+ ' 信息已更新',
-// 				undo: true,
-// 			})
-		
-// 			props.setState({
-// 				open: false,
-// 				scroll: 'body',
-// 				row: {'name':props.state.row.name},
-// 			})
-
-// 				timer.current = window.setTimeout(() => {
-// 					setConfirmButtonSuccess(false);
-// 					setConfirmButtonLoading(false);	
-// 				}, 350);
-
-// 			}, 1000);
-
-	
-//     }
-
-
-
-const handleDelConfirmDialog = (event) => {
-
-	// console.log('cancel');
-
-      setDelConfirmDialogState({
-		open: true,
-		scroll: 'body',
-		row: props.state.row,
-		rows: props.state.rows,
-		gotData: props.state.gotData,
-	})
-
-    };
-
-
     const handleConfirmDialog = (event) => {
 
 	// console.log('cancel');
@@ -221,8 +185,9 @@ const handleDelConfirmDialog = (event) => {
 		// console.log(event.target.id);
 		var theState=props.state;
 		theState.gotData[event.target.id]=event.target.value;
-		// console.log(theState.gotData);
 		props.setState(theState);
+
+		// console.log(props.state.gotData);
 	}
 
 	const handleRadioChange = (event,newValue) => {
@@ -241,6 +206,8 @@ const handleDelConfirmDialog = (event) => {
 			rows: props.state.rows,
 			gotData: props.state.gotData,
 		})
+
+		// console.log(props.state.gotData);
 	}
 
 	const handleAutoCompleteChange = (event,newValue) => {
@@ -251,59 +218,25 @@ const handleDelConfirmDialog = (event) => {
 		theState.gotData['PGname']=newValue;
 		// console.log(theState.gotData);
 		props.setState(theState);
+
+		// console.log(props.state.gotData);
 	}
 
-	const themeWXQ = createTheme({
-		components: {
-		  // Name of the component
-		  MuiChip: {
-			  //需要重写样式的MUI组件名称
-		    defaultProps: {
-			// The props to change the default for.即：使用组件时传入的参数的值。
-		    },
-		    styleOverrides: {
-			    //styleOverrides是对css类选择器“	.MuiChip-colorSecondary”的重写。如果要重写其他类选择器
-			    //，则可再建立一个新的这样的结构，名称换成那个类的名。
-			colorSecondary:{
-				color:yellow[700],
-				borderColor:yellow[700],
-			},
-			outlinedSecondary:{
-				color:yellow[700],
-				borderColor:yellow[700],
-			}
-		    },
-		  },
-		MuiButton: {
-			//需要重写样式的MUI组件名称
-		  defaultProps: {
-		    // The props to change the default for.即：使用组件时传入的参数的值。
-		  },
-		  styleOverrides: {
-			  //styleOverrides是对css类选择器“	.MuiChip-colorSecondary”的重写。如果要重写其他类选择器
-			  //，则可再建立一个新的这样的结构，名称换成那个类的名。
-		    outlinedSecondary:{
-			    color:yellow[700],
-			    borderColor:yellow[700],
-			    '&:hover': {
-				color:yellow[700],
-				borderColor:yellow[700],
-			    },
-		    }
-		  },
-		},
-		},
-	    });
 
-	const YellowSwitch = styled(Switch)(({ theme }) => ({
-		'& .Mui-checked': {
+	const YellowChip = styled(Chip)(({ theme }) => ({
+		'&.MuiChip-colorPrimary': {
+			color: yellow[700],
+			borderColor: yellow[700],
+		},
+	}));
+
+
+	const YellowButton = styled(Button)(({ theme }) => ({
+		'&.MuiButton-textSecondary': {
 			color: yellow[700],
 			'&:hover': {
 			backgroundColor: alpha(yellow[700], theme.palette.action.hoverOpacity),
 			},
-		},
-		'& .Mui-checked+ .MuiSwitch-track': {
-			backgroundColor: yellow[700],
 		},
 	}));
 
@@ -315,25 +248,8 @@ const handleDelConfirmDialog = (event) => {
             setOpen={setOpenAlert}
       /> */}
 
-	<ConfirmDialog
-		state={confirmDialogState}
-		setState={setConfirmDialogState}
-		editState={props.state}
-		setEditState={props.setState}
-		setSnackState={props.setSnackState}
-		setRows={props.setRows}
-	/>
 
-	<DelConfirmDialog
-		state={delConfirmDialogState}
-		setState={setDelConfirmDialogState}
-		editState={props.state}
-		setEditState={props.setState}
-		setSnackState={props.setSnackState}
-		setRows={props.setRows}
-	/>
-
-<Dialog
+	<Dialog
 		open={validationErrorAlertOpen}
 		onClose={handleCloseValidateAlert}
 		scroll={"body"}
@@ -365,6 +281,15 @@ const handleDelConfirmDialog = (event) => {
 	</Dialog>
 
 
+	<ConfirmDialog
+		state={confirmDialogState}
+		setState={setConfirmDialogState}
+		editState={props.state}
+		setEditState={props.setState}
+		setSnackState={props.setSnackState}
+		setRows={props.setRows}
+	/>
+
        <Dialog
         open={props.state.open}
         onClose={handleCancelDialog}
@@ -379,12 +304,12 @@ const handleDelConfirmDialog = (event) => {
 						<Grid item xs={10}></Grid>
 						{props.state.loading?
 							<Grid item>
-								{"加载用户 "+props.state.row.name+" 信息..."}
+								{"生成UUID..."}
 								<Divider sx={{ my: 1 }} />
 							</Grid>
 						:
 							<Grid item>
-								{"编辑用户 "+props.state.row.name}
+								{"添加用户"}
 								<Divider sx={{ my: 1 }} />
 							</Grid>
 						}
@@ -401,13 +326,13 @@ const handleDelConfirmDialog = (event) => {
 		{props.state.loading?
 			<Grid container justifyContent="center">
 				<Grid item>
-					<CircularProgress/> 
+					<CircularProgress color="secondary" /> 
 				</Grid>
 			</Grid>
 			:
 			<Grid  container spacing={2} direction="column" sx={{pt:2}} justifyContent="center">
 				<Grid item sx={{ml:'5%',mr:'5%'}}>
-					<EditHeadCard/>
+					<AddHeadCard/>
 					{/* <Typography >
 							姓名
 					</Typography> */}
@@ -419,15 +344,14 @@ const handleDelConfirmDialog = (event) => {
 								<Grid container spacing={2}  alignItems="center" sx={{pb:2}} >
 									<Grid item  md={3} xs={12} >
 										<Divider textAlign="left" variant="fullwidth">
-											<Chip label="姓名"  color="primary" variant="outlined" />
+											<YellowChip label="姓名"  color="primary" variant="outlined" />
 										</Divider>
 									</Grid>
 									<Grid item  md={9} xs={12} >
 										<TextField 
 											id="Name"
 											variant="outlined"  
-											color="primary" 
-											defaultValue={props.state.gotData===undefined?'':props.state.gotData.Name} 
+											color="secondary" 
 											onChange={handleTextChange}
 											fullWidth 
 										/>
@@ -437,14 +361,14 @@ const handleDelConfirmDialog = (event) => {
 								<Grid container spacing={2}  alignItems="center" sx={{pb:2}}>
 									<Grid item  md={3} xs={12} >
 										<Divider textAlign="left" variant="fullwidth">
-											<Chip label="UID"  color="primary" variant="outlined" />
+											<YellowChip label="UID"  color="primary" variant="outlined" />
 										</Divider>
 									</Grid>
 									<Grid item  md={9} xs={12} >
 										<TextField 
 											id="Uid"
 											variant="outlined"  
-											color="primary"
+											color="secondary"
 											disabled = {true}
 											helperText="不提供编辑。"
 											defaultValue={props.state.gotData===undefined?'':props.state.gotData.Uid} 
@@ -458,16 +382,14 @@ const handleDelConfirmDialog = (event) => {
 								<Grid container spacing={2}  alignItems="center" sx={{pb:2}}>
 									<Grid item  md={3} xs={12} >
 										<Divider textAlign="left" variant="fullwidth">
-											<Chip label="电话"  color="primary" variant="outlined" />
+											<YellowChip label="电话"  color="primary" variant="outlined" />
 										</Divider>
 									</Grid>
 									<Grid item  md={9} xs={12} >
 										<TextField 
 											id="Phone"
 											variant="outlined"  
-											color="primary"
-											disabled = {true}
-											helperText="不提供编辑。"
+											color="secondary"
 											defaultValue={props.state.gotData===undefined?'':props.state.gotData.Phone} 
 											onChange={handleTextChange}
 											fullWidth 
@@ -480,7 +402,7 @@ const handleDelConfirmDialog = (event) => {
 								<Grid container spacing={2}  alignItems="center" sx={{pb:2}}>
 									<Grid item  md={3} xs={12} >
 										<Divider textAlign="left" variant="fullwidth">
-											<Chip label="性别"  color="primary" variant="outlined" />
+											<YellowChip label="性别"  color="primary" variant="outlined" />
 										</Divider>
 									</Grid>
 									<Grid item  md={9} xs={12} >
@@ -492,9 +414,9 @@ const handleDelConfirmDialog = (event) => {
 										value={props.state.gotData===undefined?"保密":props.state.gotData.Gender} 
 										onChange={handleRadioChange}
 										>
-											<FormControlLabel value="男" control={<Radio />} label="男" />
-											<FormControlLabel value="女" control={<Radio />} label="女" />
-											<FormControlLabel value="保密" control={<Radio />} label="保密" />
+											<FormControlLabel value="男" control={<Radio  color="secondary" />} label="男" />
+											<FormControlLabel value="女" control={<Radio  color="secondary" />} label="女" />
+											<FormControlLabel value="保密" control={<Radio   color="secondary" />} label="保密" />
 										</RadioGroup>
 									</FormControl>
 									</Grid>
@@ -503,15 +425,14 @@ const handleDelConfirmDialog = (event) => {
 								<Grid container spacing={2}  alignItems="center" sx={{pb:2}}>
 									<Grid item  md={3} xs={12} >
 										<Divider textAlign="left" variant="fullwidth">
-											<Chip label="身份证"  color="primary" variant="outlined" />
+											<YellowChip label="身份证"  color="primary" variant="outlined" />
 										</Divider>
 									</Grid>
 									<Grid item  md={9} xs={12} >
 										<TextField 
 											id="IdCard"
 											variant="outlined"  
-											color="primary"
-											defaultValue={props.state.gotData===undefined?'':props.state.gotData.IdCard} 
+											color="secondary"
 											onChange={handleTextChange}
 											fullWidth 
 										/>
@@ -522,7 +443,7 @@ const handleDelConfirmDialog = (event) => {
 								<Grid container spacing={2}  alignItems="center" sx={{pb:2}}>
 									<Grid item  md={3} xs={12} >
 										<Divider textAlign="left" variant="fullwidth">
-											<Chip label="权限组"  color="primary" variant="outlined" />
+											<YellowChip label="权限组"  color="primary" variant="outlined" />
 										</Divider>
 									</Grid>
 									<Grid item  md={9} xs={12} >
@@ -532,7 +453,7 @@ const handleDelConfirmDialog = (event) => {
 											onChange={handleAutoCompleteChange}
 											inputValue={inputValuePGname}
 											disabled={false}
-											color="primary"
+											color="secondary"
 											setInputValue={setInputValuePGname}
 											options={props.state.gotData===undefined?['业主用户']:props.state.gotData.PGNameList}
 										/>
@@ -543,56 +464,17 @@ const handleDelConfirmDialog = (event) => {
 								<Grid container spacing={2}  alignItems="center" sx={{pb:2}}>
 									<Grid item  md={3} xs={12} >
 										<Divider textAlign="left" variant="fullwidth">
-											<Chip label="邮箱"  color="primary" variant="outlined" />
+											<YellowChip label="邮箱"  color="primary" variant="outlined" />
 										</Divider>
 									</Grid>
 									<Grid item  md={9} xs={12} >
 										<TextField 
 											id="Email"
 											variant="outlined"  
-											color="primary"
-											defaultValue={props.state.gotData===undefined?'':props.state.gotData.Email} 
+											color="secondary"
 											onChange={handleTextChange}
 											fullWidth 
 										/>
-									</Grid>
-								</Grid>
-
-
-
-								<Grid container spacing={2}  alignItems="center" sx={{pb:2}}>
-									<Grid item  md={12} xs={12} >
-										<Divider  variant="fullwidth">
-											<ThemeProvider theme={themeWXQ}>
-												<Chip sx={{clickable:true}} label="危险区"  color="secondary" variant="outlined" />
-											</ThemeProvider>
-										</Divider>
-									</Grid>
-									<Grid item  md={12} xs={12} >
-										<Grid container justifyContent="center">
-
-											<Grid item xs={6}>
-												
-												<FormGroup>
-													{/* <FormControlLabel  control={<Switch  color="error" />} label="禁言" /> */}
-													<FormControlLabel  disabled={true} control={<YellowSwitch  defaultChecked color="secondary"  />} label="封禁" />
-												</FormGroup>
-											</Grid>
-
-											<Grid item >
-												<ThemeProvider theme={themeWXQ}>
-													<Button 
-														color="secondary" 
-														variant="outlined" 
-														onClick={handleDelConfirmDialog}
-														startIcon={<DeleteIcon />}
-														>
-														删除帐号
-													</Button>
-												</ThemeProvider>
-											</Grid>
-
-										</Grid>
 									</Grid>
 								</Grid>
 
@@ -605,7 +487,6 @@ const handleDelConfirmDialog = (event) => {
 
 		}
 
-	
 	 {/* </Grid> */}
 
      
@@ -615,8 +496,8 @@ const handleDelConfirmDialog = (event) => {
 
 		{(!props.state.loading)&&
 			<DialogActions>
-				<Button onClick={handleCancelDialog}>取消</Button>
-				<Button onClick={validate}>提交</Button>
+				<YellowButton  variant="text" color="secondary" onClick={handleCancelDialog}>取消</YellowButton>
+				<YellowButton  variant="text" color="secondary" onClick={validate}>提交</YellowButton>
 			</DialogActions>
 		}
     

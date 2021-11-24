@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import {  Checkbox, CardContent, Grid, Typography } from '@mui/material';
+import {  Checkbox, CardContent, Grid, Typography, Stack } from '@mui/material';
 // import {  Menu,MenuItem } from '@mui/material';
 
 import * as React from 'react';
@@ -38,11 +38,15 @@ import SkeletonNewPostCard from 'ui-component/cards/Skeleton/NewPostCard';
 
 // assets
 import ChevronRightOutlinedIcon from '@mui/icons-material/ChevronRightOutlined';
+import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
+import AdjustRoundedIcon from '@mui/icons-material/AdjustRounded';
+import AlbumRoundedIcon from '@mui/icons-material/AlbumRounded';
 
 import UsermanDataCard from 'views/utilities/cards/userman/compoents/UsermanDataCard.js';
 import Breadcrumb from 'views/utilities/essentialCompoents/BreadCrumb.js'
 
 import EditDialog from 'views/utilities/essentialCompoents/dialog_uoverview_edit.js'
+import AddDialog from 'views/utilities/essentialCompoents/dialog_uoverview_add.js'
 import axios from 'axios';
 
 // ==============================|| DASHBOARD DEFAULT - POPULAR CARD ||============================== //
@@ -188,62 +192,76 @@ import axios from 'axios';
     const { numSelected } = props;
   
     return (
-      
-      <Grid container  sx={{pt:2}} 
-        // backgroundColor="#ffab91"
-      >
-	    <FormControlLabel
-		control={<Switch checked={props.multiSwitchChecked} onChange={props.onMultiSwitchChange} />}
-		label="多选"
-		/>
-         {numSelected > 0 ?
-           <Toolbar
-           sx={{
-             pl: { sm: 2 },
-             pr: { xs: 1, sm: 1 }
-           }}
-         >
-           {numSelected > 0 ? (
-             
-             <Typography
-               sx={{ flex: '1 1 100%' }}
-               color="inherit"
-               variant="subtitle1"
-               component="div"
-             >
-              已选择 {numSelected} 个
-             </Typography>
-           ) : (
-             // <Typography
-             //   sx={{ flex: '1 1 100%' }}
-             //   variant="h4"
-             //   id="tableTitle"
-             //   component="div"
-             // >
-             //   用户简表
-             // </Typography>
-             <></>
-           )}
-     
-           {numSelected > 0 ? (
-             <Tooltip title="Delete">
-               <IconButton>
-                 <DeleteIcon />
-               </IconButton>
-             </Tooltip>
-           ) : (
-             <></>
-             // <Tooltip title="Filter list">
-             //   <IconButton>
-             //     <FilterListIcon />
-             //   </IconButton>
-             // </Tooltip>
-           )}
-     
-         </Toolbar>:<></>
-        }
-    
-      </Grid>
+
+	<Toolbar  sx={{ml:'-2%'}} variant="dense">
+
+
+	{
+		props.multiSel?
+			<Tooltip title="单选">
+			<IconButton  color="primary" onClick={props.onMultiSwitchChange}>
+				<AlbumRoundedIcon />
+			</IconButton>
+			</Tooltip>
+		:
+		<Tooltip title="多选">
+			<IconButton onClick={props.onMultiSwitchChange}>
+				<AdjustRoundedIcon />
+			</IconButton>
+		</Tooltip>
+	}
+
+	<Tooltip title="添加用户">
+		<IconButton onClick={props.handleClickAdd}>
+		<AddCircleOutlineRoundedIcon />
+		</IconButton>
+	</Tooltip>
+
+	{numSelected > 0 ? (
+	
+	<Typography
+	sx={{ flex: '1 1 100%' }}
+	color="inherit"
+	variant="subtitle1"
+	component="div"
+	>
+	已选择 {numSelected} 个
+	</Typography>
+	) : (
+	// <Typography
+	//   sx={{ flex: '1 1 100%' }}
+	//   variant="h4"
+	//   id="tableTitle"
+	//   component="div"
+	// >
+	//   用户简表
+	// </Typography>
+	<></>
+	)}
+
+	{numSelected > 0 ? (
+	<Tooltip title="删除">
+	<IconButton>
+		<DeleteIcon />
+	</IconButton>
+	</Tooltip>
+	) : (
+	<></>
+	// <Tooltip title="Filter list">
+	//   <IconButton>
+	//     <FilterListIcon />
+	//   </IconButton>
+	// </Tooltip>
+	)}
+	</Toolbar>
+	
+
+
+		
+
+
+
+		
     );
   };
   
@@ -265,6 +283,15 @@ function EnhancedTable(props) {
 		gotData: {'Name':'null'},
 		rows: props.rows,
 	});
+
+	const [addDialogState, setAddDialogState] = React.useState({
+		open: false,
+		scroll: 'body',
+		row: {'name':'null'},
+		gotData: {'Name':'null'},
+		rows: props.rows,
+	});
+
 
 	const [snackState, setSnackState] = React.useState({
 		open: false,
@@ -292,7 +319,92 @@ function EnhancedTable(props) {
   
 
 
-    const handleClickEdit = (event,row) => {
+    const handleClickAdd = (event) => {
+
+	// setEditOpenDialog(true);
+	// setEditDialogScroll('body');
+	// curEditRow=row;
+	// setEditDialogUserName(row);
+
+	setAddDialogState({
+		open: true,
+		scroll: 'body',
+		loading: true,
+		gotData:{'Name':'null'},
+		insufPermission:false,
+		rows: props.rows,
+	})
+
+	axios.get("/api/haveperm", {
+	　　params: { 'permid': 209 }
+	}).then(function (response) {
+	// 　　alert(''.concat(response.data, '\r\n', response.status, '\r\n', response.statusText, '\r\n', response.headers, '\r\n', response.config));
+	if(response.status===200){
+	//鉴权请求
+
+	if(response.data==="notlogged"){
+		window.location='/auth/login';
+	}
+
+	if(response.data==="ok"){
+	//该用户有相应的权限
+	setAddDialogState({
+		open: true,
+		scroll: 'body',
+		// row: row,
+		loading: true,
+		gotData:{'Name':'null'},
+		insufPermission:true
+	})
+	}
+
+	axios.get("/api/adduser", {
+	　　params: { 'uid': '-1'}
+	}).then(function (response) {
+		// 　　alert(''.concat(response.data, '\r\n', response.status, '\r\n', response.statusText, '\r\n', response.headers, '\r\n', response.config));
+		if(response.status===200){
+		
+	
+		if(response.data==="notlogged"){
+		window.location='/auth/login';
+		}
+
+
+		// console.log(response.data);
+
+		//结束加载(并强制欣赏加载动画)
+		timer.current = window.setTimeout(() => {
+
+			setAddDialogState({
+			open: true,
+			scroll: 'body',
+			// row: row,
+			loading: false,
+			gotData:response.data,
+			})
+
+			// console.log(editDialogState.gotData);
+
+		},450)
+		
+		}
+		}).catch(function (error) {
+		// 　　alert(error);
+		});
+	
+	// console.log(userData);
+	}
+	}).catch(function (error) {
+	// 　　alert(error);
+	});
+
+};
+
+
+
+
+
+const handleClickEdit = (event,row) => {
 
 		// setEditOpenDialog(true);
 		// setEditDialogScroll('body');
@@ -431,7 +543,7 @@ function EnhancedTable(props) {
     };
   
     const handleSwitchMultiSel = (event) => {
-      setMultiSel(event.target.checked);
+      setMultiSel(!multiSel);
       if(!event.target.checked) setSelected([]);
     };
 
@@ -488,14 +600,27 @@ function EnhancedTable(props) {
 		state={editDialogState}
 		setState={setEditDialogState}
 		setSnackState={setSnackState}
-    setRows={props.setRows}
+    		setRows={props.setRows}
+	/>
+
+	<AddDialog
+		state={addDialogState}
+		setState={setAddDialogState}
+		setSnackState={setSnackState}
+		setRows={props.setRows}
 	/>
 
         <Paper sx={{ width: '100%' }}>
 
         <UsermanDataCard isLoading={false} />
 
-          <EnhancedTableToolbar multiSwitchChecked={multiSel} onMultiSwitchChange={handleSwitchMultiSel} numSelected={selected.length}  />
+          <EnhancedTableToolbar  
+			handleClickAdd={handleClickAdd} 
+			multiSwitchChecked={multiSel} 
+			multiSel={multiSel} 
+			onMultiSwitchChange={handleSwitchMultiSel} 
+			numSelected={selected.length}  
+	    />
           
           <TableContainer>
 

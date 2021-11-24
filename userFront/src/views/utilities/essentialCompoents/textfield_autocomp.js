@@ -20,7 +20,7 @@ export default function ControllableStates(props) {
         }}
         id="csa"
         options={props.options===undefined?['业主用户']:props.options}
-        renderInput={(params) => <TextField {...params}  />}
+        renderInput={(params) => <TextField {...params} color={props.color} />}
       />
     </div>
   );
