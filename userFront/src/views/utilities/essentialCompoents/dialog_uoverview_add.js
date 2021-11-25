@@ -139,20 +139,24 @@ const validate = () =>{
 	setValidationErrorAlertOpen(false);
 
 	let schema = Yup.object().shape({
-		phone: Yup.string().trim().required("请输入手机号").matches(/^[0-9]{11}$/,"手机号无效"),
-		idcard: Yup.string().trim().required("请输入身份证").matches(/^[0-9]{18}$/,"身份证无效"),
-		pgname: Yup.string().trim().required("请指定权限组"),
+		name: Yup.string().trim().nullable().required("请输入姓名"),
+		email: Yup.string().trim().nullable().required("请输入邮箱").email("不是有效的邮箱"),
+		phone: Yup.string().trim().nullable().required("请输入手机号").matches(/^[0-9]{11}$/,"手机号无效"),
+		idcard: Yup.string().trim().nullable().required("请输入身份证").matches(/^[0-9]{18}$/,"身份证无效"),
+		pgname: Yup.string().trim().nullable().required("请指定权限组"),
 	});
 
 	schema.validate(
 		{
+			name:props.state.gotData.Name,
+			email:props.state.gotData.Email,
 			phone:props.state.gotData.Phone,
 			idcard:props.state.gotData.IdCard,
 			pgname:props.state.gotData.PGname,
 		}
 	)
 	.catch(function (err) {
-		console.log(err.errors);
+		// console.log(err.errors);
 		setValidationErrorAlertOpen(true);
 		setValidationErrors(err.errors);
 		hasErr=true;
@@ -257,7 +261,7 @@ const validate = () =>{
 		aria-describedby="scroll-dialog-description"
 	>
             <DialogTitle id="scroll-dialog-title" variant="h3">    
-			<Grid container direction="row"  rowSpacing={5}>
+			<Grid container direction="row"  rowSpacing={5} sx={{minWidth:'200px'}}>
 				<Grid item>
 					<Grid container direction="row" columnSpacing={5} rowSpacing={1} justifyContent="flex-start">
 						<Grid item xs={10}></Grid>

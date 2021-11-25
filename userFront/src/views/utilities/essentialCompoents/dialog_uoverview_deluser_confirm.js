@@ -130,7 +130,7 @@ const Content = (props) =>{
 				setConfirmButtonLoading(false);	
 			}, 350);
 
-		}, 1000);
+		}, 250);
 
     }
 
@@ -212,7 +212,7 @@ const Content = (props) =>{
 
 						timer.current = window.setTimeout(() => {
 							refreshTable();
-						},550)
+						},300)
 
 					  }
 				    }).catch(function (error) {

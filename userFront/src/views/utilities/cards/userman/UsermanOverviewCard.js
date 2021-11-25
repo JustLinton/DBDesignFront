@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import {  Checkbox, CardContent, Grid, Typography, Stack } from '@mui/material';
+import {  Checkbox, CardContent, Grid, Typography, Stack, Divider } from '@mui/material';
 // import {  Menu,MenuItem } from '@mui/material';
 
 import * as React from 'react';
@@ -41,6 +41,8 @@ import ChevronRightOutlinedIcon from '@mui/icons-material/ChevronRightOutlined';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import AdjustRoundedIcon from '@mui/icons-material/AdjustRounded';
 import AlbumRoundedIcon from '@mui/icons-material/AlbumRounded';
+import EditRoundedIcon from '@mui/icons-material/EditRounded';
+import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
 
 import UsermanDataCard from 'views/utilities/cards/userman/compoents/UsermanDataCard.js';
 import Breadcrumb from 'views/utilities/essentialCompoents/BreadCrumb.js'
@@ -171,7 +173,7 @@ import axios from 'axios';
 
           {/* 从这里添加操作（表头） */}
           <TableCell align='center'>
-                 操作
+                 {/* 操作 */}
           </TableCell>
 
         </TableRow>
@@ -318,7 +320,6 @@ function EnhancedTable(props) {
     };
   
 
-
     const handleClickAdd = (event) => {
 
 	// setEditOpenDialog(true);
@@ -385,7 +386,7 @@ function EnhancedTable(props) {
 
 			// console.log(editDialogState.gotData);
 
-		},450)
+		},150)
 		
 		}
 		}).catch(function (error) {
@@ -472,7 +473,7 @@ const handleClickEdit = (event,row) => {
 
 			// console.log(editDialogState.gotData);
 
-              },450)
+              },150)
               
               }
                 }).catch(function (error) {
@@ -502,7 +503,7 @@ const handleClickEdit = (event,row) => {
 
     const handleSelectAllClick = (event) => {
       if (event.target.checked) {
-        const newSelecteds = props.rows.map((n) => n.name);
+        const newSelecteds = props.rows.map((n) => n.phone);
         setSelected(newSelecteds);
         return;
       }
@@ -691,7 +692,28 @@ const handleClickEdit = (event,row) => {
 
                           {/* 从这里添加操作（每行） */}
                         <TableCell padding="checkbox">
-                        	<Button 
+					{multiSel?
+						<></>:
+						<Stack direction="row" sx={{pr:'10px'}}>
+							<Divider orientation="vertical" flexItem sx={{mr:'5px',pr:'5px'}} />
+							<Tooltip title="编辑">
+								<IconButton onClick={(event) => handleClickEdit(event,row)}>
+									<EditRoundedIcon />
+								</IconButton>
+							</Tooltip>
+							<Tooltip title="更多">
+								<IconButton 
+								//  onClick={(event) => handleClickEdit(event,row)}
+								>
+									<MoreVertRoundedIcon />
+								</IconButton>
+							</Tooltip>
+						</Stack>
+					
+						
+					}
+		
+					{/* <Button 
 						variant="outlined" 
 						// onClick={() => {
 
@@ -699,7 +721,7 @@ const handleClickEdit = (event,row) => {
 						onClick={(event) => handleClickEdit(event,row)}
 						>
 						修改
-					</Button>
+					</Button> */}
                         </TableCell>
 
                       </TableRow>

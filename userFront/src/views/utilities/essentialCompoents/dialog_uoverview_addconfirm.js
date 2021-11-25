@@ -113,7 +113,7 @@ const Content = (props) =>{
 					setConfirmButtonLoading(false);	
 				}, 350);
 	
-			}, 900);
+			}, 150);
 
 		}, 100);
 
@@ -198,7 +198,7 @@ const Content = (props) =>{
 		    .then(function (response) {
 				timer.current = window.setTimeout(() => {
 					refreshTable();
-				},550)
+				},300)
 		    })
 		    .catch(function (error) {
 			  console.log(error);
