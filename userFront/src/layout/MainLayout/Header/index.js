@@ -64,7 +64,10 @@ const Header = (props) => {
             <Box sx={{ flexGrow: 1 }} />
 
             {/* notification & profile */}
-            <NotificationSection />
+            <NotificationSection 
+                notiRows={props.notiRows}
+                notiRowsTotalNum={props.notiRowsTotalNum}
+            />
             <ProfileSection  userData={props.userData}/>
         </>
     );

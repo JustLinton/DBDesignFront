@@ -55,7 +55,7 @@ const Content = (props) =>{
 
     const [confirmButtonLoading, setConfirmButtonLoading] = React.useState(false);
     const [confirmButtonSuccess, setConfirmButtonSuccess] = React.useState(false);
-    const [insufPermission, setInsufPermission] = React.useState(true);
+//     const [insufPermission, setInsufPermission] = React.useState(true);
 
     const handleCancelDialog = (event) => {
 
@@ -136,7 +136,7 @@ const Content = (props) =>{
 
 		    if(response.data==="ok"){
 			  //该用户有相应的权限
-			  setInsufPermission(false);
+			//   setInsufPermission(false);
 		    }
     
 			  axios.get("/api/userlist", {
@@ -181,7 +181,7 @@ const Content = (props) =>{
     
 		    if(response.data==="ok"){
 			  //该用户有相应的权限
-			  setInsufPermission(false);
+			//   setInsufPermission(false);
 		    }
     
 		    let data = new FormData();

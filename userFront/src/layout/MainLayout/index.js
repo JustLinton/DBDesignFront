@@ -67,6 +67,8 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(({
 // ==============================|| MAIN LAYOUT ||============================== //
 
 var userData = {'Name':'加载中...'};
+var notiRows = [{'Title':'加载中...'},{'Title':'加载中...'}];
+var notiRowsTotalNum = 0;
 
 const MainLayout = () => {
     const theme = useTheme();
@@ -85,6 +87,30 @@ const MainLayout = () => {
     }, [matchDownMd]);
 
     const [loading, setLoading] = useState(true);
+
+    const getNotificationList = () =>{
+
+        axios.get("/api/notilist", {
+            　　params: { 'test': 'false' }
+            }).then(function (response) {
+            // 　　alert(''.concat(response.data, '\r\n', response.status, '\r\n', response.statusText, '\r\n', response.headers, '\r\n', response.config));
+            if(response.status===200){
+            
+            //     console.log(response);
+                if(response.data==="notlogged"){
+                    window.location='/auth/login';
+                }
+
+		    	notiRows=response.data['Rows'];	
+                notiRowsTotalNum=response.data['TotalNum'];	
+			//     console.log(notiRows);
+
+			setLoading(false);
+                }
+            }).catch(function (error) {
+            // 　　alert(error);
+            });
+    }
 
     axios.defaults.baseURL = ""
     axios.get("/api/checkLoggedIn", {
@@ -116,7 +142,8 @@ const MainLayout = () => {
             }
 
                 userData=response.data;
-                setLoading(false);
+		    
+                getNotificationList();
             }
         }).catch(function (error) {
         // 　　alert(error);
@@ -137,7 +164,11 @@ const MainLayout = () => {
                 }}
             >
                 <Toolbar>
-                    <Header handleLeftDrawerToggle={handleLeftDrawerToggle}  userData={loading?{'Name':'加载中...'}:userData} />
+                    <Header handleLeftDrawerToggle={handleLeftDrawerToggle}   
+			  	notiRows={loading?[{'Title':'加载中...'},{'Title':'加载中...'}]:notiRows} 
+			   	userData={loading?{'Name':'加载中...'}:userData} 
+                notiRowsTotalNum={notiRowsTotalNum}
+			   />
                 </Toolbar>
             </AppBar>
 

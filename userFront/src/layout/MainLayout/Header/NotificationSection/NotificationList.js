@@ -1,5 +1,6 @@
 // material-ui
 import { useTheme, styled } from '@mui/material/styles';
+
 import {
     Avatar,
     // Button,
@@ -19,7 +20,8 @@ import {
 
 // assets
 // import { IconBrandTelegram, IconBuildingStore, IconMailbox, IconPhoto } from '@tabler/icons';
-import User1 from 'assets/images/users/usr_linton.png';
+import UserLintonAvaPNG from 'assets/images/users/usr_linton.png';
+import UserJohnsonAvaPNG  from 'assets/images/users/user-round.svg';
 
 // styles
 const ListItemWrapper = styled('div')(({ theme }) => ({
@@ -33,34 +35,167 @@ const ListItemWrapper = styled('div')(({ theme }) => ({
     }
 }));
 
+
 // ==============================|| NOTIFICATION LIST ITEM ||============================== //
 
-const NotificationList = () => {
+const NotificationList = (props) => {
     const theme = useTheme();
 
-    const chipSX = {
-        height: 24,
-        padding: '0 6px'
-    };
-    const chipErrorSX = {
-        ...chipSX,
-        color: theme.palette.orange.dark,
-        backgroundColor: theme.palette.orange.light,
-        marginRight: '5px'
-    };
+    var rawRowsArray = props.notiRows;
 
-    const chipWarningSX = {
-        ...chipSX,
-        color: theme.palette.warning.dark,
-        backgroundColor: theme.palette.warning.light
-    };
+//     console.log(props.notiRows);
 
-    // const chipSuccessSX = {
-    //     ...chipSX,
-    //     color: theme.palette.success.dark,
-    //     backgroundColor: theme.palette.success.light,
-    //     height: 28
-    // };
+const DefaultItem = (props) =>{
+	return(
+		<>
+			<Divider />
+			<ListItemWrapper>
+			<ListItem alignItems="center">
+				<ListItemAvatar>
+					<Avatar alt="John Doe" />
+				</ListItemAvatar>
+				<ListItemText primary="Linton" />
+				<ListItemSecondaryAction>
+					<Grid container justifyContent="flex-end">
+					<Grid item xs={12}>
+						<Typography variant="caption" display="block" gutterBottom>
+							2 分钟前
+						</Typography>
+					</Grid>
+					</Grid>
+				</ListItemSecondaryAction>
+			</ListItem>
+			<Grid container direction="column" className="list-container">
+				<Grid item xs={12} sx={{ pb: 2 }}>
+					<Typography variant="subtitle2">通知中心正在做了！已经建文件夹了！</Typography>
+				</Grid>
+				<Grid item xs={12}>
+					<Grid container>
+						{props.unread&&
+							<Grid item>
+								<Chip label="未读" />
+							</Grid>
+						}
+					<Grid item>
+						<Chip label="好友" />
+					</Grid>
+					</Grid>
+				</Grid>
+			</Grid>
+			</ListItemWrapper>  
+			<Divider />
+		</>
+	);
+}
+
+
+const handleClickItem = (rowNum) =>{
+	props.setNotiDialogState({
+		open: true,
+		scroll: 'body',
+		// row: {'name':props.state.row.name},
+		loading: false,
+		gotData:{'Name':''}
+	});
+	props.setListOpen(false);
+	console.log(rowNum);
+}
+
+const TextItem = (props) =>{
+
+	// console.log(props);
+
+	return(
+		<>
+			<Divider />
+			<ListItemWrapper
+				onClick={()=> {handleClickItem(props.rowNum)}}
+			>
+
+				<ListItem alignItems="center" >
+
+					<ListItemAvatar>
+						{props.senderAva}
+					</ListItemAvatar>
+					<ListItemText primary={props.senderName} />
+					<ListItemSecondaryAction>
+						<Grid container justifyContent="flex-end">
+						<Grid item xs={12}>
+							<Typography variant="caption" display="block" gutterBottom>
+								{props.SendTimePassed}
+							</Typography>
+						</Grid>
+						</Grid>
+					</ListItemSecondaryAction>
+				</ListItem>
+
+				<Grid container direction="column" className="list-container" 
+					// onClick={()=> {handleClickItem(props.rowNum)}}
+				>
+					<Grid item xs={12} sx={{ pb: 2 }}>
+						<Typography variant="subtitle2">{props.title}</Typography>
+					</Grid>
+					<Grid item xs={12}>
+						<Grid container>
+							{props.unread&&
+								<Grid item>
+									<Chip label="未读" />
+								</Grid>
+							}
+						{/* <Grid item>
+							<Chip label="好友" />
+						</Grid> */}
+						</Grid>
+					</Grid>
+				</Grid>
+
+			</ListItemWrapper>  
+			<Divider />
+		</>
+	);
+}
+
+
+const avatarGetter = (ava) =>{
+	if(ava==="linton") return UserLintonAvaPNG;
+	if(ava==="john") return UserJohnsonAvaPNG;
+	return "2";
+}
+
+const rowsRenderer = (row) =>{
+
+	if(row.Title==="加载中...")return(<DefaultItem/>);
+	if(row.Type==="text")return(
+		<TextItem
+			title={row.Title}
+			unread={row.HaveRead==="false"}
+			rowNum={row.RowNum}
+			senderName={row.SenderName}
+			senderAva={<Avatar alt={row.SenderName} src={avatarGetter(row.SenderAva)} />}
+			SendTimePassed={row.SendTimePassed}
+			SendTime={row.SendTime}
+		/>
+	);
+}
+
+const TheRows = () =>{
+
+	if(props.notiRowsTotalNum===0)
+		return (
+			<Grid container justifyContent="center" sx={{minWidth:'250px',maxWidth:'300px'}}>
+					<Grid item sx={{pt:2,pb:2}}>
+						<Chip label="暂无通知" />
+					</Grid>
+			</Grid>
+		);
+
+	return(
+		<Grid sx={{minWidth:'250px',maxWidth:'300px'}}>
+		{rawRowsArray.map(rowsRenderer)}
+		</Grid>
+	);
+}
+
 
     return (
         <List
@@ -83,144 +218,11 @@ const NotificationList = () => {
                 }
             }}
         >
-            <ListItemWrapper>
-                <ListItem alignItems="center">
-                    <ListItemAvatar>
-                        <Avatar alt="John Doe" src={User1} />
-                    </ListItemAvatar>
-                    <ListItemText primary="Linton" />
-                    <ListItemSecondaryAction>
-                        <Grid container justifyContent="flex-end">
-                            <Grid item xs={12}>
-                                <Typography variant="caption" display="block" gutterBottom>
-                                    2 分钟前
-                                </Typography>
-                            </Grid>
-                        </Grid>
-                    </ListItemSecondaryAction>
-                </ListItem>
-                <Grid container direction="column" className="list-container">
-                    <Grid item xs={12} sx={{ pb: 2 }}>
-                        <Typography variant="subtitle2">通知中心正在做了！已经建文件夹了！</Typography>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Grid container>
-                            <Grid item>
-                                <Chip label="未读" sx={chipErrorSX} />
-                            </Grid>
-                            <Grid item>
-                                <Chip label="好友" sx={chipWarningSX} />
-                            </Grid>
-                        </Grid>
-                    </Grid>
-                </Grid>
-            </ListItemWrapper>
-            <Divider />
             
-            <ListItemWrapper>
-                <ListItem alignItems="center">
-                    <ListItemAvatar>
-                        <Avatar alt="John Doe" src={User1} />
-                    </ListItemAvatar>
-                    <ListItemText primary="Linton" />
-                    <ListItemSecondaryAction>
-                        <Grid container justifyContent="flex-end">
-                            <Grid item xs={12}>
-                                <Typography variant="caption" display="block" gutterBottom>
-                                    2 分钟前
-                                </Typography>
-                            </Grid>
-                        </Grid>
-                    </ListItemSecondaryAction>
-                </ListItem>
-                <Grid container direction="column" className="list-container">
-                    <Grid item xs={12} sx={{ pb: 2 }}>
-                        <Typography variant="subtitle2">通知中心正在做了！已经建文件夹了！</Typography>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Grid container>
-                            <Grid item>
-                                <Chip label="未读" sx={chipErrorSX} />
-                            </Grid>
-                            <Grid item>
-                                <Chip label="好友" sx={chipWarningSX} />
-                            </Grid>
-                        </Grid>
-                    </Grid>
-                </Grid>
-            </ListItemWrapper>
-            <Divider />
 
-            <ListItemWrapper>
-                <ListItem alignItems="center">
-                    <ListItemAvatar>
-                        <Avatar alt="John Doe" src={User1} />
-                    </ListItemAvatar>
-                    <ListItemText primary="Linton" />
-                    <ListItemSecondaryAction>
-                        <Grid container justifyContent="flex-end">
-                            <Grid item xs={12}>
-                                <Typography variant="caption" display="block" gutterBottom>
-                                    2 分钟前
-                                </Typography>
-                            </Grid>
-                        </Grid>
-                    </ListItemSecondaryAction>
-                </ListItem>
-                <Grid container direction="column" className="list-container">
-                    <Grid item xs={12} sx={{ pb: 2 }}>
-                        <Typography variant="subtitle2">通知中心正在做了！已经建文件夹了！</Typography>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Grid container>
-                            <Grid item>
-                                <Chip label="未读" sx={chipErrorSX} />
-                            </Grid>
-                            <Grid item>
-                                <Chip label="好友" sx={chipWarningSX} />
-                            </Grid>
-                        </Grid>
-                    </Grid>
-                </Grid>
-            </ListItemWrapper>
-            <Divider />
-
-            <ListItemWrapper>
-                <ListItem alignItems="center">
-                    <ListItemAvatar>
-                        <Avatar alt="John Doe" src={User1} />
-                    </ListItemAvatar>
-                    <ListItemText primary="Linton" />
-                    <ListItemSecondaryAction>
-                        <Grid container justifyContent="flex-end">
-                            <Grid item xs={12}>
-                                <Typography variant="caption" display="block" gutterBottom>
-                                    2 分钟前
-                                </Typography>
-                            </Grid>
-                        </Grid>
-                    </ListItemSecondaryAction>
-                </ListItem>
-                <Grid container direction="column" className="list-container">
-                    <Grid item xs={12} sx={{ pb: 2 }}>
-                        <Typography variant="subtitle2">通知中心正在做了！已经建文件夹了！</Typography>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Grid container>
-                            <Grid item>
-                                <Chip label="未读" sx={chipErrorSX} />
-                            </Grid>
-                            <Grid item>
-                                <Chip label="好友" sx={chipWarningSX} />
-                            </Grid>
-                        </Grid>
-                    </Grid>
-                </Grid>
-            </ListItemWrapper>
    
-
-            
-
+            <TheRows/>
+        
 
             {/* <ListItemWrapper>
                 <ListItem alignItems="center">

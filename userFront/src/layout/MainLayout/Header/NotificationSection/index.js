@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
+import * as React from 'react';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -28,9 +29,12 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 import MainCard from 'ui-component/cards/MainCard';
 import Transitions from 'ui-component/extended/Transitions';
 import NotificationList from './NotificationList';
+import Badge from '@mui/material/Badge';
 
 // assets
 import { IconBell } from '@tabler/icons';
+
+import NotiDialog from 'layout/MainLayout/Header/NotificationSection/compoents/dialog_notification'
 
 // notification status options
 // const status = [
@@ -46,7 +50,7 @@ import { IconBell } from '@tabler/icons';
 
 // ==============================|| NOTIFICATION ||============================== //
 
-const NotificationSection = () => {
+const NotificationSection = (props) => {
     const theme = useTheme();
     const matchesXs = useMediaQuery(theme.breakpoints.down('md'));
 
@@ -56,6 +60,14 @@ const NotificationSection = () => {
      * anchorRef is used on different componets and specifying one type leads to other components throwing an error
      * */
     const anchorRef = useRef(null);
+
+    const [notiDialogState, setNotiDialogState] = React.useState({
+		open: false,
+		scroll: 'body',
+		// row: {'name':'null'},
+		// rows: props.state.rows,
+		// gotData: {'Name':'null'},
+	});
 
     const handleToggle = () => {
         setOpen((prevOpen) => !prevOpen);
@@ -80,8 +92,31 @@ const NotificationSection = () => {
     //     if (event?.target.value) setValue(event?.target.value);
     // };
 
+
+    // const handleNotiDialog = (event) => {
+
+    //     // console.log('cancel');
+    
+    //       setNotiDialogState({
+    //         open: true,
+    //         scroll: 'body',
+    //         // row: props.state.row,
+    //         // rows: props.state.rows,
+    //         // gotData: props.state.gotData,
+    //     })
+    
+    //     };
+
     return (
         <>
+        
+	<NotiDialog
+		state={notiDialogState}
+		setState={setNotiDialogState}
+		// setSnackState={setSnackState}
+    	// 	setRows={props.setRows}
+	/>
+
             <Box
                 sx={{
                     ml: 2,
@@ -91,29 +126,31 @@ const NotificationSection = () => {
                     }
                 }}
             >
-                <ButtonBase sx={{ borderRadius: '12px' }}>
-                    <Avatar
-                        variant="rounded"
-                        sx={{
-                            ...theme.typography.commonAvatar,
-                            ...theme.typography.mediumAvatar,
-                            transition: 'all .2s ease-in-out',
-                            background: theme.palette.secondary.light,
-                            color: theme.palette.secondary.dark,
-                            '&[aria-controls="menu-list-grow"],&:hover': {
-                                background: theme.palette.secondary.dark,
-                                color: theme.palette.secondary.light
-                            }
-                        }}
-                        ref={anchorRef}
-                        aria-controls={open ? 'menu-list-grow' : undefined}
-                        aria-haspopup="true"
-                        onClick={handleToggle}
-                        color="inherit"
-                    >
-                        <IconBell stroke={1.5} size="1.3rem" />
-                    </Avatar>
-                </ButtonBase>
+                <Badge badgeContent={props.notiRowsTotalNum} color="secondary">
+                    <ButtonBase sx={{ borderRadius: '12px' }}>
+                        <Avatar
+                            variant="rounded"
+                            sx={{
+                                ...theme.typography.commonAvatar,
+                                ...theme.typography.mediumAvatar,
+                                transition: 'all .2s ease-in-out',
+                                background: theme.palette.secondary.light,
+                                color: theme.palette.secondary.dark,
+                                '&[aria-controls="menu-list-grow"],&:hover': {
+                                    background: theme.palette.secondary.dark,
+                                    color: theme.palette.secondary.light
+                                }
+                            }}
+                            ref={anchorRef}
+                            aria-controls={open ? 'menu-list-grow' : undefined}
+                            aria-haspopup="true"
+                            onClick={handleToggle}
+                            color="inherit"
+                        >
+                            <IconBell stroke={1.5} size="1.3rem" />
+                        </Avatar>
+                    </ButtonBase>
+                </Badge>
             </Box>
             <Popper
                 placement={matchesXs ? 'bottom' : 'bottom-end'}
@@ -144,21 +181,25 @@ const NotificationSection = () => {
                                                 <Grid item>
                                                     <Stack direction="row" spacing={2}>
                                                         <Typography variant="subtitle1">全部通知</Typography>
-                                                        <Chip
-                                                            size="small"
-                                                            label="01"
-                                                            sx={{
-                                                                color: theme.palette.background.default,
-                                                                bgcolor: theme.palette.warning.dark
-                                                            }}
-                                                        />
+                                                        {
+                                                            props.notiRowsTotalNum>0&&
+                                                            <Chip
+                                                                size="small"
+                                                                label={props.notiRowsTotalNum}
+                                                                sx={{
+                                                                    color: theme.palette.background.default,
+                                                                    bgcolor: theme.palette.warning.dark
+                                                                }}
+                                                            />
+                                                        }
+                                                        
                                                     </Stack>
                                                 </Grid>
-                                                <Grid item>
+                                                {/* <Grid item>
                                                     <Typography component={Link} to="#" variant="subtitle2" color="primary">
                                                         全部标记为已读
                                                     </Typography>
-                                                </Grid>
+                                                </Grid> */}
                                             </Grid>
                                         </Grid>
                                         <Grid item xs={12}>
@@ -190,7 +231,14 @@ const NotificationSection = () => {
                                                         <Divider sx={{ my: 0 }} />
                                                     </Grid>
                                                 </Grid> */}
-                                                <NotificationList />
+                                                <NotificationList 
+                                                    notiRows={props.notiRows}
+                                                    notiRowsTotalNum={props.notiRowsTotalNum}
+                                                    notiDialogState={notiDialogState}
+                                                    setNotiDialogState={setNotiDialogState}
+                                                    listOpen={open}
+                                                    setListOpen={setOpen}
+                                                />
                                             </PerfectScrollbar>
                                         </Grid>
                                     </Grid>
