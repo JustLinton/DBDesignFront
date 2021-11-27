@@ -121,6 +121,17 @@ const NewpostCard = ({ isLoading }) => {
         setAnchorEl(null);
     };
 
+    const ScrollTo = () => {
+        let scrollToptimer = setInterval(function() {
+          var top = document.body.scrollTop || document.documentElement.scrollTop;
+          var speed = top / 30;
+          document.documentElement.scrollTop -= speed;
+          if (top === 0) {
+            clearInterval(scrollToptimer);
+          }
+        }, 5);
+      }
+
     return (
         <>
             {isLoading ? (
@@ -184,7 +195,7 @@ const NewpostCard = ({ isLoading }) => {
 
                             <Grid item xs={12}>
                             <CardActions sx={{ p: 1.25, pt: 0, justifyContent: 'center' }}>
-                                <Button size="small" disableElevation>
+                                <Button size="small" disableElevation  onClick={ScrollTo} >
                                     <ChevronLeftOutlinedIcon />
                                     上一页
                                 </Button>

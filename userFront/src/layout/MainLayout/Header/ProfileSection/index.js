@@ -274,7 +274,7 @@ const ProfileSection = (props) => {
                                                 <ListItemButton
                                                     sx={{ borderRadius: `${customization.borderRadius}px` }}
                                                     selected={selectedIndex === 1}
-                                                    onClick={(event) => handleListItemClick(event, 1, '/user/social-profile/posts')}
+                                                    onClick={(event) => handleListItemClick(event, 1, '/onion/profile')}
                                                 >
                                                     <ListItemIcon>
                                                         <IconUser stroke={1.5} size="1.3rem" />
@@ -286,14 +286,14 @@ const ProfileSection = (props) => {
                                                                     <Typography variant="body2">我的主页</Typography>
                                                                 </Grid>
                                                                 <Grid item>
-                                                                    <Chip
+                                                                    {/* <Chip
                                                                         label="02"
                                                                         size="small"
                                                                         sx={{
                                                                             bgcolor: theme.palette.warning.dark,
                                                                             color: theme.palette.background.default
                                                                         }}
-                                                                    />
+                                                                    /> */}
                                                                 </Grid>
                                                             </Grid>
                                                         }

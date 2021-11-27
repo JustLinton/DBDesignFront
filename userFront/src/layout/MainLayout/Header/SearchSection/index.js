@@ -15,6 +15,7 @@ import Transitions from 'ui-component/extended/Transitions';
 import { IconAdjustmentsHorizontal, IconSearch, IconX } from '@tabler/icons';
 import { shouldForwardProp } from '@mui/system';
 
+
 // styles
 const PopperStyle = styled(Popper, { shouldForwardProp })(({ theme }) => ({
     zIndex: 1100,
@@ -66,7 +67,7 @@ const MobileSearch = ({ value, setValue, popupState }) => {
             id="input-search-header"
             value={value}
             onChange={(e) => setValue(e.target.value)}
-            placeholder="Search"
+            placeholder="搜索 Nesto"
             startAdornment={
                 <InputAdornment position="start">
                     <IconSearch stroke={1.5} size="1rem" color={theme.palette.grey[500]} />
@@ -115,12 +116,100 @@ MobileSearch.propTypes = {
 
 // ==============================|| SEARCH INPUT ||============================== //
 
-const SearchSection = () => {
+const SearchSection = (props) => {
     const theme = useTheme();
     const [value, setValue] = useState('');
 
     return (
-        <>
+        props.displayIcon?
+            <>
+            <Box sx={{ display: { xs: 'none', md: 'block' } }}>
+                <PopupState variant="popper" popupId="demo-popup-popper">
+                    {(popupState) => (
+                        <>
+                            <Box sx={{ ml: 2 }}>
+                                <ButtonBase sx={{ borderRadius: '12px' }}>
+                                    <HeaderAvatarStyle variant="rounded" {...bindToggle(popupState)}>
+                                        <IconSearch stroke={1.5} size="1.2rem" />
+                                    </HeaderAvatarStyle>
+                                </ButtonBase>
+                            </Box>
+                            <PopperStyle {...bindPopper(popupState)} transition>
+                                {({ TransitionProps }) => (
+                                    <>
+                                        <Transitions type="grow" {...TransitionProps} sx={{ transformOrigin: 'center top' }}>
+                                            <Grid container
+                                                justifyContent="center"
+                                                sx={{
+                                                //     background: '#fff',
+                                                    [theme.breakpoints.down('xs')]: {
+                                                        border: 0,
+                                                        boxShadow: 'none',
+                                                    }
+                                                }}
+                                            >
+
+								<Grid item  sx={{ pt: 2,mb:2,pr:2}} >
+                                                    <Grid container alignItems="center" justifyContent="space-between">
+                                                        <Grid item xs>
+                                                            <MobileSearch value={value} setValue={setValue} popupState={popupState} />
+                                                        </Grid>
+                                                    </Grid>
+                                                </Grid>
+
+
+                                            </Grid>
+                                        </Transitions>
+                                    </>
+                                )}
+                            </PopperStyle>
+                        </>
+                    )}
+                </PopupState>
+            </Box>
+		<Box sx={{ display: { xs: 'block', md: 'none' } }}>
+                <PopupState variant="popper" popupId="demo-popup-popper">
+                    {(popupState) => (
+                        <>
+                            <Box sx={{ ml: 2 }}>
+                                <ButtonBase sx={{ borderRadius: '12px' }}>
+                                    <HeaderAvatarStyle variant="rounded" {...bindToggle(popupState)}>
+                                        <IconSearch stroke={1.5} size="1.2rem" />
+                                    </HeaderAvatarStyle>
+                                </ButtonBase>
+                            </Box>
+                            <PopperStyle {...bindPopper(popupState)} transition>
+                                {({ TransitionProps }) => (
+                                    <>
+                                        <Transitions type="zoom" {...TransitionProps} sx={{ transformOrigin: 'center top' }}>
+                                            <Card
+                                                sx={{
+                                                    background: '#fff',
+                                                    [theme.breakpoints.down('sm')]: {
+                                                        border: 0,
+                                                        boxShadow: 'none'
+                                                    }
+                                                }}
+                                            >
+                                                <Box sx={{ p: 2 }}>
+                                                    <Grid container alignItems="center" justifyContent="space-between">
+                                                        <Grid item xs>
+                                                            <MobileSearch value={value} setValue={setValue} popupState={popupState} />
+                                                        </Grid>
+                                                    </Grid>
+                                                </Box>
+                                            </Card>
+                                        </Transitions>
+                                    </>
+                                )}
+                            </PopperStyle>
+                        </>
+                    )}
+                </PopupState>
+            </Box>
+        </>
+            :    
+            <>
             <Box sx={{ display: { xs: 'block', md: 'none' } }}>
                 <PopupState variant="popper" popupId="demo-popup-popper">
                     {(popupState) => (
@@ -166,7 +255,7 @@ const SearchSection = () => {
                     id="input-search-header"
                     value={value}
                     onChange={(e) => setValue(e.target.value)}
-                    placeholder="Search"
+                    placeholder="搜索 Nesto"
                     startAdornment={
                         <InputAdornment position="start">
                             <IconSearch stroke={1.5} size="1rem" color={theme.palette.grey[500]} />
