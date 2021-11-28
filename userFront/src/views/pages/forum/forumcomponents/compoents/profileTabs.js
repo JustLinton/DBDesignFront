@@ -63,9 +63,9 @@ export default function BasicTabs(props) {
 				scrollButtons="auto"
 			>
 				<Tab label="主页" {...a11yProps(0)} />
+        <Tab label="帖子" {...a11yProps(1)} />
 				<Tab label="相册" {...a11yProps(2)} />
-				<Tab label="帖子" {...a11yProps(1)} />
-				<Tab label="留言板" {...a11yProps(1)} />
+				<Tab label="留言板" {...a11yProps(3)} />
 			</Tabs>
 		</Grid>
     </Grid>

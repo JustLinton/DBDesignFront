@@ -3,10 +3,7 @@ import PropTypes from 'prop-types';
 
 // material-ui
 // import { useTheme } from '@mui/material/styles';
-import { Avatar,CardContent, Divider, Grid, Stack, Typography } from '@mui/material';
-// import { ListItemButton } from '@mui/material';
-import { styled } from '@mui/material/styles';
-// import { yellow } from '@mui/material/colors';
+import { CardContent, Divider, Grid, Stack, Typography } from '@mui/material';
 
 // project imports
 // import BajajAreaChartCard from './BajajAreaChartCard';
@@ -28,6 +25,7 @@ import ListItemAvatar from '@mui/material/ListItemAvatar';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import YellowAvatar from 'views/pages/forum/forumcomponents/compoents/avatar_yellow.js'
 
 const SocialList = ()=> {
   return (
@@ -72,13 +70,6 @@ const SocialList = ()=> {
     </List>
   );
 }
-
-const YellowAvatar = styled(Avatar)(({ theme }) => ({
-      '&.MuiAvatar-colorDefault': {
-            backgroundColor: theme.palette.secondary.main,
-            color: '#fff',
-      },
-}));
 
 const NewpostCard = ({ isLoading }) => {
 //     const theme = useTheme();

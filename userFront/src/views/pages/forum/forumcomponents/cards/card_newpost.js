@@ -115,7 +115,7 @@ const handleButtonClick = () => {
                         <Stack spacing={2} sx={{pl:1,pr:1}}>
                               <TextField
                                     id="outlined-multiline-static"
-                                    label="What's Going On?"
+                                    placeholder="What's Going On?"
                                     multiline
                                     rows={5}
                                     fullWidth

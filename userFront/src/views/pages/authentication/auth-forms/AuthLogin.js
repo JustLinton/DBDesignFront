@@ -162,7 +162,7 @@ const FirebaseLogin = ({ ...others }) => {
                                    }else if(response.data==='ok'){
                                         console.log("success!");
                                         setpasswdWrong(false);
-                                        window.location='/manage/dashboard';
+                                        window.location='/onion';
                                    } 
                                 }
                             })

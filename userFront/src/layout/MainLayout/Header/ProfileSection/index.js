@@ -31,11 +31,12 @@ import {
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import axios from 'axios';
 import lintonUserAvt from 'assets/images/users/usr_linton.png';
+import url from 'url' 
 
 // project imports
 import MainCard from 'ui-component/cards/MainCard';
 import Transitions from 'ui-component/extended/Transitions';
-// import UpgradePlanCard from './UpgradePlanCard';
+import ManageCard from './manageCard';
 // import User1 from 'assets/images/users/user-round.svg';
 
 // assets
@@ -54,9 +55,19 @@ const ProfileSection = (props) => {
     const [notification, setNotification] = useState(false);
     const [selectedIndex, setSelectedIndex] = useState(-1);
     const [open, setOpen] = useState(false);
+
+
     /**
      * anchorRef is used on different componets and specifying one type leads to other components throwing an error
      * */
+
+
+
+    //判断是否应该显示manage进入的卡片
+    let theUrl = url.parse(document.documentURI,true);    // 解析地址
+    const showManageEnterCard = theUrl.path.indexOf("manage")<0;
+
+
     const anchorRef = useRef(null);
     const handleLogout = async () => {
         // console.log('Logout');
@@ -180,6 +191,7 @@ const ProfileSection = (props) => {
                                             </Stack>
                                             <Typography variant="subtitle">{props.userData['PGName']}</Typography>
                                         </Stack>
+                                        
                                         {/* <OutlinedInput
                                             sx={{ width: '100%', pr: 1, pl: 2, my: 2 }}
                                             id="input-search-profile"
@@ -200,8 +212,7 @@ const ProfileSection = (props) => {
                                     </Box>
                                     <PerfectScrollbar style={{ height: '100%', maxHeight: 'calc(100vh - 250px)', overflowX: 'hidden' }}>
                                         <Box sx={{ p: 2 }}>
-                                            {/* <UpgradePlanCard /> */}
-                                            {/* <Divider /> */}
+                                         
                                             <Card
                                                 sx={{
                                                     bgcolor: theme.palette.primary.light,
@@ -244,7 +255,15 @@ const ProfileSection = (props) => {
                                                     </Grid>
                                                 </CardContent>
                                             </Card>
-                                            <Divider />
+
+                                            {showManageEnterCard&&
+                                                <>
+                                                    <Divider />
+                                                        <ManageCard />
+                                                    <Divider />
+                                                </>
+                                            }
+
                                             <List
                                                 component="nav"
                                                 sx={{
@@ -264,7 +283,7 @@ const ProfileSection = (props) => {
                                                 <ListItemButton
                                                     sx={{ borderRadius: `${customization.borderRadius}px` }}
                                                     selected={selectedIndex === 0}
-                                                    onClick={(event) => handleListItemClick(event, 0, '/user/account-profile/profile1')}
+                                                    onClick={(event) => handleListItemClick(event, 0,'/onion/account')}
                                                 >
                                                     <ListItemIcon>
                                                         <IconSettings stroke={1.5} size="1.3rem" />

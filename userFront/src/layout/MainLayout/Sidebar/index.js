@@ -11,7 +11,7 @@ import { BrowserView, MobileView } from 'react-device-detect';
 // project imports
 import MenuList from './MenuList';
 import LogoSection from '../LogoSection';
-import MenuCard from './MenuCard';
+import OnionCard from './card_onion';
 import { drawerWidth } from 'store/constant';
 // import UpgradePlanCard from './MenuCard/UpgradePlanCard';
 
@@ -39,15 +39,16 @@ const Sidebar = (props) => {
                 >
                     
                     {/* <UpgradePlanCard/> */}
-                      <MenuCard />
+                      <OnionCard />
                     <MenuList userData={props.userData} />
                   
                 </PerfectScrollbar>
             </BrowserView>
             <MobileView>
                 <Box sx={{ px: 2 }}>
+                    <OnionCard />
                     <MenuList userData={props.userData}/>
-                    <MenuCard />
+                   
                 </Box>
             </MobileView>
         </>

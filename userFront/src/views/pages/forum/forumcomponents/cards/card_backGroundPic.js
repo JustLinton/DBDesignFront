@@ -21,7 +21,7 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
     overflow: 'hidden',
     position: 'relative',
     width:'100%',
-    height:180,
+    height:220,
     '&>div': {
         position: 'relative',
         zIndex: 5

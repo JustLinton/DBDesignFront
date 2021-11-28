@@ -6,6 +6,7 @@ import Loadable from 'ui-component/Loadable';
 
 //forums
 const ForumProfile = Loadable(lazy(() => import('views/pages/forum/forumpages/page_socialProfile.js')));
+const AccountSettings = Loadable(lazy(() => import('views/pages/forum/forumpages/page_accountSettings.js')));
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -14,8 +15,16 @@ const MainRoutes = {
     element: <LandingLayout />,
     children: [
         {
+            path: '/',
+            element: <ForumProfile/>
+        }, 
+        {
             path: '/profile',
             element: <ForumProfile/>
+        }, 
+        {
+            path: '/account',
+            element: <AccountSettings/>
         },
     ]
 };
