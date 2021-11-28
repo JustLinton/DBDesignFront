@@ -11,7 +11,7 @@ import {  Badge, Button, Grid, Stack, Typography } from '@mui/material';
 import ForumPageWrapper from '../forumPageWrapper';
 // import CardWrapper from '../cardWrapper';
 // import Logo from 'ui-component/Logo';
-import AuthFooter from 'ui-component/cards/AuthFooter';
+import ForumFooter from 'ui-component/cards/ForumFooter';
 
 import SubCard from 'ui-component/cards/SubCard';
 import ProfileTabs from'views/pages/forum/forumcomponents/compoents/profileTabs.js'
@@ -295,7 +295,7 @@ const ProfileLayout = () => {
 			</Grid>
 	
 			<Grid item xs={12} sx={{ m: 3, pt: 10 }}>
-				  <AuthFooter />
+				  <ForumFooter />
 			    </Grid>
 		  </ForumPageWrapper>
 	    );

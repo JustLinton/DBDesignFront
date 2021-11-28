@@ -11,6 +11,8 @@ const AuthRegister3 = Loadable(lazy(() => import('views/pages/authentication/aut
 //errors
 const UnderConstruction = Loadable(lazy(() => import('views/pages/other/emptypages/construction.js')));
 
+//landing
+const LandingPage = Loadable(lazy(() => import('views/pages/landing/landingpages/page_landing')));
 
 // ==============================|| AUTHENTICATION ROUTING ||============================== //
 
@@ -32,6 +34,12 @@ const AuthenticationRoutes = {
             element: <UnderConstruction />
         },
 
+
+             //landing pages
+        {
+            path: '/landing',
+            element: <LandingPage />
+        },
 
 
              //authentacations
