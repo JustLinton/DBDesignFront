@@ -81,6 +81,7 @@
         "http-proxy-middleware": "^2.0.1",
         "material-ui-popup-state": "^1.9.3",
         "prettier": "^2.2.1",
+        "react-parallax": "^3.3.0",
         "react-perfect-scrollbar": "^1.5.8",
         "sass": "^1.43.4"
     }
