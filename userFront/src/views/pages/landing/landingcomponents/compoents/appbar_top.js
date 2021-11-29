@@ -85,15 +85,15 @@ const ResponsiveAppbar =(props)=> {
 	  <>
 	  
 		{/* transparent state */}
-		<Slide in={!trigger} mountOnEnter unmountOnExit>
+		<Fade in={!trigger} mountOnEnter unmountOnExit>
 			<StyledAppBar  bgcolor="transparent" height={86} elevation={0}>
 					<ToolBarContent tp/>
 			</StyledAppBar>
-		</Slide>
+		</Fade>
 
 	  	{/* solid state */}
 		<Fade in={trigger}>
-			<StyledAppBar  bgcolor="#fff" height={64} elevation={1}>
+			<StyledAppBar  bgcolor="#fff" height={86} elevation={1}>
 				<ToolBarContent sl/>
 			</StyledAppBar>
 		</Fade>

@@ -5,7 +5,7 @@ import url from 'url'
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import {  Badge, Button, Grid, Paper, Stack, Toolbar, Typography } from '@mui/material';
+import {  Badge, Button, Divider, Grid, Paper, Stack, Toolbar, Typography } from '@mui/material';
 // import { styled } from '@mui/material/styles';
 
 // project imports
@@ -30,8 +30,13 @@ import {  styled } from '@mui/material/styles';
 import AppbarTop from 'views/pages/landing/landingcomponents/compoents/appbar_top.js'
 import ButtonPicture from 'views/pages/landing/landingcomponents/compoents/button_picture.js'
 import CheckCircleOutlineRoundedIcon from '@mui/icons-material/CheckCircleOutlineRounded';
+import GitHubIcon from '@mui/icons-material/GitHub';
+import PinterestIcon from '@mui/icons-material/Pinterest';
+import TwitterIcon from '@mui/icons-material/Twitter';
+import IconButton from '@mui/material/IconButton';
 
-import { Parallax, Background } from "react-parallax";
+import { Parallax } from "react-parallax";
+import { Link} from '@mui/material';
 
 // assets
 
@@ -85,7 +90,7 @@ const StyledLandingHead = styled(Grid)((props) => ({
   const StyledSlopeBottomGrid = styled(Grid)((props) => ({
     
 	backgroundImage: `url(${LandingHeadMaskerBottom})`,
-	backgroundSize:`1917px 632px`,
+	// backgroundSize:`1917px 632px`,
 	backgroundRepeat:"no-repeat",
 	backgroundPositionX:"center",
 	backgroundPositionY:"0px",
@@ -116,7 +121,7 @@ const StyledLandingHead = styled(Grid)((props) => ({
   const StyledSmallSlopeTopGrid = styled(Grid)((props) => ({
     
 	backgroundImage: `url(${LandingHeadMaskerTop})`,
-	backgroundSize:`1917px 632px`,
+	// backgroundSize:`1917px 632px`,
 	backgroundRepeat:"no-repeat",
 	backgroundPositionX:"center",
 	backgroundPositionY:"0px",
@@ -142,6 +147,122 @@ const StyledLandingHead = styled(Grid)((props) => ({
 	width:'100%',
   }));
 
+
+  const StyledOpacityGrid = styled(Grid)((props) => ({
+	backgroundColor:'rgba(0,0,0,0.5)',
+	opacity:0.78,
+  }));
+
+
+const StyledContactButton = styled(IconButton)((props) => ({
+	backgroundColor:"#fff",
+	color:"#424242",
+	'&:hover': {
+		backgroundColor:'#ffecb3',
+	}
+}));
+
+
+const LandingFooter =()=>{
+	return(
+
+	<Grid container  direction="column" justifyContent="flex-start"  backgroundColor="#ffca28">
+		<Grid item>
+			<Stack  direction={{xs:"column",md:"row"}} spacing={5} sx={{width:"100%",height:{xs:"100vh",md:"35vh"}}}>
+				
+				
+					
+				<Grid  container sx={{width:"100%",pt:"10vh"}} justifyContent="center" alignItems="flex-start">
+					<Grid item sx={12} >
+						<Stack>
+							<Typography  sx={{color:"#424242",  fontSize: '2.0rem', fontWeight: 600 }}>
+								Try Nesto Now Online!
+							</Typography>
+							<Typography  sx={{color:"#424242",  fontSize: '1.6rem', fontWeight: 400 }}>
+								现在试用 Nesto ,<br/>体验智慧社区新理念
+							</Typography>
+							<Stack direction="row" spacing={2} sx={{pt:3}}>
+								<StyledContactButton onClick={()=>{window.location="https://github.com/justlinton"}} >
+									<GitHubIcon />
+								</StyledContactButton>
+								<StyledContactButton>
+									<TwitterIcon />
+								</StyledContactButton>
+								<StyledContactButton>
+									<PinterestIcon />
+								</StyledContactButton>
+							</Stack>
+						</Stack>
+					</Grid>
+				</Grid>
+
+	
+
+				<Grid  container sx={{width:"100%",pt:"10vh",pl:{xs:"10%",md:"20%"},pr:{xs:"10%",md:0}}} justifyContent="center" alignItems="flex-start">
+						<Grid item xs={12} md={6}>
+							<Stack>
+								<Typography  sx={{color:"#424242",  fontSize: '1.4rem', fontWeight: 600,pb:1.1}}>
+									链接
+								</Typography>
+								<Typography href="https://mui.com" sx={{color:"#424242",  fontSize: '1.1rem', fontWeight: 300,pb:0.7}}  component={Link}  target="_blank" underline="hover">
+									Material UI
+								</Typography>
+								<Typography  href="https://www.sdu.edu.cn" sx={{color:"#424242",  fontSize: '1.1rem', fontWeight: 300,pb:0.7}}  component={Link}  target="_blank" underline="hover">
+									山东大学
+								</Typography>
+								<Typography  href="https://www.sdu.edu.cn" sx={{color:"#424242",  fontSize: '1.1rem', fontWeight: 300,pb:0.7}}  component={Link}  target="_blank" underline="hover">
+									IRLab
+								</Typography>
+								<Typography href="http://a.cupof.beer" sx={{color:"#424242",  fontSize: '1.1rem', fontWeight: 300,pb:0.7}}  component={Link}  target="_blank" underline="hover">
+									Linton个人博客
+								</Typography>
+							</Stack>
+						</Grid>
+						<Grid item xs={12} md={6} sx={{pt:{xs:3,md:0}}}>
+							<Stack>
+								<Typography  sx={{color:"#424242",  fontSize: '1.4rem', fontWeight: 600,pb:1.1}}>
+									有关信息
+								</Typography>
+								<Typography  href="#" sx={{color:"#424242",  fontSize: '1.1rem', fontWeight: 300,pb:0.7}}  component={Link}  target="_blank" underline="hover">
+									MIT许可证
+								</Typography>
+								<Typography  href="#" sx={{color:"#424242",  fontSize: '1.1rem', fontWeight: 300,pb:0.7}}  component={Link}  target="_blank" underline="hover">
+									Terms & Conditions
+								</Typography>
+								<Typography href="#" sx={{color:"#424242",  fontSize: '1.1rem', fontWeight: 300,pb:0.7}}  component={Link}  target="_blank" underline="hover">
+									小记
+								</Typography>
+							</Stack>
+						</Grid>
+
+				</Grid>
+			
+			</Stack>
+		</Grid>
+
+		<Grid item>
+			<Grid container sx={{width:"100%",height:"15vh"}} justifyContent="center" >
+				<Grid item sx={3}/>
+				<Grid item sx={6}>
+					<Stack alignItems="center"  justifyContent="center" spacing={0}>
+						<Divider sx={{pl:"50%",pr:"50%",pt:3,mb:2}}/>
+						<Typography  sx={{color:"#424242",  fontSize: '0.9rem', fontWeight: 300 }} component={Link} href="http://a.cupof.beer" target="_blank" underline="hover">
+						Copyright&copy; 2022 JustLinton
+						</Typography>
+						<Typography  sx={{color:"#424242",  fontSize: '0.9rem', fontWeight: 300,mt:0.7}}>
+						Database System Design 2021
+						</Typography>
+					</Stack>
+				</Grid>
+				<Grid item sx={3}/>
+			</Grid>
+		</Grid>
+	</Grid>
+
+	
+	);
+	
+}
 
 const TopSubCard = () =>{
 	const theme = useTheme();
@@ -239,9 +360,21 @@ const ProfileLayout = () => {
 
 				<Grid item sx={{width:"100%",zIndex:-1}} >
 
-						<Parallax bgImage={imageMain} strength={300} >
+						<Parallax bgImage={imageMain} strength={350} blur={{ min: -15, max: 12 }}>
 							<div style={{ height: "130vh" }}>
-							<div style={insideStyles}>HTML inside the parallax</div>							
+								<StyledOpacityGrid container sx={{width:"100%",height:"130vh",pb:"30vh"}} justifyContent="center" alignItems="center">
+									<Grid item xs={6} md={6} sx={{pt:{xs:3,md:0}}}>
+										<Stack>
+											<Typography  sx={{color:"#fff",  fontSize: '2.4rem', fontWeight: 600,pb:1.1}}>
+												社区故事，从此开始
+											</Typography>
+											<Typography  href="#" sx={{color:"#fff",  fontSize: '2.1rem', fontWeight: 300,pb:0.7}}  component={Link}  target="_blank" underline="hover">
+												Join Nesto.
+											</Typography>
+										</Stack>
+									</Grid>
+
+								</StyledOpacityGrid>		
 							</div>
 						</Parallax>
 				</Grid>
@@ -265,7 +398,7 @@ const ProfileLayout = () => {
 
 				<Grid item sx={{width:"100%",background:"#eeeeee"}}>
 					
-					<StyledSlopeBottomGrid sx={{width:"100%",zIndex:1,mt:{xs:80,md:'0px'},mb:'-600px'}}>
+					<StyledSlopeBottomGrid sx={{width:"100%",zIndex:1,mt:{xs:80,md:'0px'},mb:'-650px'}}>
 
 						<Stack sx={{pt:10,pl:'10%',pr:'10%'}} direction={{xs:"column",md: "row"}} justifyContent="space-evenly" spacing={10}>
 										
@@ -322,7 +455,7 @@ const ProfileLayout = () => {
 
 				<Grid item sx={{width:"100%",zIndex:-1}}>
 
-						<Parallax bgImage={image1} strength={300} blur={{ min: -1, max: 3 }}>
+						<Parallax bgImage={image1} strength={350} blur={{ min: -15, max: 12 }} >
 							<div style={{ height: "140vh" }}>
 							<div style={insideStyles}>HTML inside the parallax</div>
 							</div>
@@ -341,7 +474,7 @@ const ProfileLayout = () => {
 
 				<Grid item sx={{width:"100%",background:"#eeeeee"}}>
 					
-					<StyledSlopeBottomGrid sx={{width:"100%",zIndex:1,mt:{xs:80,md:'0px'},mb:'-600px'}}>
+					<StyledSlopeBottomGrid sx={{width:"100%",zIndex:1,mt:{xs:80,md:'0px'},mb:'-650px'}}>
 
 						<Stack sx={{pt:10,pl:'10%',pr:'10%'}} direction={{xs:"column",md: "row"}} justifyContent="space-evenly" spacing={10}>
 										
@@ -399,7 +532,7 @@ const ProfileLayout = () => {
 				
 				<Grid item sx={{width:"100%",zIndex:-1}}>
 
-						<Parallax bgImage={image1} strength={300} blur={{ min: -1, max: 3 }}>
+						<Parallax bgImage={image1} strength={350} >
 							<div style={{ height: "140vh" }}>
 							<div style={insideStyles}>HTML inside the parallax</div>
 							</div>
@@ -418,9 +551,10 @@ const ProfileLayout = () => {
 				
 				</Grid>
 		
-				<Grid item xs={12} sx={{ m: 3, pt: 10 }}>
-					<AuthFooter />
+				<Grid item xs={12} sx={{width:"100%",height:"50vh"}} backgroundColor="#ffca28">
+					<LandingFooter />
 				</Grid>
+				
 			</LandingPageWrapper>
 			<AppbarTop sx={{pt:10}}/>
 		  </>
