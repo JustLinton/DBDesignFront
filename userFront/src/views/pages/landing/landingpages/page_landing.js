@@ -149,7 +149,7 @@ const StyledLandingHead = styled(Grid)((props) => ({
 
 
   const StyledOpacityGrid = styled(Grid)((props) => ({
-	backgroundColor:'rgba(0,0,0,0.5)',
+	backgroundColor:'rgba(0,0,0,0.55)',
 	opacity:0.78,
   }));
 
@@ -168,7 +168,7 @@ const LandingFooter =()=>{
 
 	<Grid container  direction="column" justifyContent="flex-start"  backgroundColor="#ffca28">
 		<Grid item>
-			<Stack  direction={{xs:"column",md:"row"}} spacing={5} sx={{width:"100%",height:{xs:"100vh",md:"35vh"}}}>
+			<Stack  direction={{xs:"column",md:"row"}} spacing={{xs:1,md:5}} sx={{width:"100%",height:{xs:"90vh",md:"35vh"}}}>
 				
 				
 					
@@ -204,16 +204,16 @@ const LandingFooter =()=>{
 								<Typography  sx={{color:"#424242",  fontSize: '1.4rem', fontWeight: 600,pb:1.1}}>
 									链接
 								</Typography>
-								<Typography href="https://mui.com" sx={{color:"#424242",  fontSize: '1.1rem', fontWeight: 300,pb:0.7}}  component={Link}  target="_blank" underline="hover">
+								<Typography href="https://mui.com" sx={{color:"#424242",  fontSize: '0.9rem', fontWeight: 300,pb:0.7}}  component={Link}  target="_blank" underline="hover">
 									Material UI
 								</Typography>
-								<Typography  href="https://www.sdu.edu.cn" sx={{color:"#424242",  fontSize: '1.1rem', fontWeight: 300,pb:0.7}}  component={Link}  target="_blank" underline="hover">
+								<Typography  href="https://www.sdu.edu.cn" sx={{color:"#424242",  fontSize: '0.9rem', fontWeight: 300,pb:0.7}}  component={Link}  target="_blank" underline="hover">
 									山东大学
 								</Typography>
-								<Typography  href="https://www.sdu.edu.cn" sx={{color:"#424242",  fontSize: '1.1rem', fontWeight: 300,pb:0.7}}  component={Link}  target="_blank" underline="hover">
+								<Typography  href="https://www.sdu.edu.cn" sx={{color:"#424242",  fontSize: '0.9rem', fontWeight: 300,pb:0.7}}  component={Link}  target="_blank" underline="hover">
 									IRLab
 								</Typography>
-								<Typography href="http://a.cupof.beer" sx={{color:"#424242",  fontSize: '1.1rem', fontWeight: 300,pb:0.7}}  component={Link}  target="_blank" underline="hover">
+								<Typography href="http://a.cupof.beer" sx={{color:"#424242",  fontSize: '0.9rem', fontWeight: 300,pb:0.7}}  component={Link}  target="_blank" underline="hover">
 									Linton个人博客
 								</Typography>
 							</Stack>
@@ -223,13 +223,13 @@ const LandingFooter =()=>{
 								<Typography  sx={{color:"#424242",  fontSize: '1.4rem', fontWeight: 600,pb:1.1}}>
 									有关信息
 								</Typography>
-								<Typography  href="#" sx={{color:"#424242",  fontSize: '1.1rem', fontWeight: 300,pb:0.7}}  component={Link}  target="_blank" underline="hover">
+								<Typography  href="#" sx={{color:"#424242",  fontSize: '0.9rem', fontWeight: 300,pb:0.7}}  component={Link}  target="_blank" underline="hover">
 									MIT许可证
 								</Typography>
-								<Typography  href="#" sx={{color:"#424242",  fontSize: '1.1rem', fontWeight: 300,pb:0.7}}  component={Link}  target="_blank" underline="hover">
+								<Typography  href="#" sx={{color:"#424242",  fontSize: '0.9rem', fontWeight: 300,pb:0.7}}  component={Link}  target="_blank" underline="hover">
 									Terms & Conditions
 								</Typography>
-								<Typography href="#" sx={{color:"#424242",  fontSize: '1.1rem', fontWeight: 300,pb:0.7}}  component={Link}  target="_blank" underline="hover">
+								<Typography href="#" sx={{color:"#424242",  fontSize: '0.9rem', fontWeight: 300,pb:0.7}}  component={Link}  target="_blank" underline="hover">
 									小记
 								</Typography>
 							</Stack>
@@ -246,10 +246,10 @@ const LandingFooter =()=>{
 				<Grid item sx={6}>
 					<Stack alignItems="center"  justifyContent="center" spacing={0}>
 						<Divider sx={{pl:"50%",pr:"50%",pt:3,mb:2}}/>
-						<Typography  sx={{color:"#424242",  fontSize: '0.9rem', fontWeight: 300 }} component={Link} href="http://a.cupof.beer" target="_blank" underline="hover">
+						<Typography  sx={{color:"#424242",  fontSize: '0.8rem', fontWeight: 300 }} component={Link} href="http://a.cupof.beer" target="_blank" underline="hover">
 						Copyright&copy; 2022 JustLinton
 						</Typography>
-						<Typography  sx={{color:"#424242",  fontSize: '0.9rem', fontWeight: 300,mt:0.7}}>
+						<Typography  sx={{color:"#424242",  fontSize: '0.8rem', fontWeight: 300,mt:0.7}}>
 						Database System Design 2021
 						</Typography>
 					</Stack>
@@ -306,11 +306,6 @@ const TopSubCard = () =>{
 												Lintonasd<br/>
 												Lintonasd<br/>
 												Lintonasd<br/>
-												Lintonasd<br/>
-												Lintonasd<br/>
-												Lintonasd<br/>	Lintonasd<br/>
-												Lintonasd<br/>	Lintonasd<br/>
-												Lintonasd<br/>
 											
 									</Typography>
 								</Grid>
@@ -359,16 +354,15 @@ const ProfileLayout = () => {
 				{/* <TestPara/> */}
 
 				<Grid item sx={{width:"100%",zIndex:-1}} >
-
 						<Parallax bgImage={imageMain} strength={350} blur={{ min: -15, max: 12 }}>
 							<div style={{ height: "130vh" }}>
 								<StyledOpacityGrid container sx={{width:"100%",height:"130vh",pb:"30vh"}} justifyContent="center" alignItems="center">
-									<Grid item xs={6} md={6} sx={{pt:{xs:3,md:0}}}>
-										<Stack>
-											<Typography  sx={{color:"#fff",  fontSize: '2.4rem', fontWeight: 600,pb:1.1}}>
+									<Grid item xs={12} md={12} sx={{pt:{xs:0,md:0}}}>
+										<Stack alignItems="center">
+											<Typography  sx={{color:"#fff",  fontSize: {xs:'2.1rem',md:'2.7rem'}, fontWeight: 600,pb:1.1}}>
 												社区故事，从此开始
 											</Typography>
-											<Typography  href="#" sx={{color:"#fff",  fontSize: '2.1rem', fontWeight: 300,pb:0.7}}  component={Link}  target="_blank" underline="hover">
+											<Typography  href="#" sx={{color:"#fff",  fontSize: {xs:'1.8rem',md:'2.3rem'}, fontWeight: 300,pb:0.7}}  component={Link}  target="_blank" underline="hover">
 												Join Nesto.
 											</Typography>
 										</Stack>
@@ -382,7 +376,7 @@ const ProfileLayout = () => {
 
 						
 				<Grid item sx={{width:"100%",background:"#eee"}}>
-					<StyledSlopeTopGrid sx={{width:"100%",zIndex:1,mt:'-288px',mb:{xs:90,md:'-450px'}}}>
+					<StyledSlopeTopGrid sx={{width:"100%",zIndex:1,mt:'-288px',mb:{xs:20,md:'-690px'}}}>
 
 							<Stack sx={{pt:10,pl:'10%',pr:'10%'}} direction={{xs:"column",md: "row"}} justifyContent="space-evenly" spacing={10}>
 										
